@@ -155,4 +155,27 @@ router.get('/pages/your-health/cancel-appointment', (req, res) => {
 	res.render('pages/your-health/cancel-appointment', appointmentContext(req));
 });
 
+// Cancellation confirmation, reached from the "Cancel appointment" button.
+// Records the cancellation in the session (so it moves from upcoming to past
+// appointments) and removes the upcoming booking.
+router.get('/pages/your-health/appointment-cancelled', (req, res) => {
+	const ctx = appointmentContext(req);
+
+	if (req.session && req.session.data && ctx.clinic && ctx.clinic.id) {
+		req.session.data.cancelledAppointment = {
+			clinicId: ctx.clinic.id,
+			clinicName: ctx.clinic.name,
+			address: ctx.clinic.address,
+			postcode: ctx.postcode,
+			date: ctx.date,
+			time: ctx.time,
+			walkIn: ctx.clinic.type === 'walk-in'
+		};
+		// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+		delete req.session.data.bookedAppointment;
+	}
+
+	res.render('pages/your-health/appointment-cancelled', ctx);
+});
+
 module.exports = router;

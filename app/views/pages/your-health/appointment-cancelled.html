@@ -1,0 +1,33 @@
+{% extends 'layout-app.html' %}
+
+{% set hub = "Your health" %}
+
+{% set pageHeading = "Appointment cancelled" %}
+
+{% block content %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-full">
+
+      {{ panel({
+        titleText: "Appointment cancelled",
+        html: "Your [name of test] appointment has been cancelled."
+      }) }}
+
+      <p class="nhsuk-body">If you still need this test, you can book a new appointment at any time.</p>
+
+      <h2 class="nhsuk-heading-l">More information</h2>
+
+      {{ nhsappCardGroup({
+        cards: [
+          {
+            href: "/pages/hospital-and-specialist-appointments",
+            title: "View your appointments"
+          }
+        ]
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

@@ -59,7 +59,7 @@
       {{ button({
         text: "Cancel appointment",
         classes: "nhsapp-button nhsuk-u-margin-top-4",
-        href: "#"
+        href: "/pages/your-health/appointment-cancelled?clinic=" + (clinic.id | urlencode) + "&postcode=" + (postcode | urlencode) + "&date=" + (date | urlencode) + "&time=" + (time | urlencode)
       }) }}
 
       <a class="nhsuk-link nhsuk-link--no-visited-state keep-appointment" href="{{ backLinkURL }}">Keep existing appointment</a>
