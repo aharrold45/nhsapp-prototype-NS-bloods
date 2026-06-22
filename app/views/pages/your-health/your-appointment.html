@@ -26,6 +26,18 @@
 
       <h1 class="nhsapp-page-heading nhsuk-heading-l">Your [name of the test] appointment</h1>
 
+      <a class="add-to-calendar" href="#">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <rect x="3" y="4" width="18" height="17" rx="2"></rect>
+          <line x1="3" y1="9" x2="21" y2="9"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="12" y1="12" x2="12" y2="18"></line>
+          <line x1="9" y1="15" x2="15" y2="15"></line>
+        </svg>
+        Add to calendar
+      </a>
+
       <div class="nhsuk-warning-callout">
         <h2 class="nhsuk-warning-callout__label">
           <span role="text">
@@ -62,32 +74,20 @@
         <div class="nhsuk-summary-list__row">
           <dt class="nhsuk-summary-list__key">Location</dt>
           <dd class="nhsuk-summary-list__value">{{ clinic.address }}</dd>
+          <p><a class="nhsuk-link" href="#">Get directions</a></p>
         </div>
       </dl>
 
-      <p><a class="nhsuk-link" href="#">Get directions</a></p>
-
-      <a class="add-to-calendar" href="#">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-          <rect x="3" y="4" width="18" height="17" rx="2"></rect>
-          <line x1="3" y1="9" x2="21" y2="9"></line>
-          <line x1="8" y1="2" x2="8" y2="6"></line>
-          <line x1="16" y1="2" x2="16" y2="6"></line>
-          <line x1="12" y1="12" x2="12" y2="18"></line>
-          <line x1="9" y1="15" x2="15" y2="15"></line>
-        </svg>
-        Add to calendar
-      </a>
 
       {{ button({
         text: "Ask to reschedule appointment",
         classes: "appointment-action-button",
-        href: "#"
+        href: "/pages/your-health/edit-appointment?clinic=" + (clinic.id | urlencode) + "&postcode=" + (postcode | urlencode) + "&date=" + (date | urlencode) + "&time=" + (time | urlencode)
       }) }}
 
-      <a class="nhsuk-link nhsuk-link--no-visited-state ask-to-cancel" href="#">Ask to cancel appointment</a>
+      <a class="nhsuk-link nhsuk-link--no-visited-state ask-to-cancel" href="#">Ask to cancel appointment</a><BR>
 
-      <h2 class="nhsuk-heading-l">Action required</h2>
+      <h2 class="nhsuk-heading-m">Action required</h2>
 
       {{ nhsappCardGroup({
         stacked: true,

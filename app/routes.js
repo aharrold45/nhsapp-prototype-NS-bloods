@@ -127,4 +127,11 @@ router.get('/pages/your-health/your-appointment', (req, res) => {
 	res.render('pages/your-health/your-appointment', appointmentContext(req));
 });
 
+// Edit appointment page, reached from "Ask to reschedule appointment". The
+// clinic is retained (used by the "rebook with same clinic" link) but not
+// displayed.
+router.get('/pages/your-health/edit-appointment', (req, res) => {
+	res.render('pages/your-health/edit-appointment', appointmentContext(req));
+});
+
 module.exports = router;
