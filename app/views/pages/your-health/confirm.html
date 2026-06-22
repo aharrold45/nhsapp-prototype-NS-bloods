@@ -23,12 +23,12 @@
 
       {% if clinic.type != 'walk-in' %}
         <style>
-          .add-to-calendar { display:inline-flex; align-items:center; gap:12px; color:#005eb8; font-size:24px; text-decoration:underline; margin:16px 0 8px 0; }
+          .add-to-calendar { display:inline-flex; align-items:center; gap:12px; color:#005eb8; font-size:20px; text-decoration:underline; margin:20px 0 20px 0; }
           .add-to-calendar:hover { color:#7c2855; }
           .add-to-calendar svg { flex:0 0 auto; }
-        </style>
+        </style> 
         <a class="add-to-calendar" href="#">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
             <rect x="3" y="4" width="18" height="17" rx="2"></rect>
             <line x1="3" y1="9" x2="21" y2="9"></line>
             <line x1="8" y1="2" x2="8" y2="6"></line>
@@ -40,17 +40,16 @@
         </a>
       {% endif %}
 
-      <h2 class="nhsuk-heading-m">Your details</h2>
-      <dl class="nhsuk-summary-list">
-        <div class="nhsuk-summary-list__row">
-          <dt class="nhsuk-summary-list__key">Phone number</dt>
-          <dd class="nhsuk-summary-list__value">07859 123 456</dd>
-        </div>
-        <div class="nhsuk-summary-list__row">
-          <dt class="nhsuk-summary-list__key">Email</dt>
-          <dd class="nhsuk-summary-list__value">email@email.com</dd>
-        </div>
-      </dl>
+      <div class="nhsuk-warning-callout">
+        <h2 class="nhsuk-warning-callout__label">
+          <span role="text">
+            <span class="nhsuk-u-visually-hidden">Important: </span>
+            Important
+          </span>
+        </h2>
+        <p>You have more appointments to book. Please see below.</p>
+      </div>
+
 
       <h2 class="nhsuk-heading-m">Appointment details</h2>
       <dl class="nhsuk-summary-list">
@@ -79,7 +78,66 @@
         </div>
       </dl>
 
-      <p><a class="nhsuk-link" href="/pages/your-health-p9">Return to your health</a></p>
+      <p class="nhsuk-u-margin-top-3"><a class="nhsuk-link" href="#">Get directions</a></p>
+
+      <style>
+        .view-appointment-button:link,
+        .view-appointment-button:visited { background-color:#fff; color:#005eb8; box-shadow:0 4px 0 #003087; }
+        .view-appointment-button:hover { background-color:#f0f4f5; color:#005eb8; }
+        .view-appointment-button:active { background-color:#e8edee; }
+        .confirm-beta-banner { background-color:#d4e5f3; padding:16px 20px; margin:24px 0; }
+        .confirm-beta-banner p { margin:0; }
+      </style>
+
+      {{ button({
+        text: "View appointment",
+        classes: "view-appointment-button",
+        href: "/pages/your-health/view-or-manage-appointment"
+      }) }}
+
+      <div class="confirm-beta-banner">
+        <p>This is a new service. Please help us improve it and <a class="nhsuk-link" href="#">give your feedback</a>.</p>
+      </div>
+
+      <h2 class="nhsuk-heading-l nhsuk-u-margin-top-6">Actions required</h2>
+
+      {{ nhsappCardGroup({
+        stacked: true,
+        cards: [
+          {
+            href: "#",
+            aboveContent: { html: '<strong class="nhsuk-tag nhsuk-tag--red">Book as soon as possible</strong>' },
+            title: "Book [name of test] ASAP",
+            description: "Some context for the test and why its important."
+          },
+          {
+            href: "#",
+            aboveContent: { html: '<strong class="nhsuk-tag nhsuk-tag--red">Actions required</strong>' },
+            title: "Monday 11th May 2026",
+            descriptionHtml: '<p class="nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-2"><strong>6:00 pm - 6:30 pm</strong></p><p class="nhsuk-u-margin-bottom-1">[Name of the test]</p><p class="nhsuk-u-margin-bottom-0">Greenwich Health Centre</p>'
+          }
+        ]
+      }) }}
+
+      <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
+
+      <details class="nhsuk-details">
+        <summary class="nhsuk-details__summary">
+          <span class="nhsuk-details__summary-text">About [name of test]</span>
+        </summary>
+        <div class="nhsuk-details__text">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+      </details>
+
+      <details class="nhsuk-details">
+        <summary class="nhsuk-details__summary">
+          <span class="nhsuk-details__summary-text">An FAQ about test</span>
+        </summary>
+        <div class="nhsuk-details__text">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+      </details>
 
     </div>
   </div>
