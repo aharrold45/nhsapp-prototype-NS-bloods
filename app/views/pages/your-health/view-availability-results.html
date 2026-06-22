@@ -35,7 +35,7 @@
           .times-pages { display:flex; align-items:center; justify-content:center }
           .times-box { width:var(--times-box-width); border:2px solid #0b67a6; border-radius:8px; padding:16px; background:#f6fbfc }
           .times-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px }
-          .slot-button { background:#fff; border:2px solid #0b5a3b; color:#0b5a3b; padding:12px 18px; border-radius:8px; font-weight:700; font-size:16px }
+          .slot-button { display:block; text-align:center; text-decoration:none; background:#fff; border:2px solid #0b5a3b; color:#0b5a3b; padding:12px 18px; border-radius:8px; font-weight:700; font-size:16px }
           .clinic-times-row .nhsuk-heading-s,
           .clinic-times-heading .nhsuk-heading-s { font-size:16px; font-weight:400; margin-left: max(0px, calc(50% - (var(--times-box-width) / 2))); }
           .clinic-times-row .nhsuk-heading-s .suggested-current,
@@ -89,7 +89,7 @@
                       <div style="text-align:center; font-weight:800">{{ page.dateLabel }}</div>
                       <div class="times-grid">
                         {% for slot in page.slots %}
-                          <button class="slot-button" type="button">{{ slot }}</button>
+                          <a class="slot-button" href="/pages/your-health/check?clinic={{ clinic.id | urlencode }}&postcode={{ postcode | urlencode }}&date={{ page.dateLabel | urlencode }}&time={{ slot | urlencode }}">{{ slot }}</a>
                         {% endfor %}
                       </div>
                     </div>
