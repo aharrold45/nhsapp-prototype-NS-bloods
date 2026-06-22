@@ -1,0 +1,81 @@
+{% extends 'layout-app.html' %}
+
+{% set hub = "Your health" %}
+
+{% set backLink = true %}
+{% set backLinkURL = "/pages/your-health/your-appointment?clinic=" + (clinic.id | urlencode) + "&postcode=" + (postcode | urlencode) + "&date=" + (date | urlencode) + "&time=" + (time | urlencode) %}
+
+{% set pageHeading = "Cancel appointment" %}
+
+{% block content %}
+
+  <style>
+    .keep-appointment { display:block; text-align:center; margin:8px 0 24px 0; }
+  </style>
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-full">
+
+      <h1 class="nhsapp-page-heading nhsuk-heading-l">Cancel appointment</h1>
+
+      <div class="nhsuk-warning-callout">
+        <h2 class="nhsuk-warning-callout__label">
+          <span role="text">
+            <span class="nhsuk-u-visually-hidden">Important: </span>
+            Important
+          </span>
+        </h2>
+        <p>Attending test appointments is crucial in allowing the NHS to provide any relevant treatment you may need as soon as possible.</p>
+      </div>
+
+      <h2 class="nhsuk-heading-m">Current appointment details</h2>
+      {% if clinic.type == 'walk-in' %}
+        <p class="nhsuk-body">[Name of test], walk in at {{ clinic.name }}.</p>
+      {% else %}
+        <p class="nhsuk-body">[Name of test], {{ date }}, {{ time }} at {{ clinic.name }}.</p>
+      {% endif %}
+
+      <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--m">
+
+      <fieldset class="nhsuk-fieldset">
+        <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">Please let us know the reason:</legend>
+        <div class="nhsuk-checkboxes">
+          {% set cancelReasons = [
+            "Appointment inconvenient",
+            "Procedure no longer necessary",
+            "Unfit due to acute illness",
+            "Administrative error",
+            "Other – non clinical"
+          ] %}
+          {% for reason in cancelReasons %}
+            <div class="nhsuk-checkboxes__item">
+              <input class="nhsuk-checkboxes__input" id="cancel-reason-{{ loop.index }}" name="cancel-reason" type="checkbox" value="{{ reason }}">
+              <label class="nhsuk-label nhsuk-checkboxes__label" for="cancel-reason-{{ loop.index }}">{{ reason }}</label>
+            </div>
+          {% endfor %}
+        </div>
+      </fieldset>
+
+      {{ button({
+        text: "Cancel appointment",
+        classes: "nhsapp-button nhsuk-u-margin-top-4",
+        href: "#"
+      }) }}
+
+      <a class="nhsuk-link nhsuk-link--no-visited-state keep-appointment" href="{{ backLinkURL }}">Keep existing appointment</a>
+
+      <h2 class="nhsuk-heading-l">More information</h2>
+
+      {{ nhsappCardGroup({
+        cards: [
+          {
+            href: "/pages/your-health/upcoming-and-past-appointments-p9",
+            title: "View upcoming appointments"
+          }
+        ]
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

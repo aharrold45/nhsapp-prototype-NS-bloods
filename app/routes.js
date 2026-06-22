@@ -149,4 +149,10 @@ router.get('/pages/your-health/edit-appointment', (req, res) => {
 	res.render('pages/your-health/edit-appointment', appointmentContext(req));
 });
 
+// Cancel appointment page, reached from "Ask to cancel appointment". Shows the
+// current appointment details and a reason form.
+router.get('/pages/your-health/cancel-appointment', (req, res) => {
+	res.render('pages/your-health/cancel-appointment', appointmentContext(req));
+});
+
 module.exports = router;
