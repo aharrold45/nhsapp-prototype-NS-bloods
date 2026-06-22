@@ -110,4 +110,18 @@ router.get('/pages/your-health/check', (req, res) => {
 	});
 });
 
+// Appointment confirmation page, reached from the check page's
+// "Confirm appointment" button. Shows the booked details.
+router.get('/pages/your-health/confirm', (req, res) => {
+	const clinicsList = loadClinicsList();
+	const clinic = clinicsList.find(x => x.id === req.query.clinic) || {};
+
+	res.render('pages/your-health/confirm', {
+		clinic,
+		postcode: req.query.postcode || '',
+		date: req.query.date || '',
+		time: req.query.time || ''
+	});
+});
+
 module.exports = router;

@@ -2,28 +2,24 @@
 
 {% set hub = "Your health" %}
 
-{% set backLink = true %}
-{% set backLinkURL = "/pages/your-health/clinic-availability?clinic=" + (clinic.id | urlencode) + "&postcode=" + (postcode | urlencode) %}
-
-{% set pageHeading = "Check" %}
+{% set pageHeading = "Appointment confirmed" %}
 
 {% block content %}
 
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-full">
 
-      <h1 class="nhsapp-page-heading nhsuk-heading-l">Please check the below details
-</h1>
-
-      <div class="nhsuk-warning-callout">
-        <h2 class="nhsuk-warning-callout__label">
-          <span role="text">
-            <span class="nhsuk-u-visually-hidden">Important: </span>
-            Before you continue
-          </span>
-        </h2>
-        <p>Your appointment is not booked yet. Please read and confirm the details including contacts as you may need to contacted by the clinician.</p>
-      </div>
+      {% if clinic.type == 'walk-in' %}
+        {{ panel({
+          titleText: "Walk-in confirmed",
+          html: "There is no appointment time &ndash; just turn up during the clinic's opening hours."
+        }) }}
+      {% else %}
+        {{ panel({
+          titleText: "Appointment booked",
+          html: "We have sent a confirmation to<br><strong>email@email.com</strong>"
+        }) }}
+      {% endif %}
 
       <h2 class="nhsuk-heading-m">Your details</h2>
       <dl class="nhsuk-summary-list">
@@ -64,11 +60,7 @@
         </div>
       </dl>
 
-      {{ button({
-        text: "Confirm appointment",
-        classes: "nhsapp-button",
-        href: "/pages/your-health/confirm?clinic=" + (clinic.id | urlencode) + "&postcode=" + (postcode | urlencode) + "&date=" + (date | urlencode) + "&time=" + (time | urlencode)
-      }) }}
+      <p><a class="nhsuk-link" href="/pages/your-health-p9">Return to your health</a></p>
 
     </div>
   </div>
