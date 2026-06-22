@@ -23,14 +23,39 @@
         <fieldset class="nhsuk-fieldset">
           <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">Access requirement:</legend>
 
-          <div class="nhsuk-radios" style="margin-bottom:20px;">
+          <div class="nhsuk-radios nhsuk-radios--conditional" style="margin-bottom:20px;">
             <div class="nhsuk-radios__item">
               <input class="nhsuk-radios__input" id="access-no" name="access" type="radio" value="none" checked>
               <label class="nhsuk-radios__label" for="access-no">No access needs</label>
             </div>
             <div class="nhsuk-radios__item">
-              <input class="nhsuk-radios__input" id="access-yes" name="access" type="radio" value="yes">
+              <input class="nhsuk-radios__input" id="access-yes" name="access" type="radio" value="yes" data-aria-controls="conditional-access-yes">
               <label class="nhsuk-radios__label" for="access-yes">I have access needs</label>
+            </div>
+
+            <div class="nhsuk-radios__conditional nhsuk-radios__conditional--hidden" id="conditional-access-yes">
+              <fieldset class="nhsuk-fieldset">
+                <legend class="nhsuk-fieldset__legend">Select any that apply</legend>
+                <div class="nhsuk-checkboxes">
+                  {% set accessOptions = [
+                    "Accessible toilet",
+                    "Braille translation service",
+                    "Disabled car parking",
+                    "Car parking",
+                    "Induction loop",
+                    "Sign language service",
+                    "Step free access",
+                    "Text relay",
+                    "Wheelchair access"
+                  ] %}
+                  {% for option in accessOptions %}
+                    <div class="nhsuk-checkboxes__item">
+                      <input class="nhsuk-checkboxes__input" id="access-need-{{ loop.index }}" name="access-needs" type="checkbox" value="{{ option }}">
+                      <label class="nhsuk-label nhsuk-checkboxes__label" for="access-need-{{ loop.index }}">{{ option }}</label>
+                    </div>
+                  {% endfor %}
+                </div>
+              </fieldset>
             </div>
           </div>
         </fieldset>
@@ -53,4 +78,26 @@
     </div>
   </div>
 
+{% endblock %}
+
+{% block pageScripts %}
+  <script>
+    (function () {
+      var radios = document.querySelectorAll('input[name="access"]');
+      var reveal = document.getElementById('conditional-access-yes');
+      var yes = document.getElementById('access-yes');
+      if (!reveal || !radios.length) return;
+
+      function update() {
+        if (yes && yes.checked) {
+          reveal.classList.remove('nhsuk-radios__conditional--hidden');
+        } else {
+          reveal.classList.add('nhsuk-radios__conditional--hidden');
+        }
+      }
+
+      radios.forEach(function (r) { r.addEventListener('change', update); });
+      update();
+    })();
+  </script>
 {% endblock %}
