@@ -1,0 +1,164 @@
+{% extends 'layout-app.html' %}
+
+{% set hub = "Your health" %}
+
+{% set backLink = true %}
+{% set backLinkURL = "/pages/your-health/confirm?clinic=" + (clinic.id | urlencode) + "&postcode=" + (postcode | urlencode) + "&date=" + (date | urlencode) + "&time=" + (time | urlencode) %}
+
+{% set pageHeading = "Your [name of the test] appointment" %}
+
+{% block content %}
+
+  <style>
+    .add-to-calendar { display:inline-flex; align-items:center; gap:12px; color:#005eb8; font-size:20px; text-decoration:underline; margin:20px 0; }
+    .add-to-calendar:hover { color:#7c2855; }
+    .add-to-calendar svg { flex:0 0 auto; }
+    .appointment-action-button:link,
+    .appointment-action-button:visited { background-color:#fff; color:#005eb8; box-shadow:0 4px 0 #003087; }
+    .appointment-action-button:hover { background-color:#f0f4f5; color:#005eb8; }
+    .appointment-action-button:active { background-color:#e8edee; }
+    .ask-to-cancel { display:block; text-align:center; margin:8px 0 24px 0; }
+    .nhsapp-card__above { padding-bottom:10px; }
+  </style>
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-full">
+
+      <h1 class="nhsapp-page-heading nhsuk-heading-l">Your [name of the test] appointment</h1>
+
+      <div class="nhsuk-warning-callout">
+        <h2 class="nhsuk-warning-callout__label">
+          <span role="text">
+            <span class="nhsuk-u-visually-hidden">Important: </span>
+            Important
+          </span>
+        </h2>
+        <p>You have more appointments to book. Please see below.</p>
+      </div>
+
+      <dl class="nhsuk-summary-list">
+        {% if clinic.type == 'walk-in' %}
+        <div class="nhsuk-summary-list__row">
+          <dt class="nhsuk-summary-list__key">Appointment type</dt>
+          <dd class="nhsuk-summary-list__value">Walk in &ndash; no appointment needed</dd>
+        </div>
+        {% else %}
+        <div class="nhsuk-summary-list__row">
+          <dt class="nhsuk-summary-list__key">Date</dt>
+          <dd class="nhsuk-summary-list__value">{{ date }}</dd>
+        </div>
+        <div class="nhsuk-summary-list__row">
+          <dt class="nhsuk-summary-list__key">Time</dt>
+          <dd class="nhsuk-summary-list__value">
+            {{ time }}
+            <span class="nhsuk-hint nhsuk-u-margin-bottom-0">Times shown will be narrowed down 48hrs before your appointment. Test duration is approx 30 mins.</span>
+          </dd>
+        </div>
+        {% endif %}
+        <div class="nhsuk-summary-list__row">
+          <dt class="nhsuk-summary-list__key">Clinic name</dt>
+          <dd class="nhsuk-summary-list__value">{{ clinic.name }}</dd>
+        </div>
+        <div class="nhsuk-summary-list__row">
+          <dt class="nhsuk-summary-list__key">Location</dt>
+          <dd class="nhsuk-summary-list__value">{{ clinic.address }}</dd>
+        </div>
+      </dl>
+
+      <p><a class="nhsuk-link" href="#">Get directions</a></p>
+
+      <a class="add-to-calendar" href="#">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <rect x="3" y="4" width="18" height="17" rx="2"></rect>
+          <line x1="3" y1="9" x2="21" y2="9"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="12" y1="12" x2="12" y2="18"></line>
+          <line x1="9" y1="15" x2="15" y2="15"></line>
+        </svg>
+        Add to calendar
+      </a>
+
+      {{ button({
+        text: "Ask to reschedule appointment",
+        classes: "appointment-action-button",
+        href: "#"
+      }) }}
+
+      <a class="nhsuk-link nhsuk-link--no-visited-state ask-to-cancel" href="#">Ask to cancel appointment</a>
+
+      <h2 class="nhsuk-heading-l">Action required</h2>
+
+      {{ nhsappCardGroup({
+        stacked: true,
+        cards: [
+          {
+            href: "#",
+            aboveContent: { html: '<strong class="nhsuk-tag nhsuk-tag--red">Not read</strong>' },
+            title: "A letter",
+            descriptionHtml: '<p class="nhsuk-u-secondary-text-color nhsuk-u-margin-bottom-0">Received 30th April 2026</p>'
+          },
+          {
+            href: "#",
+            aboveContent: { html: '<strong class="nhsuk-tag nhsuk-tag--red">Not submitted</strong>' },
+            title: "Request for [name of a document] upload",
+            descriptionHtml: '<p class="nhsuk-u-secondary-text-color nhsuk-u-margin-bottom-0">Received 30th April 2026</p>'
+          },
+          {
+            href: "#",
+            aboveContent: { html: '<strong class="nhsuk-tag nhsuk-tag--red">Not submitted</strong>' },
+            title: "Pre appointment survey 2",
+            descriptionHtml: '<p class="nhsuk-u-secondary-text-color nhsuk-u-margin-bottom-0">Received 30th April 2026</p>'
+          }
+        ]
+      }) }}
+
+      <h2 class="nhsuk-heading-m nhsuk-u-margin-top-6">Finished</h2>
+
+      {{ nhsappCardGroup({
+        stacked: true,
+        cards: [
+          {
+            href: "#",
+            aboveContent: { html: '<strong class="nhsuk-tag nhsuk-tag--green">Finished</strong>' },
+            title: "Pre appointment survey 1",
+            descriptionHtml: '<p class="nhsuk-u-secondary-text-color nhsuk-u-margin-bottom-0">Received 30th April 2026</p>'
+          }
+        ]
+      }) }}
+
+      <h2 class="nhsuk-heading-l nhsuk-u-margin-top-6">More information</h2>
+
+      {{ nhsappCardGroup({
+        cards: [
+          {
+            href: "/pages/your-health/upcoming-and-past-appointments-p9",
+            title: "View upcoming appointments"
+          }
+        ]
+      }) }}
+
+      <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--l">
+
+      <details class="nhsuk-details">
+        <summary class="nhsuk-details__summary">
+          <span class="nhsuk-details__summary-text">About [name of test]</span>
+        </summary>
+        <div class="nhsuk-details__text">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+      </details>
+
+      <details class="nhsuk-details">
+        <summary class="nhsuk-details__summary">
+          <span class="nhsuk-details__summary-text">An FAQ about test</span>
+        </summary>
+        <div class="nhsuk-details__text">
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+      </details>
+
+    </div>
+  </div>
+
+{% endblock %}

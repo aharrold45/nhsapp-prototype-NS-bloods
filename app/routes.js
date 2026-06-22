@@ -95,33 +95,36 @@ router.get('/pages/your-health/clinic-availability', (req, res) => {
 	});
 });
 
+// Build the shared appointment context (clinic record plus the chosen
+// date/time) from the request query. Used by the check, confirm and
+// appointment pages so they all show the same values.
+function appointmentContext(req) {
+	const clinicsList = loadClinicsList();
+	return {
+		clinic: clinicsList.find(x => x.id === req.query.clinic) || {},
+		postcode: req.query.postcode || '',
+		date: req.query.date || '',
+		time: req.query.time || ''
+	};
+}
+
 // Check your answers page for a chosen appointment slot. The clinic name and
 // address are looked up from clinics.json; the date and time come from the
 // slot button the user selected on the availability page.
 router.get('/pages/your-health/check', (req, res) => {
-	const clinicsList = loadClinicsList();
-	const clinic = clinicsList.find(x => x.id === req.query.clinic) || {};
-
-	res.render('pages/your-health/check', {
-		clinic,
-		postcode: req.query.postcode || '',
-		date: req.query.date || '',
-		time: req.query.time || ''
-	});
+	res.render('pages/your-health/check', appointmentContext(req));
 });
 
 // Appointment confirmation page, reached from the check page's
 // "Confirm appointment" button. Shows the booked details.
 router.get('/pages/your-health/confirm', (req, res) => {
-	const clinicsList = loadClinicsList();
-	const clinic = clinicsList.find(x => x.id === req.query.clinic) || {};
+	res.render('pages/your-health/confirm', appointmentContext(req));
+});
 
-	res.render('pages/your-health/confirm', {
-		clinic,
-		postcode: req.query.postcode || '',
-		date: req.query.date || '',
-		time: req.query.time || ''
-	});
+// Appointment detail page, reached from the "View appointment" button on the
+// confirmation page. Shows the same details plus tasks and other actions.
+router.get('/pages/your-health/your-appointment', (req, res) => {
+	res.render('pages/your-health/your-appointment', appointmentContext(req));
 });
 
 module.exports = router;
