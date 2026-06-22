@@ -36,6 +36,8 @@
           .times-box { width:var(--times-box-width); border:2px solid #0b67a6; border-radius:8px; padding:16px; background:#f6fbfc }
           .times-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px }
           .slot-button { display:block; text-align:center; text-decoration:none; background:#fff; border:2px solid #0b5a3b; color:#0b5a3b; padding:12px 18px; border-radius:8px; font-weight:700; font-size:16px }
+          .walk-in-block { padding:0 0 4px 0 }
+          .walk-in-select { display:inline-block; width:auto; box-shadow:0 4px 0 #00401f }
           .clinic-times-row .nhsuk-heading-s,
           .clinic-times-heading .nhsuk-heading-s { font-size:16px; font-weight:400; margin-left: max(0px, calc(50% - (var(--times-box-width) / 2))); }
           .clinic-times-row .nhsuk-heading-s .suggested-current,
@@ -75,6 +77,21 @@
             </div>
           </div>
 
+          {% if clinic.type == 'walk-in' %}
+
+          <div class="walk-in-block">
+            <p class="nhsuk-body" style="margin:8px 0">{{ clinic.durationDesc }}</p>
+            {% if clinic.busyPeriods %}
+              <p class="nhsuk-body" style="margin:0 0 12px 0">{{ clinic.busyPeriods }}</p>
+            {% endif %}
+            <div style="margin:8px 0 12px 0">
+              <a class="cta-availability" href="/pages/your-health/clinic-availability?clinic={{ clinic.id | urlencode }}&postcode={{ postcode | urlencode }}">See full clinic details</a>
+            </div>
+            <a class="slot-button walk-in-select" href="/pages/your-health/check?clinic={{ clinic.id | urlencode }}&postcode={{ postcode | urlencode }}&date={{ 'Walk in' | urlencode }}&time={{ 'Walk in' | urlencode }}">Select walk in</a>
+          </div>
+
+          {% else %}
+
           <div class="clinic-times-heading cta-wrapper">
             <p class="nhsuk-heading-s" style="margin:0 0 8px 0">Suggested times <span class="suggested-current">1</span>/<span class="suggested-total">{{ clinic.times | length }}</span></p>
           </div>
@@ -104,6 +121,8 @@
               <p class="clinic-duration nhsuk-body-s" style="margin-top:4px">{{ clinic.durationDesc or 'Tests are expected to start within times shown and last 30 minutes.' }}</p>
             </div>
           </div>
+
+          {% endif %}
 
           {% if not loop.last %}
             <hr class="nhsuk-section-break--s" />

@@ -39,6 +39,12 @@
 
       <h2 class="nhsuk-heading-m">Appointment details</h2>
       <dl class="nhsuk-summary-list">
+        {% if clinic.type == 'walk-in' %}
+        <div class="nhsuk-summary-list__row">
+          <dt class="nhsuk-summary-list__key">Appointment type</dt>
+          <dd class="nhsuk-summary-list__value">Walk in &ndash; no appointment needed</dd>
+        </div>
+        {% else %}
         <div class="nhsuk-summary-list__row">
           <dt class="nhsuk-summary-list__key">Date</dt>
           <dd class="nhsuk-summary-list__value">{{ date }}</dd>
@@ -47,6 +53,7 @@
           <dt class="nhsuk-summary-list__key">Time</dt>
           <dd class="nhsuk-summary-list__value">{{ time }}</dd>
         </div>
+        {% endif %}
         <div class="nhsuk-summary-list__row">
           <dt class="nhsuk-summary-list__key">Clinic name</dt>
           <dd class="nhsuk-summary-list__value">{{ clinic.name }}</dd>

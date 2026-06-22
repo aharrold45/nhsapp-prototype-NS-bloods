@@ -46,6 +46,7 @@
     .ca-slot-button:focus { outline:4px solid #ffeb3b; outline-offset:0; box-shadow:0 4px 0 #212b32; }
     .ca-slot-button:active { box-shadow:0 1px 0 #00401f; transform:translateY(3px); }
     .ca-no-slots { color:#425563; padding:14px 0; }
+    .ca-walk-in-select { display:inline-block; margin-top:16px; }
 
     /* Order a kit card */
     .ca-kit-card { display:flex; justify-content:space-between; align-items:center; gap:12px; width:100%; text-align:left; background:#fff; border:1px solid #d8dde0; border-radius:8px; padding:16px; margin:8px 0 0 0; font-weight:700; font-size:18px; color:var(--ca-blue); text-decoration:none; }
@@ -89,6 +90,17 @@
     <p><a class="nhsuk-link" href="#">Visit the CQC site for more information</a></p>
 
     <hr class="ca-section-break" />
+
+    {% if clinic.type == 'walk-in' %}
+
+    <h2 class="nhsuk-heading-m">Availability</h2>
+    <p class="nhsuk-body">{{ clinic.durationDesc }}</p>
+    {% if clinic.busyPeriods %}
+      <p class="nhsuk-body">{{ clinic.busyPeriods }}</p>
+    {% endif %}
+    <a class="ca-slot-button ca-walk-in-select" href="/pages/your-health/check?clinic={{ clinic.id | urlencode }}&postcode={{ postcode | urlencode }}&date={{ 'Walk in' | urlencode }}&time={{ 'Walk in' | urlencode }}">Select walk in</a>
+
+    {% else %}
 
     <div class="ca-picker-head">
       <h2 class="nhsuk-heading-m" id="ca-month-label">{{ days[0].monthYear if days.length }}</h2>
@@ -143,6 +155,8 @@
       <span>Order a home testing kit</span>
       <span class="ca-kit-card__chev" aria-hidden="true">&rsaquo;</span>
     </a>
+
+    {% endif %}
 
     <hr class="ca-section-break" />
 
