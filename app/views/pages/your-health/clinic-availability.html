@@ -1,0 +1,228 @@
+{% extends 'layout-app.html' %}
+
+{% set hub = "Your health" %}
+
+{% set backLink = true %}
+{% set backLinkURL = "/pages/your-health/view-availability-results?postcode=" + (postcode | urlencode) %}
+
+{% set pageHeading = clinic.name %}
+
+{% block content %}
+
+  <style>
+    .clinic-availability { --ca-blue:#005eb8; --ca-green:#007f3b; }
+    .clinic-availability .ca-section-break { border:0; border-top:1px solid #d8dde0; margin:20px 0; }
+    .clinic-availability .ca-meta-label { font-weight:700; margin:0 0 4px 0; }
+    .clinic-availability .ca-address { margin:0 0 8px 0; }
+    .clinic-availability .ca-cqc-rating { display:flex; align-items:center; gap:10px; margin:8px 0; }
+    .clinic-availability .ca-cqc-dot { width:18px; height:18px; border-radius:50%; flex:0 0 auto; }
+    .clinic-availability .ca-cqc-dot--good { background:#007f3b; }
+    .clinic-availability .ca-cqc-dot--improve { background:#ffb81c; }
+    .clinic-availability .ca-cqc-dot--outstanding { background:#330072; }
+    .clinic-availability .ca-cqc-dot--inadequate { background:#d5281b; }
+
+    /* Date picker */
+    .ca-picker-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px; }
+    .ca-picker-head h2 { margin:0; }
+    .ca-picker { display:flex; align-items:stretch; gap:4px; }
+    .ca-picker-chev { flex:0 0 auto; background:none; border:none; font-size:28px; line-height:1; color:#212b32; padding:0 4px; cursor:pointer; }
+    .ca-picker-chev:disabled { color:#aeb7bd; cursor:default; }
+    .ca-picker-days { display:flex; gap:8px; overflow-x:auto; scroll-behavior:smooth; padding:4px 2px; -webkit-overflow-scrolling:touch; }
+    .ca-picker-days::-webkit-scrollbar { display:none; }
+    .day-chip { flex:0 0 auto; min-width:56px; border:1px solid #d8dde0; border-radius:8px; background:#fff; padding:8px 6px; text-align:center; cursor:pointer; font-family:inherit; }
+    .day-chip .day-chip__weekday { display:block; font-size:14px; color:#425563; }
+    .day-chip .day-chip__day { display:block; font-size:20px; font-weight:700; color:#212b32; }
+    .day-chip[aria-pressed="true"] { background:var(--ca-blue); border-color:var(--ca-blue); }
+    .day-chip[aria-pressed="true"] .day-chip__weekday,
+    .day-chip[aria-pressed="true"] .day-chip__day { color:#fff; }
+
+    /* Time slots */
+    .ca-times-note { color:#425563; margin:16px 0; }
+    .ca-period { margin-bottom:8px; }
+    .ca-period h3 { margin:16px 0 0 0; }
+    .ca-slot-row { display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid #d8dde0; }
+    .ca-slot-row__label { margin:0; }
+    .ca-no-slots { color:#425563; padding:14px 0; }
+
+    /* Order a kit card */
+    .ca-kit-card { display:flex; justify-content:space-between; align-items:center; gap:12px; width:100%; text-align:left; background:#fff; border:1px solid #d8dde0; border-radius:8px; padding:16px; margin:8px 0 0 0; font-weight:700; font-size:18px; color:var(--ca-blue); text-decoration:none; }
+    .ca-kit-card__chev { font-size:24px; color:#425563; }
+  </style>
+
+  <div class="clinic-availability">
+
+    <h1 class="nhsapp-page-heading nhsuk-heading-l">{{ clinic.name }}</h1>
+
+    {% if clinic.distance %}
+      <p class="ca-meta-label">Location {{ clinic.distance }}</p>
+    {% endif %}
+    {% if clinic.address %}
+      <p class="ca-address nhsuk-body">{{ clinic.address }}</p>
+    {% endif %}
+    <p><a class="nhsuk-link" href="#">Get directions</a></p>
+
+    <hr class="ca-section-break" />
+
+    <h2 class="nhsuk-heading-s">Opening hours</h2>
+    <p class="nhsuk-body">{{ clinic.openingHours }}</p>
+
+    <hr class="ca-section-break" />
+
+    <h2 class="nhsuk-heading-s">Care Quality Commission inspection rating.</h2>
+    <div class="ca-cqc-rating">
+      {% set rating = clinic.cqcRating | lower %}
+      {% if rating == 'good' %}
+        {% set dotClass = 'ca-cqc-dot--good' %}
+      {% elif 'improve' in rating %}
+        {% set dotClass = 'ca-cqc-dot--improve' %}
+      {% elif rating == 'outstanding' %}
+        {% set dotClass = 'ca-cqc-dot--outstanding' %}
+      {% else %}
+        {% set dotClass = 'ca-cqc-dot--inadequate' %}
+      {% endif %}
+      <span class="ca-cqc-dot {{ dotClass }}" aria-hidden="true"></span>
+      <span>Overall: <strong>{{ clinic.cqcRating }}</strong></span>
+    </div>
+    <p><a class="nhsuk-link" href="#">Visit the CQC site for more information</a></p>
+
+    <hr class="ca-section-break" />
+
+    <div class="ca-picker-head">
+      <h2 class="nhsuk-heading-m" id="ca-month-label">{{ days[0].monthYear if days.length }}</h2>
+      <a class="nhsuk-link" href="#">View calendar</a>
+    </div>
+
+    <div class="ca-picker">
+      <button type="button" class="ca-picker-chev" id="ca-prev" aria-label="Previous day">&lsaquo;</button>
+      <div class="ca-picker-days" id="ca-days">
+        {% for day in days %}
+          <button type="button" class="day-chip" data-day-index="{{ day.index }}" data-month-year="{{ day.monthYear }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">
+            <span class="day-chip__weekday">{{ day.weekday }}</span>
+            <span class="day-chip__day">{{ day.day }}</span>
+          </button>
+        {% endfor %}
+      </div>
+      <button type="button" class="ca-picker-chev" id="ca-next" aria-label="Next day">&rsaquo;</button>
+    </div>
+
+    <p class="ca-times-note">Times shown are expected start and finish.</p>
+
+    <div id="ca-panels">
+      {% for day in days %}
+        <div class="ca-day-panel" data-day-index="{{ day.index }}" {% if not loop.first %}hidden{% endif %}>
+          {% if not day.hasSlots %}
+            <p class="ca-no-slots">No appointments available on this day.</p>
+          {% else %}
+            {% set periods = [
+              { name: 'Morning', slots: day.morning },
+              { name: 'Afternoon', slots: day.afternoon },
+              { name: 'Evening', slots: day.evening }
+            ] %}
+            {% for period in periods %}
+              {% if period.slots.length %}
+                <div class="ca-period">
+                  <h3 class="nhsuk-heading-s">{{ period.name }}</h3>
+                  {% for slot in period.slots %}
+                    <div class="ca-slot-row">
+                      <p class="ca-slot-row__label">{{ slot.label }}</p>
+                      <a class="nhsuk-link" href="#">Select</a>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <h2 class="nhsuk-heading-s nhsuk-u-margin-top-6">Can't see a time suitable?</h2>
+    <a class="ca-kit-card" href="#">
+      <span>Order a home testing kit</span>
+      <span class="ca-kit-card__chev" aria-hidden="true">&rsaquo;</span>
+    </a>
+
+    <hr class="ca-section-break" />
+
+    <h2 class="nhsuk-heading-s">Help and support</h2>
+    <p class="nhsuk-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    <p class="nhsuk-body"><strong>0800 123 456</strong><br>9am to 5pm Monday to Friday</p>
+
+    <hr class="ca-section-break" />
+
+    <details class="nhsuk-details">
+      <summary class="nhsuk-details__summary">
+        <span class="nhsuk-details__summary-text">About [name of test]</span>
+      </summary>
+      <div class="nhsuk-details__text">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      </div>
+    </details>
+
+    <details class="nhsuk-details">
+      <summary class="nhsuk-details__summary">
+        <span class="nhsuk-details__summary-text">An FAQ about test</span>
+      </summary>
+      <div class="nhsuk-details__text">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      </div>
+    </details>
+
+  </div>
+
+{% endblock %}
+
+{% block pageScripts %}
+  <script>
+    (function () {
+      var daysEl = document.getElementById('ca-days');
+      if (!daysEl) return;
+      var chips = Array.prototype.slice.call(daysEl.querySelectorAll('.day-chip'));
+      var panels = Array.prototype.slice.call(document.querySelectorAll('.ca-day-panel'));
+      var monthLabel = document.getElementById('ca-month-label');
+      var prevBtn = document.getElementById('ca-prev');
+      var nextBtn = document.getElementById('ca-next');
+      if (!chips.length) return;
+
+      var current = 0;
+
+      function select(i) {
+        if (i < 0) i = 0;
+        if (i > chips.length - 1) i = chips.length - 1;
+        current = i;
+        chips.forEach(function (chip, idx) {
+          chip.setAttribute('aria-pressed', idx === i ? 'true' : 'false');
+        });
+        panels.forEach(function (panel, idx) {
+          if (idx === i) panel.removeAttribute('hidden');
+          else panel.setAttribute('hidden', '');
+        });
+        if (monthLabel) monthLabel.textContent = chips[i].getAttribute('data-month-year');
+        chips[i].scrollIntoView({ block: 'nearest', inline: 'center' });
+        if (prevBtn) prevBtn.disabled = i === 0;
+        if (nextBtn) nextBtn.disabled = i === chips.length - 1;
+      }
+
+      chips.forEach(function (chip, idx) {
+        chip.addEventListener('click', function () { select(idx); });
+      });
+      if (prevBtn) prevBtn.addEventListener('click', function () { select(current - 1); });
+      if (nextBtn) nextBtn.addEventListener('click', function () { select(current + 1); });
+
+      // Swipe left/right on the panels area to change day
+      var panelsEl = document.getElementById('ca-panels');
+      if (panelsEl) {
+        var startX = null;
+        panelsEl.addEventListener('touchstart', function (e) { startX = e.changedTouches[0].clientX; }, { passive: true });
+        panelsEl.addEventListener('touchend', function (e) {
+          if (startX === null) return;
+          var dx = e.changedTouches[0].clientX - startX;
+          if (Math.abs(dx) > 40) select(dx < 0 ? current + 1 : current - 1);
+          startX = null;
+        }, { passive: true });
+      }
+
+      select(0);
+    })();
+  </script>
+{% endblock %}

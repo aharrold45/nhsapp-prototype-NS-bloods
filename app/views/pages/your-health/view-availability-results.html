@@ -99,7 +99,7 @@
               <button class="chev-right" aria-label="Next suggested times" data-clinic-id="{{ clinic.id }}">&rsaquo;</button>
 
               <div class="cta-wrapper" style="margin-top:6px; margin-bottom:6px">
-                <a class="cta-availability" href="#">See full clinic availability</a>
+                <a class="cta-availability" href="/pages/your-health/clinic-availability?clinic={{ clinic.id | urlencode }}&postcode={{ postcode | urlencode }}">See full clinic availability</a>
               </div>
               <p class="clinic-duration nhsuk-body-s" style="margin-top:4px">{{ clinic.durationDesc or 'Tests are expected to start within times shown and last 30 minutes.' }}</p>
             </div>
