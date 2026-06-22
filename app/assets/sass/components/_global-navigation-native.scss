@@ -1,0 +1,92 @@
+// ==========================================================================
+// COMPONENTS / #GLOBAL NAVIGATION NATIVE
+// ==========================================================================
+
+.app-global-navigation-native {
+  background-color: nhsuk-colour("grey-5");
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+}
+
+.app-global-navigation-native--scrolled {
+  background-color: #ffffff; // white background once scrolled
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.app-global-navigation-native__nav {
+  align-items: center;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.app-global-navigation-native__logo {
+  display: flex;
+  align-items: center;
+  margin-right: auto; // push the nav list to the right while keeping logo aligned with the container
+  padding-left: 0; // make logo flush with container edge
+  padding-top: 10px;
+  padding-bottom: 10px;
+  svg {
+    display: block;
+    margin: 0;
+    height: 30px; // match help button total height on mobile (font-size 18 + 6*2)
+    width: auto;
+  }
+  @include nhsuk-media-query($from: tablet) {
+    svg {
+      height: 36px; // match help button total height on tablet (font-size 20 + 8*2)
+    }
+  }
+}
+
+.app-global-navigation-native__nav-list {
+  display: flex;
+  list-style: none;
+  margin: 0 -12px 0 0;
+  padding: 0;
+}
+
+.app-global-navigation-native__help {
+  background: nhsuk-colour("grey-5");
+  border: 1px solid nhsuk-colour("grey-3");
+  color: nhsuk-colour("blue");
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 18px;
+  line-height: 1;
+  display: inline-block;
+  box-shadow: none;
+  margin-left: -10px; // nudge left by 10px as requested
+}
+
+@include nhsuk-media-query($from: tablet) {
+  .app-global-navigation-native__help {
+    font-size: 20px;
+    padding: 8px 14px;
+  }
+}
+
+.app-global-navigation-native__nav-item {
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+}
+
+.app-global-navigation-native__nav-link {
+  display: block;
+  padding: 12px;
+
+  &:focus {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
+.app-global-navigation-native__nav-icon {
+  fill: $nhsuk-focus-text-color;
+  flex-shrink: 0;
+  height: 32px;
+  width: 32px;
+}

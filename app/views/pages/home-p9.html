@@ -1,0 +1,66 @@
+{% extends 'layout-app.html' %}
+
+{% set hub = "Home" %}
+
+{% set pageHeading = "Home" %}
+
+{% block content %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-full">
+
+      <!-- Page title -->
+      <h1 class="app-dynamic-page-title__heading nhsuk-heading-l">Home</h1>
+
+      {# We'll show small badge indicators to the left of the chevrons using the badgeLarge param on cards. #}
+
+      <!-- Primary quick links (no H2 header) -->
+      {{ nhsappCardGroup({
+        stacked: true,
+        cards: [
+          { title: 'Prescriptions', href: '/pages/your-health/prescriptions-p9' },
+          { title: 'Appointments', href: '/pages/appointments-p9', badgeLarge: { count: 1, label: 'notifications' } },
+          { title: 'Test results', href: '/pages/your-health/test-results-p9' },
+          { title: 'Vaccinations', href: '/pages/your-health/vaccinations-p9' },
+          { title: 'Health conditions', href: '/pages/your-health/conditions-p9' },
+          { title: 'Documents', href: '/pages/your-health/documents-p9' }
+        ]
+      }) }}
+
+      <!-- NHS information and support -->
+      {{ nhsappCardGroup({
+        stacked: true,
+        headingHtml: '<h2 class="nhsuk-heading-m nhsuk-u-margin-bottom-0">NHS information and support</h2>',
+        cards: [
+          { title: 'Check your symptoms using 111 online', href: 'https://111.nhs.uk/' },
+          { title: 'Health A-Z', href: 'https://www.nhs.uk/conditions/' },
+          { title: 'Find services near you', href: '/pages/services-p9' }
+        ]
+      }) }}
+
+      <!-- Messages -->
+      {{ nhsappCardGroup({
+        stacked: true,
+        headingHtml: '<h2 class="nhsuk-heading-m nhsuk-u-margin-bottom-0">Messages</h2>',
+        cards: [
+          { title: 'New messages', href: '/pages/messages-p9', badgeLarge: { count: 1, label: 'notifications' } },
+          { title: 'Sent messages', href: '/pages/messages-sent-p9' }
+        ]
+      }) }}
+
+      <!-- Existing media card -->
+      {{ nhsappCard({
+        classes: 'nhsapp-card--dark-blue',
+        href: '#',
+        title: 'Help change the NHS',
+        titleClasses: 'nhsuk-u-font-size-26',
+        descriptionHtml: '<p class="nhsuk-u-margin-top-2">Have your say on making the NHS fit for the future</p>',
+        img: {
+          src: '/images/campaigns/campaign-card-image-3.jpg'
+        }
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

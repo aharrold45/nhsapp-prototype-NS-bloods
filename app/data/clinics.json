@@ -1,0 +1,94 @@
+{
+  "clinics": {
+    "vanburgh": {
+      "id": "vanburgh",
+      "name": "Vanburgh Clinic",
+      "distance": "0.3 miles away",
+      "address": "12 Station Road, SE7 7HX",
+      "openingHours": "8:00am - 6:00pm Monday to Friday",
+      "cqcRating": "Good",
+      "durationDesc": "Tests are expected to start within times shown and last 30 minutes."
+    },
+    "greenwich": {
+      "id": "greenwich",
+      "name": "Greenwich Health Clinic",
+      "distance": "1.1 miles away",
+      "address": "45 Church Street, SE7 7HJ",
+      "openingHours": "8:00am - 6:00pm Monday to Friday",
+      "cqcRating": "Good",
+      "durationDesc": "Tests are expected to start within times shown and last 30 minutes."
+    },
+    "blackheath": {
+      "id": "blackheath",
+      "name": "Blackheath Health Clinic",
+      "distance": "2.1 miles away",
+      "address": "3 High Street, SE7 7HL",
+      "openingHours": "8:00am - 6:00pm Monday to Friday",
+      "cqcRating": "Requires improvement",
+      "durationDesc": "Next availability shown — times typically last 30 minutes."
+    },
+    "charlton": {
+      "id": "charlton",
+      "name": "Charlton Clinic",
+      "distance": "2.2 miles away",
+      "address": "88 Market Road, SE7 7HM",
+      "openingHours": "9:00am - 5:00pm Monday to Friday",
+      "cqcRating": "Good",
+      "durationDesc": "Tests are expected to start within times shown and last 30 minutes."
+    },
+    "woolwich": {
+      "id": "woolwich",
+      "name": "Woolwich Health Clinic",
+      "distance": "3.2 miles away",
+      "address": "7 Dockside, SE7 7HN",
+      "openingHours": "Walk-in only, see clinic for times",
+      "cqcRating": "Outstanding",
+      "durationDesc": "This clinic operates a walk in only service with tests expected to take 30 minutes."
+    },
+    "Postcode-1": {
+      "id": "Postcode-1",
+      "name": "Postcode-1 Clinic",
+      "distance": "0.3 miles away",
+      "address": "12 Station Road, SE7 7HX",
+      "openingHours": "8:00am - 6:00pm Monday to Friday",
+      "cqcRating": "Good",
+      "durationDesc": "Tests are expected to start within times shown and last 30 minutes."
+    },
+    "Postcode-2": {
+      "id": "Postcode-2",
+      "name": "Postcode-2 Clinic",
+      "distance": "1.1 miles away",
+      "address": "45 Church Street, SE7 7HJ",
+      "openingHours": "8:00am - 6:00pm Monday to Friday",
+      "cqcRating": "Good",
+      "durationDesc": "Tests are expected to start within times shown and last 30 minutes."
+    },
+    "Postcode-3": {
+      "id": "Postcode-3",
+      "name": "Postcode-3 Clinic",
+      "distance": "2.1 miles away",
+      "address": "3 High Street, SE7 7HL",
+      "openingHours": "8:00am - 6:00pm Monday to Friday",
+      "cqcRating": "Requires improvement",
+      "durationDesc": "Next availability shown — times typically last 30 minutes."
+    },
+    "Postcode-4": {
+      "id": "Postcode-4",
+      "name": "Postcode-4 Clinic",
+      "distance": "2.2 miles away",
+      "address": "88 Market Road, SE7 7HM",
+      "openingHours": "9:00am - 5:00pm Monday to Friday",
+      "cqcRating": "Good",
+      "durationDesc": "Tests are expected to start within times shown and last 30 minutes."
+    },
+    "Postcode-5": {
+      "id": "Postcode-5",
+      "name": "Postcode-5 Clinic",
+      "distance": "3.2 miles away",
+      "address": "7 Dockside, SE7 7HN",
+      "openingHours": "Walk-in only, see clinic for times",
+      "cqcRating": "Outstanding",
+      "durationDesc": "This clinic operates a walk in only service with tests expected to take 30 minutes."
+    }
+  }
+}

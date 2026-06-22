@@ -1,0 +1,7 @@
+{
+  "SE77HX": ["vanburgh","greenwich","blackheath","charlton","woolwich"],
+  "SE7": ["vanburgh","greenwich","blackheath","charlton","woolwich"],
+  "SE77": ["vanburgh","greenwich","blackheath","charlton","woolwich"],
+  "SW1A": ["greenwich","vanburgh","charlton","blackheath","woolwich"],
+  "DEFAULT": ["vanburgh","greenwich","blackheath","charlton","woolwich"]
+}

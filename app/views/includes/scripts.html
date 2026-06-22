@@ -1,0 +1,26 @@
+<script src="/js/jquery-3.5.1.min.js"></script>
+<script src="/js/main.js"></script>
+{% if useAutoStoreData %}
+  <script src="/js/auto-store-data.js"></script>
+{% endif %}
+
+<!-- Add any custom scripts -->
+
+<script>
+  (function () {
+    var header = document.querySelector('.app-global-navigation-native');
+    if (!header) return;
+
+    var onScroll = function () {
+      if (window.scrollY > 10) {
+        header.classList.add('app-global-navigation-native--scrolled');
+      } else {
+        header.classList.remove('app-global-navigation-native--scrolled');
+      }
+    };
+
+    document.addEventListener('scroll', onScroll, { passive: true });
+    // run once on load
+    onScroll();
+  })();
+</script>

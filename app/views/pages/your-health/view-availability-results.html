@@ -1,0 +1,208 @@
+{% extends 'layout-app.html' %}
+
+{% set hub = "Your health" %}
+
+{% set backLink = true %}
+{% set backLinkURL = "/pages/your-health/view-availability" %}
+
+{% block content %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-full">
+
+      <h1 class="nhsapp-page-heading nhsuk-heading-l">Available clinics</h1>
+
+      {% if postcode %}
+        <p class="nhsuk-body-s">Showing results for <strong>{{ postcode }}</strong></p>
+      {% endif %}
+
+      {% if debug == '1' %}
+        <h2 class="nhsuk-heading-s">Debug: clinics payload</h2>
+        <pre style="white-space:pre-wrap; background:#f6f6f6; padding:12px; border-radius:6px">{{ clinicsJson }}</pre>
+      {% endif %}
+
+      <div class="nhsuk-section">
+        <style>
+          :root { --times-box-width:301px; --chev-gap:16px; --body-margin:16px }
+          .clinic-card { margin-bottom:20px; padding:16px; border:1px solid #e6eef0; border-radius:6px; background:#fff }
+          .clinic-top { display:flex; justify-content:space-between; align-items:flex-start; padding-bottom:0 }
+          .clinic-top2 { padding: 0 }
+          .clinic-distance { font-weight:700; font-size:1.1rem; margin:0 }
+          .clinic-name { font-size:1.4rem; margin:8px 0 }
+          .clinic-duration { color:#222; margin:0; width:301px }
+          /* clinic-times becomes the pager container */
+          .clinic-times { position:relative; display:flex; justify-content:center; align-items:center; gap:12px }
+          .times-pages { display:flex; align-items:center; justify-content:center }
+          .times-box { width:var(--times-box-width); border:2px solid #0b67a6; border-radius:8px; padding:16px; background:#f6fbfc }
+          .times-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px }
+          .slot-button { background:#fff; border:2px solid #0b5a3b; color:#0b5a3b; padding:12px 18px; border-radius:8px; font-weight:700; font-size:16px }
+          .clinic-times-row .nhsuk-heading-s,
+          .clinic-times-heading .nhsuk-heading-s { font-size:16px; font-weight:400; margin-left: max(0px, calc(50% - (var(--times-box-width) / 2))); }
+          .clinic-times-row .nhsuk-heading-s .suggested-current,
+          .clinic-times-row .nhsuk-heading-s .suggested-total,
+          .clinic-times-heading .nhsuk-heading-s .suggested-current,
+          .clinic-times-heading .nhsuk-heading-s .suggested-total { font-weight:700 }
+
+          /* Align CTA and duration to left edge of centered times-box */
+          .cta-wrapper { margin-left: max(0px, calc(50% - (var(--times-box-width) / 2))); }
+          .cta-wrapper + .clinic-duration { margin-left: max(0px, calc(50% - (var(--times-box-width) / 2))); }
+          .slot-button:active { transform:translateY(1px) }
+          .times-meta { width:56px; display:flex; align-items:center; justify-content:center }
+          .chev, .chev-left, .chev-right { font-size:36px; color:#222; background:none; border:none; padding:8px; width:48px; height:48px; display:inline-flex; align-items:center; justify-content:center }
+          .chev-left, .chev-right { position:fixed; transform:translateY(-50%); z-index:30 }
+          /* Position chevrons flush with the inner edge of the main content wrapper */
+          .clinic-times-col { position:relative }
+          .clinic-times-row { position:relative }
+          .chev-left { left: 0; }
+          .chev-right { right: 0; }
+          .cta-availability { display:inline-flex; align-items:center; gap:10px; color:#0b67a6; font-weight:700; text-decoration:none }
+          .cta-availability:before { content:'\27A1'; display:inline-block; background:#0b6b3a; color:#fff; border-radius:50%; width:28px; height:28px; line-height:28px; text-align:center }
+        </style>
+
+        {% for clinic in clinics %}
+          <div class="clinic-top" style="padding:8px 0 0 0">
+            <div>
+              <p class="clinic-distance">{{ clinic.distance }}</p>
+            </div>
+            <div style="text-align:right">
+              <p style="margin:0"><a class="nhsuk-link" href="#">Get directions</a></p>
+            </div>
+          </div>
+
+          <div class="clinic-top2">
+            <div>
+              <p class="clinic-name">{{ clinic.name }}</p>
+            </div>
+          </div>
+
+          <div class="clinic-times-heading cta-wrapper">
+            <p class="nhsuk-heading-s" style="margin:0 0 8px 0">Suggested times <span class="suggested-current">1</span>/<span class="suggested-total">{{ clinic.times | length }}</span></p>
+          </div>
+
+          <div class="nhsuk-grid-row clinic-times-row" style="padding:0; position:relative">
+            <div class="nhsuk-grid-column-two-thirds clinic-times-col">
+              <div class="clinic-times" style="margin-bottom:8px" data-clinic-id="{{ clinic.id }}">
+                <button class="chev-left" aria-label="Previous suggested times">&lsaquo;</button>
+                <div class="times-pages" style="display:flex; gap:12px; align-items:flex-start;">
+                  {% for page in clinic.times %}
+                    <div class="times-box" data-page-index="{{ loop.index0 }}" style="{% if loop.index0 != 0 %}display:none;{% endif %}">
+                      <div style="text-align:center; font-weight:800">{{ page.dateLabel }}</div>
+                      <div class="times-grid">
+                        {% for slot in page.slots %}
+                          <button class="slot-button" type="button">{{ slot }}</button>
+                        {% endfor %}
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+              <button class="chev-right" aria-label="Next suggested times" data-clinic-id="{{ clinic.id }}">&rsaquo;</button>
+
+              <div class="cta-wrapper" style="margin-top:6px; margin-bottom:6px">
+                <a class="cta-availability" href="#">See full clinic availability</a>
+              </div>
+              <p class="clinic-duration nhsuk-body-s" style="margin-top:4px">{{ clinic.durationDesc or 'Tests are expected to start within times shown and last 30 minutes.' }}</p>
+            </div>
+          </div>
+
+          {% if not loop.last %}
+            <hr class="nhsuk-section-break--s" />
+          {% endif %}
+        {% endfor %}
+
+        <script>
+          (function(){
+            // Per-clinic times pager: prev/next chevrons and swipe support
+            function initClinicPagers(){
+              const clinics = document.querySelectorAll('.clinic-times');
+              clinics.forEach(ct => {
+                const pages = Array.from(ct.querySelectorAll('.times-box'));
+                if (!pages.length) return;
+                const total = pages.length;
+                const counterCurrent = ct.parentElement.querySelector('.suggested-current');
+                const counterTotal = ct.parentElement.querySelector('.suggested-total');
+                if (counterTotal) counterTotal.textContent = total;
+                let idx = 0;
+
+                function show(i){
+                  pages.forEach(p=> p.style.display = 'none');
+                  pages[i].style.display = '';
+                  if (counterCurrent) counterCurrent.textContent = i+1;
+                }
+
+                const chevPrev = ct.querySelector('.chev-left');
+                // chev-right is placed on the containing row so find by clinic id
+                const clinicId = ct.dataset.clinicId;
+                const chevNext = document.querySelector('.chev-right[data-clinic-id="'+clinicId+'"]');
+                if (chevNext){
+                  chevNext.addEventListener('click', ()=>{
+                    idx = (idx + 1) % total;
+                    show(idx);
+                  });
+                }
+                if (chevPrev){
+                  chevPrev.addEventListener('click', ()=>{
+                    idx = (idx - 1 + total) % total;
+                    show(idx);
+                  });
+                }
+
+                // touch swipe handling
+                let startX = null;
+                ct.addEventListener('touchstart', function(e){ startX = e.changedTouches[0].clientX; }, {passive:true});
+                ct.addEventListener('touchend', function(e){
+                  if (startX === null) return;
+                  const dx = e.changedTouches[0].clientX - startX;
+                  if (Math.abs(dx) > 30){
+                    if (dx < 0){ idx = (idx + 1) % total; } else { idx = (idx - 1 + total) % total; }
+                    show(idx);
+                  }
+                  startX = null;
+                }, {passive:true});
+            
+                // reposition fixed chevrons to align with main wrapper edges and vertically centre to this clinic block
+                function positionChevronsForClinic(){
+                  try{
+                    // Use the full-width grid column as the alignment reference
+                    const wrapper = document.querySelector('.nhsuk-grid-column-full') || document.querySelector('.nhsuk-main-wrapper, .app-main-wrapper') || document.querySelector('main') || document.body;
+                    const wrapperRect = wrapper.getBoundingClientRect();
+                    const ctRect = ct.getBoundingClientRect();
+                    const topPx = ctRect.top + (ctRect.height/2);
+                    if (chevPrev){
+                      chevPrev.style.top = topPx + 'px';
+                      // place flush with wrapper inner left edge (0px from .nhsuk-grid-column-full)
+                      const leftPx = Math.max(0, Math.round(wrapperRect.left));
+                      // set left so the chevron's left edge is exactly at wrapper left
+                      chevPrev.style.left = leftPx + 'px';
+                      // ensure no right value remains
+                      chevPrev.style.right = '';
+                    }
+                    if (chevNext){
+                      // place chevron so its right edge aligns exactly with wrapperRect.right
+                      const nextW = chevNext.offsetWidth || 48;
+                      const leftForNext = Math.max(0, Math.round(wrapperRect.right) - nextW);
+                      chevNext.style.top = topPx + 'px';
+                      chevNext.style.left = leftForNext + 'px';
+                      // clear right to avoid conflicts
+                      chevNext.style.right = '';
+                    }
+                  }catch(e){ /* ignore layout errors */ }
+                }
+
+                // initial and responsive positioning
+                positionChevronsForClinic();
+                window.addEventListener('resize', positionChevronsForClinic);
+                window.addEventListener('scroll', positionChevronsForClinic, {passive:true});
+              });
+            }
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initClinicPagers);
+            else initClinicPagers();
+          })();
+        </script>
+
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}

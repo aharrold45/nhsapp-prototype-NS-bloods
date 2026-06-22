@@ -1,0 +1,9 @@
+{
+  "SE77HX": ["vanburgh","greenwich","blackheath","charlton","woolwich"],
+  "SE7 7HX": ["vanburgh","greenwich","blackheath","charlton","woolwich"],
+  "EN110RX": ["Postcode-1","Postcode-2","Postcode-3","Postcode-4","Postcode-5"],
+  "EN11 0RX": ["Postcode-1","Postcode-2","Postcode-3","Postcode-4","Postcode-5"],
+  "SE77": ["vanburgh","greenwich","blackheath","charlton","woolwich"],
+  "SW1A": ["greenwich","vanburgh","charlton","blackheath","woolwich"],
+  "DEFAULT": ["vanburgh","greenwich","blackheath","charlton","woolwich"]
+}
