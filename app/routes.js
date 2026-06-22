@@ -116,9 +116,24 @@ router.get('/pages/your-health/check', (req, res) => {
 });
 
 // Appointment confirmation page, reached from the check page's
-// "Confirm appointment" button. Shows the booked details.
+// "Confirm appointment" button. Shows the booked details and persists the
+// booking in the session so it appears under upcoming appointments.
 router.get('/pages/your-health/confirm', (req, res) => {
-	res.render('pages/your-health/confirm', appointmentContext(req));
+	const ctx = appointmentContext(req);
+
+	if (req.session && req.session.data && ctx.clinic && ctx.clinic.id) {
+		req.session.data.bookedAppointment = {
+			clinicId: ctx.clinic.id,
+			clinicName: ctx.clinic.name,
+			address: ctx.clinic.address,
+			postcode: ctx.postcode,
+			date: ctx.date,
+			time: ctx.time,
+			walkIn: ctx.clinic.type === 'walk-in'
+		};
+	}
+
+	res.render('pages/your-health/confirm', ctx);
 });
 
 // Appointment detail page, reached from the "View appointment" button on the

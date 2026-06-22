@@ -19,7 +19,7 @@
         <h2 class="nhsuk-heading-m nhsuk-u-margin-top-20 nhsuk-u-margin-bottom-20">Actions required</h2>
       </div>
 
-      <ul class="nhsapp-cards nhsapp-cards--stacked">
+      <ul class="nhsapp-cards">
         <li class="nhsapp-card">
           <div class="nhsapp-card__container">
             <div class="nhsapp-card__content">
@@ -50,7 +50,7 @@
           </div>
         </li>
       </ul>
-      <ul class="nhsapp-cards nhsapp-cards--stacked ">
+      <ul class="nhsapp-cards">
         <li class="nhsapp-card">
           <div class="nhsapp-card__container">
             <div class="nhsapp-card__content">
@@ -95,6 +95,44 @@
       <div class="nhsapp-section-heading">
         <h2 class="nhsuk-heading-m nhsuk-u-margin-top-20 nhsuk-u-margin-bottom-20">Up and coming appointments</h2>
       </div>
+
+      {% if data.bookedAppointment %}
+      <ul class="nhsapp-cards">
+        <li class="nhsapp-card">
+          <div class="nhsapp-card__container">
+            <div class="nhsapp-card__content">
+              <div class="nhsapp-card__above">
+                <span class="nhsapp-tag nhsapp-tag--green nhsuk-u-margin-bottom-3" aria-hidden="true">Booked</span>
+              </div>
+              <a
+                href="/pages/your-health/your-appointment?clinic={{ data.bookedAppointment.clinicId | urlencode }}&postcode={{ data.bookedAppointment.postcode | urlencode }}&date={{ data.bookedAppointment.date | urlencode }}&time={{ data.bookedAppointment.time | urlencode }}"
+                class="nhsapp-card__link nhsuk-link--no-visited-state nhsuk-u-font-size-22"
+              >
+                [name of the test] appointment
+              </a>
+
+              {% if data.bookedAppointment.walkIn %}
+              <p aria-hidden="true" class="nhsuk-u-font-weight-bold nhsuk-u-margin-top-1 nhsuk-u-margin-bottom-3">
+                Walk in &ndash; no appointment needed
+              </p>
+              {% else %}
+              <p aria-hidden="true" class="nhsuk-u-font-weight-bold nhsuk-u-margin-top-1 nhsuk-u-margin-bottom-3">
+                {{ data.bookedAppointment.date }} <br />
+                {{ data.bookedAppointment.time }}
+              </p>
+              {% endif %}
+              <p aria-hidden="true" class="nhsuk-u-margin-bottom-3">
+                {{ data.bookedAppointment.address }}
+              </p>
+            </div>
+
+            <svg class="nhsapp-icon nhsapp-icon--chevron-right" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" height="2rem" width="2rem" viewBox="0 0 24 24">
+              <path d="M8.82 19.11a.97.97 0 0 1-.72-.31.996.996 0 0 1 .03-1.41l5.61-5.38-5.6-5.25c-.4-.38-.42-1.01-.05-1.41.38-.4 1.01-.42 1.41-.05l6.37 5.97c.2.19.31.45.32.72s-.11.54-.31.73l-6.37 6.11c-.19.19-.44.28-.69.28Z" />
+            </svg>
+          </div>
+        </li>
+      </ul>
+      {% endif %}
 
       <ul class="nhsapp-cards">
         <li class="nhsapp-card">
