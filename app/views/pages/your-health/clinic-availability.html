@@ -127,7 +127,7 @@
                   <h3 class="nhsuk-heading-s">{{ period.name }}</h3>
                   <div class="ca-slots-grid">
                     {% for slot in period.slots %}
-                      <a class="ca-slot-button" href="#" aria-label="Select {{ slot.label }}">{{ slot.start }}</a>
+                      <a class="ca-slot-button" href="/pages/your-health/check?clinic={{ clinic.id | urlencode }}&postcode={{ postcode | urlencode }}&date={{ day.dateLabel | urlencode }}&time={{ slot.start | urlencode }}" aria-label="Select {{ slot.label }}">{{ slot.start }}</a>
                     {% endfor %}
                   </div>
                 </div>

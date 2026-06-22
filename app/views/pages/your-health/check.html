@@ -1,0 +1,59 @@
+{% extends 'layout-app.html' %}
+
+{% set hub = "Your health" %}
+
+{% set backLink = true %}
+{% set backLinkURL = "/pages/your-health/clinic-availability?clinic=" + (clinic.id | urlencode) + "&postcode=" + (postcode | urlencode) %}
+
+{% set pageHeading = "Check" %}
+
+{% block content %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-full">
+
+      <h1 class="nhsapp-page-heading nhsuk-heading-l">Check</h1>
+
+      <h2 class="nhsuk-heading-m">Your details</h2>
+      <dl class="nhsuk-summary-list">
+        <div class="nhsuk-summary-list__row">
+          <dt class="nhsuk-summary-list__key">Phone number</dt>
+          <dd class="nhsuk-summary-list__value">07859 123 456</dd>
+        </div>
+        <div class="nhsuk-summary-list__row">
+          <dt class="nhsuk-summary-list__key">Email</dt>
+          <dd class="nhsuk-summary-list__value">email@email.com</dd>
+        </div>
+      </dl>
+
+      <h2 class="nhsuk-heading-m">Appointment details</h2>
+      <dl class="nhsuk-summary-list">
+        <div class="nhsuk-summary-list__row">
+          <dt class="nhsuk-summary-list__key">Date</dt>
+          <dd class="nhsuk-summary-list__value">{{ date }}</dd>
+        </div>
+        <div class="nhsuk-summary-list__row">
+          <dt class="nhsuk-summary-list__key">Time</dt>
+          <dd class="nhsuk-summary-list__value">{{ time }}</dd>
+        </div>
+        <div class="nhsuk-summary-list__row">
+          <dt class="nhsuk-summary-list__key">Clinic name</dt>
+          <dd class="nhsuk-summary-list__value">{{ clinic.name }}</dd>
+        </div>
+        <div class="nhsuk-summary-list__row">
+          <dt class="nhsuk-summary-list__key">Location</dt>
+          <dd class="nhsuk-summary-list__value">{{ clinic.address }}</dd>
+        </div>
+      </dl>
+
+      <form id="form" method="post" action="#" novalidate="novalidate">
+        {{ button({
+          text: "Confirm appointment",
+          classes: "nhsapp-button"
+        }) }}
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}

@@ -95,4 +95,19 @@ router.get('/pages/your-health/clinic-availability', (req, res) => {
 	});
 });
 
+// Check your answers page for a chosen appointment slot. The clinic name and
+// address are looked up from clinics.json; the date and time come from the
+// slot button the user selected on the availability page.
+router.get('/pages/your-health/check', (req, res) => {
+	const clinicsList = loadClinicsList();
+	const clinic = clinicsList.find(x => x.id === req.query.clinic) || {};
+
+	res.render('pages/your-health/check', {
+		clinic,
+		postcode: req.query.postcode || '',
+		date: req.query.date || '',
+		time: req.query.time || ''
+	});
+});
+
 module.exports = router;
