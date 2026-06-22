@@ -108,6 +108,20 @@ function appointmentContext(req) {
 	};
 }
 
+// Flatten an appointment context into the record stored in the session and
+// rendered on the appointments lists.
+function appointmentRecord(ctx) {
+	return {
+		clinicId: ctx.clinic.id,
+		clinicName: ctx.clinic.name,
+		address: ctx.clinic.address,
+		postcode: ctx.postcode,
+		date: ctx.date,
+		time: ctx.time,
+		walkIn: ctx.clinic.type === 'walk-in'
+	};
+}
+
 // Check your answers page for a chosen appointment slot. The clinic name and
 // address are looked up from clinics.json; the date and time come from the
 // slot button the user selected on the availability page.
@@ -122,15 +136,14 @@ router.get('/pages/your-health/confirm', (req, res) => {
 	const ctx = appointmentContext(req);
 
 	if (req.session && req.session.data && ctx.clinic && ctx.clinic.id) {
-		req.session.data.bookedAppointment = {
-			clinicId: ctx.clinic.id,
-			clinicName: ctx.clinic.name,
-			address: ctx.clinic.address,
-			postcode: ctx.postcode,
-			date: ctx.date,
-			time: ctx.time,
-			walkIn: ctx.clinic.type === 'walk-in'
-		};
+		// If this confirmation completes a reschedule, move the original
+		// appointment to past (cancelled) before recording the new booking.
+		if (req.session.data.reschedulingFrom) {
+			req.session.data.cancelledAppointment = req.session.data.reschedulingFrom;
+			// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+			delete req.session.data.reschedulingFrom;
+		}
+		req.session.data.bookedAppointment = appointmentRecord(ctx);
 	}
 
 	res.render('pages/your-health/confirm', ctx);
@@ -146,7 +159,15 @@ router.get('/pages/your-health/your-appointment', (req, res) => {
 // clinic is retained (used by the "rebook with same clinic" link) but not
 // displayed.
 router.get('/pages/your-health/edit-appointment', (req, res) => {
-	res.render('pages/your-health/edit-appointment', appointmentContext(req));
+	const ctx = appointmentContext(req);
+
+	// Remember the appointment being rescheduled so it can be moved to past
+	// (cancelled) once the new appointment is confirmed.
+	if (req.session && req.session.data && ctx.clinic && ctx.clinic.id) {
+		req.session.data.reschedulingFrom = appointmentRecord(ctx);
+	}
+
+	res.render('pages/your-health/edit-appointment', ctx);
 });
 
 // Cancel appointment page, reached from "Ask to cancel appointment". Shows the
@@ -162,17 +183,12 @@ router.get('/pages/your-health/appointment-cancelled', (req, res) => {
 	const ctx = appointmentContext(req);
 
 	if (req.session && req.session.data && ctx.clinic && ctx.clinic.id) {
-		req.session.data.cancelledAppointment = {
-			clinicId: ctx.clinic.id,
-			clinicName: ctx.clinic.name,
-			address: ctx.clinic.address,
-			postcode: ctx.postcode,
-			date: ctx.date,
-			time: ctx.time,
-			walkIn: ctx.clinic.type === 'walk-in'
-		};
+		req.session.data.cancelledAppointment = appointmentRecord(ctx);
 		// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
 		delete req.session.data.bookedAppointment;
+		// A direct cancellation is not a reschedule.
+		// eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+		delete req.session.data.reschedulingFrom;
 	}
 
 	res.render('pages/your-health/appointment-cancelled', ctx);
