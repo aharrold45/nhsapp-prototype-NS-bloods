@@ -88,7 +88,7 @@
           {% else %}
 
           <div class="clinic-times-heading cta-wrapper">
-            <p class="nhsuk-heading-s" style="margin:0 0 8px 0">Suggested times <span class="suggested-current">1</span>/<span class="suggested-total">{{ clinic.times | length }}</span></p>
+            <p class="nhsuk-heading-s" style="margin:0 0 8px 0">Suggested times <span class="suggested-current" data-clinic-id="{{ clinic.id }}">1</span>/<span class="suggested-total" data-clinic-id="{{ clinic.id }}">{{ clinic.times | length }}</span></p>
           </div>
 
           <div class="nhsuk-grid-row clinic-times-row" style="padding:0; position:relative">
@@ -133,8 +133,11 @@
                 const pages = Array.from(ct.querySelectorAll('.times-box'));
                 if (!pages.length) return;
                 const total = pages.length;
-                const counterCurrent = ct.parentElement.querySelector('.suggested-current');
-                const counterTotal = ct.parentElement.querySelector('.suggested-total');
+                // Counter lives in the heading (a sibling of this column), so
+                // find it by clinic id rather than within the column.
+                const clinicId = ct.dataset.clinicId;
+                const counterCurrent = document.querySelector('.suggested-current[data-clinic-id="'+clinicId+'"]');
+                const counterTotal = document.querySelector('.suggested-total[data-clinic-id="'+clinicId+'"]');
                 if (counterTotal) counterTotal.textContent = total;
                 let idx = 0;
 
@@ -146,7 +149,6 @@
 
                 const chevPrev = ct.querySelector('.chev-left');
                 // chev-right is placed on the containing row so find by clinic id
-                const clinicId = ct.dataset.clinicId;
                 const chevNext = document.querySelector('.chev-right[data-clinic-id="'+clinicId+'"]');
                 if (chevNext){
                   chevNext.addEventListener('click', ()=>{
