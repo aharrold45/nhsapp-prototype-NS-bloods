@@ -1,0 +1,59 @@
+{% extends 'layout-app.html' %}
+
+{% set hub = "Your health" %}
+
+{% set backLink = true %}
+
+{% set pageHeading = "Hospital-ordered test results" %}
+
+{% block content %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-full">
+
+      <h1 class="nhsapp-page-heading nhsuk-heading-l">Hospital-ordered test results</h1>
+      <p class="nhsuk-body">Showing results from 2026</p>
+
+      {{ nhsappCardGroup({
+        headingHtml: '<h2 class="nhsuk-heading-m nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-2">April 2026</h2>',
+        cards: [
+          {
+            title: "Alcohol units consumed per week",
+            titleClasses: "nhsuk-u-font-size-22",
+            href: "/pages/your-health/test-result",
+            descriptionHtml: '<p class="nhsuk-u-font-weight-bold nhsuk-u-margin-bottom-0">28 April 2026 11:57 am</p>'
+          },
+          {
+            title: "Renal profile",
+            titleClasses: "nhsuk-u-font-size-22",
+            href: "/pages/your-health/test-result",
+            descriptionHtml: '<p class="nhsuk-u-font-weight-bold nhsuk-u-margin-bottom-3">1 April 2026</p><p class="nhsuk-u-font-weight-bold nhsuk-u-margin-bottom-1">Healthcare professional&#39;s comment</p><p class="nhsuk-u-secondary-text-color nhsuk-u-margin-bottom-0">(VK) - Normal - no action</p>'
+          }
+        ]
+      }) }}
+
+      {{ nhsappCardGroup({
+        headingHtml: '<h2 class="nhsuk-heading-m nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-2">March 2026</h2>',
+        cards: [
+          {
+            title: "Alcohol units consumed per week",
+            titleClasses: "nhsuk-u-font-size-22",
+            href: "/pages/your-health/test-result",
+            descriptionHtml: '<p class="nhsuk-u-font-weight-bold nhsuk-u-margin-bottom-0">16 March 2026 8:00 am</p>'
+          }
+        ]
+      }) }}
+
+      {{ nhsappCardGroup({
+        cards: [
+          { title: "View all test results", titleClasses: "nhsuk-u-font-size-22", href: "#" }
+        ]
+      }) }}
+
+      <p class="nhsuk-body nhsuk-u-margin-top-4">You may see medical abbreviations that you are not familiar with.</p>
+      <p><a class="nhsuk-link" href="#">Help with abbreviations</a></p>
+
+    </div>
+  </div>
+
+{% endblock %}
