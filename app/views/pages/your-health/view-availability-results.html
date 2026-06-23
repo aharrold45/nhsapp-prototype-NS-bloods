@@ -29,7 +29,7 @@
           .clinic-top2 { padding: 0 }
           .clinic-distance { font-weight:700; font-size:1.1rem; margin:0 }
           .clinic-name { font-size:1.4rem; margin:8px 0 }
-          .clinic-duration { color:#222; margin:0; width:301px }
+          .clinic-duration { color:#222; margin:0; width:var(--times-box-width); margin-left: max(0px, calc(50% - (var(--times-box-width) / 2))); }
           /* clinic-times becomes the pager container */
           .clinic-times { position:relative; display:flex; justify-content:center; align-items:center; gap:12px }
           .times-pages { display:flex; align-items:center; justify-content:center }
@@ -47,7 +47,6 @@
 
           /* Align CTA and duration to left edge of centered times-box */
           .cta-wrapper { margin-left: max(0px, calc(50% - (var(--times-box-width) / 2))); }
-          .cta-wrapper + .clinic-duration { margin-left: max(0px, calc(50% - (var(--times-box-width) / 2))); }
           .slot-button:active { transform:translateY(1px) }
           .times-meta { width:56px; display:flex; align-items:center; justify-content:center }
           .chev, .chev-left, .chev-right { font-size:36px; color:#222; background:none; border:none; padding:8px; width:48px; height:48px; display:inline-flex; align-items:center; justify-content:center }
