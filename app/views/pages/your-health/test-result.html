@@ -1,0 +1,59 @@
+{% extends 'layout-app.html' %}
+
+{% set hub = "Your health" %}
+
+{% set backLink = true %}
+
+{% set pageHeading = "The name of the test" %}
+
+{% block content %}
+
+  <style>
+    .result-card { background:#fff; border:1px solid #d8dde0; border-radius:8px; padding:20px 24px; margin-bottom:24px; }
+    .result-block { margin-bottom:20px; }
+    .result-block:last-child { margin-bottom:0; }
+    .result-block h3 { margin:0 0 4px 0; }
+    .result-block p { margin:0; }
+    .result-meta { color:#425563; }
+  </style>
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-full">
+
+      <h1 class="nhsapp-page-heading nhsuk-heading-l">The name of the test</h1>
+
+      <div class="result-card">
+        <div class="result-block">
+          <h3 class="nhsuk-heading-s">Test date</h3>
+          <p>18 April 2026 8:00am</p>
+        </div>
+        <div class="result-block">
+          <h3 class="nhsuk-heading-s">Location</h3>
+          <p>Clinic name</p>
+        </div>
+        <div class="result-block">
+          <h3 class="nhsuk-heading-s">Ordered by</h3>
+          <p>GP</p>
+        </div>
+      </div>
+
+      <h2 class="nhsuk-heading-l">Results</h2>
+
+      <div class="result-card">
+        <div class="result-block">
+          <h3 class="nhsuk-heading-s">Status</h3>
+          <p>The results are with your GP</p>
+          <p class="result-meta nhsuk-body-s">Updated 7.00am 6 May 2026</p>
+        </div>
+        <div class="result-block">
+          <h3 class="nhsuk-heading-s">Comments</h3>
+          <p>No comment</p>
+        </div>
+      </div>
+
+      {{ insetText({ html: "<h3 class='nhsuk-heading-m'>What happens next</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tempus, diam eu eleifend commodo, orci eros gravida nisl, at pulvinar orci libero vitae tortor.</p>" }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

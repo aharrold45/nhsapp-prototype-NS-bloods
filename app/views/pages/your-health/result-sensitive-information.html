@@ -1,0 +1,40 @@
+{% extends 'layout-app.html' %}
+
+{% set hub = "Your health" %}
+
+{% set pageHeading = "Sensitive information" %}
+
+{% block content %}
+
+  <style>
+    .sensitive-card { background:#fff; border-top:8px solid #ffb81c; padding:24px; }
+    .sensitive-card h1 { margin-top:0; }
+    .sensitive-back { display:block; text-align:center; margin-top:16px; }
+  </style>
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-full">
+
+      <div class="sensitive-card">
+        <h1 class="nhsuk-heading-xl">Sensitive information</h1>
+
+        <p class="nhsuk-body">Your test results may include information you:</p>
+        <ul class="nhsuk-list nhsuk-list--bullet">
+          <li>find worrying</li>
+          <li>have not yet discussed with a health professional</li>
+        </ul>
+        <p class="nhsuk-body">Contact your GP if someone is pressuring you to see this information.</p>
+
+        {{ button({
+          text: "Continue",
+          classes: "nhsapp-button",
+          href: "/pages/your-health/test-result"
+        }) }}
+
+        <a class="nhsuk-link nhsuk-link--no-visited-state sensitive-back" href="/">Back to home</a>
+      </div>
+
+    </div>
+  </div>
+
+{% endblock %}

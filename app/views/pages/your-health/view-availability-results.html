@@ -12,11 +12,11 @@
       <h1 class="nhsapp-page-heading nhsuk-heading-l">Available clinics</h1>
 
       {% if postcode %}
-        <p class="nhsuk-body-s">Showing results for <strong>{{ postcode }}</strong></p>
+        <p class="nhsuk-body-m">Showing results for <strong>{{ postcode }}</strong></p>
       {% endif %}
 
       {% if debug == '1' %}
-        <h2 class="nhsuk-heading-s">Debug: clinics payload</h2>
+        <h2 class="nhsuk-heading-m">Debug: clinics payload</h2>
         <pre style="white-space:pre-wrap; background:#f6f6f6; padding:12px; border-radius:6px">{{ clinicsJson }}</pre>
       {% endif %}
 
@@ -109,7 +109,7 @@
               </div>
               <button class="chev-right" aria-label="Next suggested times" data-clinic-id="{{ clinic.id }}">&rsaquo;</button>
 
-              <p class="clinic-duration nhsuk-body-s" style="margin-top:20px">{{ clinic.durationDesc or 'Tests are expected to start within times shown and last 30 minutes.' }}</p>
+              <p class="clinic-duration nhsuk-body-m" style="margin-top:20px">{{ clinic.durationDesc or 'Tests are expected to start within times shown and last 30 minutes.' }}</p>
               <div class="cta-wrapper" style="margin-top:20px; margin-bottom:6px">
                 {{ actionLink({ text: "See full clinic availability", href: "/pages/your-health/clinic-availability?clinic=" + (clinic.id | urlencode) + "&postcode=" + (postcode | urlencode) }) }}
               </div>
