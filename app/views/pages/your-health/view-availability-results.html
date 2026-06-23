@@ -111,10 +111,10 @@
               </div>
               <button class="chev-right" aria-label="Next suggested times" data-clinic-id="{{ clinic.id }}">&rsaquo;</button>
 
-              <div class="cta-wrapper" style="margin-top:6px; margin-bottom:6px">
+              <p class="clinic-duration nhsuk-body-s" style="margin-top:20px">{{ clinic.durationDesc or 'Tests are expected to start within times shown and last 30 minutes.' }}</p>
+              <div class="cta-wrapper" style="margin-top:20px; margin-bottom:6px">
                 {{ actionLink({ text: "See full clinic availability", href: "/pages/your-health/clinic-availability?clinic=" + (clinic.id | urlencode) + "&postcode=" + (postcode | urlencode) }) }}
               </div>
-              <p class="clinic-duration nhsuk-body-s" style="margin-top:4px">{{ clinic.durationDesc or 'Tests are expected to start within times shown and last 30 minutes.' }}</p>
             </div>
           </div>
 
