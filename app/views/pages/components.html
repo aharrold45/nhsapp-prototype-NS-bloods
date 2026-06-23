@@ -1,0 +1,237 @@
+{% extends 'layout-app.html' %}
+
+{% set hub = "Your health" %}
+
+{% set backLink = true %}
+{% set backLinkURL = "/" %}
+
+{% set pageHeading = "Components" %}
+
+{% block content %}
+
+  <style>
+    .comp-section { margin-top: 24px; }
+    .comp-label { font-family: monospace; font-size: 14px; color: #425563; margin: 32px 0 8px 0; padding-top: 8px; border-top: 1px solid #d8dde0; }
+    .comp-row > * { margin-right: 8px; }
+    .comp-note { color: #425563; }
+  </style>
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-full">
+
+      <h1 class="nhsapp-page-heading nhsuk-heading-l">Components</h1>
+      <p class="nhsuk-body">An example of every component available in this prototype kit, with key variations. Sourced from NHS.UK frontend, NHS App frontend, and this prototype's custom components.</p>
+
+      <!-- ============================================================= -->
+      <h2 class="nhsuk-heading-l comp-section">NHS.UK frontend</h2>
+
+      <p class="comp-label">actionLink</p>
+      {{ actionLink({ text: "Find your nearest GP", href: "#" }) }}
+
+      <p class="comp-label">breadcrumb</p>
+      {{ breadcrumb({ items: [ { href: "#", text: "Home" }, { href: "#", text: "Your health" } ], href: "#", text: "Appointments" }) }}
+
+      <p class="comp-label">button — primary / secondary / reverse / warning / NHS App</p>
+      <div class="comp-row">
+        {{ button({ text: "Primary" }) }}
+        {{ button({ text: "Secondary", classes: "nhsuk-button--secondary" }) }}
+        {{ button({ text: "Reverse", classes: "nhsuk-button--reverse" }) }}
+        {{ button({ text: "Warning", classes: "nhsuk-button--warning" }) }}
+        {{ button({ text: "NHS App button", classes: "nhsapp-button" }) }}
+      </div>
+
+      <p class="comp-label">card — basic (clickable)</p>
+      {{ card({ heading: "Get help with your health", headingClasses: "nhsuk-heading-m", href: "#", clickable: true, description: "Find services and advice near you." }) }}
+
+      <p class="comp-label">card — feature</p>
+      {{ card({ heading: "Feature card", headingClasses: "nhsuk-heading-m", feature: true, descriptionHtml: "<p class='nhsuk-body'>Use a feature card to draw attention to important content.</p>" }) }}
+
+      <p class="comp-label">card — care card (non-urgent / urgent / emergency)</p>
+      {{ card({ heading: "Speak to a GP if:", headingLevel: 3, type: "non-urgent", descriptionHtml: "<ul><li>your symptoms get worse</li><li>they do not improve after 2 weeks</li></ul>" }) }}
+      {{ card({ heading: "Ask for an urgent GP appointment if:", headingLevel: 3, type: "urgent", descriptionHtml: "<ul><li>you have a high temperature</li></ul>" }) }}
+      {{ card({ heading: "Call 999 if:", headingLevel: 3, type: "emergency", descriptionHtml: "<ul><li>you have chest pain</li></ul>" }) }}
+
+      <p class="comp-label">characterCount</p>
+      {{ characterCount({ id: "cc", name: "cc", maxlength: 200, label: { text: "Tell us why" }, hint: { text: "Do not include personal information" } }) }}
+
+      <p class="comp-label">checkboxes</p>
+      {{ checkboxes({ idPrefix: "nationality", name: "nationality", fieldset: { legend: { text: "What is your nationality?" } }, hint: { text: "Select all that apply" }, items: [ { value: "british", text: "British" }, { value: "irish", text: "Irish" }, { value: "other", text: "Other" } ] }) }}
+
+      <p class="comp-label">contentsList</p>
+      {{ contentsList({ items: [ { href: "#", text: "What it is" }, { href: "#", text: "Symptoms", current: true }, { href: "#", text: "Treatments" } ] }) }}
+
+      <p class="comp-label">dateInput</p>
+      {{ dateInput({ id: "dob", namePrefix: "dob", fieldset: { legend: { text: "Date of birth" } }, hint: { text: "For example, 15 3 1984" } }) }}
+
+      <p class="comp-label">details</p>
+      {{ details({ summaryText: "Where can I find my NHS number?", text: "Your NHS number is a 10 digit number, like 485 777 3456." }) }}
+
+      <p class="comp-label">list (do and don't) — tick / cross</p>
+      {{ list({ title: "Do", type: "tick", items: [ { item: "cover blisters with a soft plaster" }, { item: "wash your hands before touching a burst blister" } ] }) }}
+      {{ list({ title: "Do not", type: "cross", items: [ { item: "do not burst a blister yourself" }, { item: "do not peel the skin off a burst blister" } ] }) }}
+
+      <p class="comp-label">errorMessage</p>
+      {{ errorMessage({ text: "Enter your date of birth" }) }}
+
+      <p class="comp-label">errorSummary</p>
+      {{ errorSummary({ titleText: "There is a problem", errorList: [ { href: "#", text: "Enter your date of birth" }, { href: "#", text: "Select your nationality" } ] }) }}
+
+      <p class="comp-label">fieldset</p>
+      {{ fieldset({ legend: { text: "What is your address?", classes: "nhsuk-fieldset__legend--m" } }) }}
+
+      <p class="comp-label">hero</p>
+      {{ hero({ heading: "We're here for you", text: "Helping you take control of your health and wellbeing." }) }}
+
+      <p class="comp-label">hint</p>
+      {{ hint({ text: "We'll only use this to send you appointment reminders." }) }}
+
+      <p class="comp-label">image</p>
+      {{ image({ src: "/images/test-result-graph.png", alt: "Example test result graph", caption: "An example image with a caption" }) }}
+
+      <p class="comp-label">input</p>
+      {{ input({ id: "nhs-number", name: "nhs-number", label: { text: "NHS number" }, hint: { text: "It's a 10 digit number" } }) }}
+
+      <p class="comp-label">insetText</p>
+      {{ insetText({ html: "<p>You can report a side effect using the Yellow Card scheme.</p>" }) }}
+
+      <p class="comp-label">label</p>
+      {{ label({ text: "National Insurance number" }) }}
+
+      <p class="comp-label">notificationBanner — default / success</p>
+      {{ notificationBanner({ text: "You have 3 new messages." }) }}
+      {{ notificationBanner({ type: "success", text: "Your appointment has been booked." }) }}
+
+      <p class="comp-label">pagination</p>
+      {{ pagination({ previousUrl: "#", previousPage: "Symptoms", nextUrl: "#", nextPage: "Treatments" }) }}
+
+      <p class="comp-label">panel</p>
+      {{ panel({ titleText: "Booking complete", text: "We have sent you a confirmation email" }) }}
+
+      <p class="comp-label">radios — default / inline</p>
+      {{ radios({ idPrefix: "smoke", name: "smoke", fieldset: { legend: { text: "Do you smoke?" } }, items: [ { value: "yes", text: "Yes" }, { value: "no", text: "No" } ] }) }}
+      {{ radios({ idPrefix: "smoke-inline", name: "smoke-inline", classes: "nhsuk-radios--inline", fieldset: { legend: { text: "Inline radios" } }, items: [ { value: "yes", text: "Yes" }, { value: "no", text: "No" } ] }) }}
+
+      <p class="comp-label">select</p>
+      {{ select({ id: "sort", name: "sort", label: { text: "Sort by" }, items: [ { value: "recent", text: "Most recent" }, { value: "oldest", text: "Oldest" } ] }) }}
+
+      <p class="comp-label">summaryList — with actions</p>
+      {{ summaryList({ rows: [
+        { key: { text: "Name" }, value: { text: "Jane Doe" }, actions: { items: [ { href: "#", text: "Change", visuallyHiddenText: "name" } ] } },
+        { key: { text: "Date of birth" }, value: { text: "15 March 1984" }, actions: { items: [ { href: "#", text: "Change", visuallyHiddenText: "date of birth" } ] } }
+      ] }) }}
+
+      <p class="comp-label">table</p>
+      {{ table({ caption: "Skin symptoms and possible causes", head: [ { text: "Symptom" }, { text: "Possible cause" } ], rows: [ [ { text: "Itchy, dry skin" }, { text: "Eczema" } ], [ { text: "Red, scaly patches" }, { text: "Psoriasis" } ] ] }) }}
+
+      <p class="comp-label">tabs</p>
+      {{ tabs({ items: [
+        { id: "tab-1", label: "Today", panel: { html: "<p class='nhsuk-body'>Today's appointments.</p>" } },
+        { id: "tab-2", label: "This week", panel: { html: "<p class='nhsuk-body'>This week's appointments.</p>" } }
+      ] }) }}
+
+      <p class="comp-label">tag — colour variations</p>
+      <div class="comp-row">
+        {{ tag({ text: "Default" }) }}
+        {{ tag({ text: "White", classes: "nhsuk-tag--white" }) }}
+        {{ tag({ text: "Grey", classes: "nhsuk-tag--grey" }) }}
+        {{ tag({ text: "Green", classes: "nhsuk-tag--green" }) }}
+        {{ tag({ text: "Aqua", classes: "nhsuk-tag--aqua-green" }) }}
+        {{ tag({ text: "Blue", classes: "nhsuk-tag--blue" }) }}
+        {{ tag({ text: "Purple", classes: "nhsuk-tag--purple" }) }}
+        {{ tag({ text: "Pink", classes: "nhsuk-tag--pink" }) }}
+        {{ tag({ text: "Red", classes: "nhsuk-tag--red" }) }}
+        {{ tag({ text: "Orange", classes: "nhsuk-tag--orange" }) }}
+        {{ tag({ text: "Yellow", classes: "nhsuk-tag--yellow" }) }}
+      </div>
+
+      <p class="comp-label">taskList</p>
+      {{ taskList({ idPrefix: "tasks", items: [
+        { title: { text: "Exercise" }, href: "#", status: { text: "Completed", classes: "nhsuk-task-list__status--completed" } },
+        { title: { text: "Family health history" }, hint: { text: "Details of your parents, brothers and sisters" }, href: "#", status: { tag: { text: "Incomplete", classes: "nhsuk-tag--blue" } } },
+        { title: { text: "Blood test" }, status: { text: "Cannot start yet", classes: "nhsuk-task-list__status--cannot-start-yet" } }
+      ] }) }}
+
+      <p class="comp-label">textarea</p>
+      {{ textarea({ id: "more-detail", name: "more-detail", label: { text: "Can you provide more detail?" }, hint: { text: "Do not include personal information" } }) }}
+
+      <p class="comp-label">warningCallout</p>
+      {{ warningCallout({ heading: "Important", html: "<p>For safety, tell your doctor if you're taking any other medicines.</p>" }) }}
+
+      <p class="comp-note nhsuk-body-s">Note: <strong>header</strong>, <strong>footer</strong> and <strong>skipLink</strong> are page chrome rendered by the layout, so they are not duplicated here.</p>
+
+      <!-- ============================================================= -->
+      <h2 class="nhsuk-heading-l comp-section">NHS App frontend</h2>
+
+      <p class="comp-label">nhsappBadgeLarge — count / 9+</p>
+      <div class="comp-row">
+        {{ nhsappBadgeLarge({ count: 3, label: "unread messages" }) }}
+        {{ nhsappBadgeLarge({ count: 12, label: "unread messages" }) }}
+      </div>
+
+      <p class="comp-label">nhsappBadgeSmall</p>
+      {{ nhsappBadgeSmall({ text: "New", label: "status" }) }}
+
+      <p class="comp-label">nhsappTag — colour variations</p>
+      <div class="comp-row">
+        {{ nhsappTag({ text: "Default" }) }}
+        {{ nhsappTag({ text: "White", classes: "nhsapp-tag--white" }) }}
+        {{ nhsappTag({ text: "Grey", classes: "nhsapp-tag--grey" }) }}
+        {{ nhsappTag({ text: "Green", classes: "nhsapp-tag--green" }) }}
+        {{ nhsappTag({ text: "Aqua", classes: "nhsapp-tag--aqua" }) }}
+        {{ nhsappTag({ text: "Blue", classes: "nhsapp-tag--blue" }) }}
+        {{ nhsappTag({ text: "Purple", classes: "nhsapp-tag--purple" }) }}
+        {{ nhsappTag({ text: "Pink", classes: "nhsapp-tag--pink" }) }}
+        {{ nhsappTag({ text: "Red", classes: "nhsapp-tag--red" }) }}
+        {{ nhsappTag({ text: "Orange", classes: "nhsapp-tag--orange" }) }}
+        {{ nhsappTag({ text: "Yellow", classes: "nhsapp-tag--yellow" }) }}
+      </div>
+
+      <p class="comp-label">nhsappIcon</p>
+      <div class="comp-row" style="display:flex; flex-wrap:wrap; gap:16px; align-items:center;">
+        {% for name in ["home", "homeFilled", "messages", "messagesUnread", "account", "calendar", "clock", "letter", "email", "phoneCall", "heart", "help", "download", "filter", "sort", "switchProfile", "chevronRight", "cross"] %}
+          <span style="display:inline-flex; flex-direction:column; align-items:center; width:64px; text-align:center;">
+            {{ nhsappIcon(name) }}
+            <span style="font-size:11px; color:#425563;">{{ name }}</span>
+          </span>
+        {% endfor %}
+      </div>
+
+      <p class="comp-label">nhsappCardGroup — link / with tag / with badge (stacked)</p>
+      {{ nhsappCardGroup({
+        stacked: true,
+        cards: [
+          { href: "#", title: "Simple link card" },
+          { href: "#", aboveContent: { html: '<strong class="nhsuk-tag nhsuk-tag--red">Action needed</strong>' }, title: "Card with a tag", description: "Optional description text." },
+          { href: "#", title: "Card with a badge", badgeLarge: { count: 1, label: "notifications" } }
+        ]
+      }) }}
+
+      <p class="comp-label">nhsappTimeline — past / active / future</p>
+      {{ nhsappTimeline({ items: [
+        { headingText: "Referral received", text: "30 April 2026", isPastItem: true },
+        { headingText: "Appointment booked", text: "You are here", active: true },
+        { headingText: "Attend appointment", text: "To be confirmed" },
+        { headingText: "Results", text: "To be confirmed" }
+      ] }) }}
+
+      <!-- ============================================================= -->
+      <h2 class="nhsuk-heading-l comp-section">Custom prototype components</h2>
+
+      <p class="comp-label">dynamicPageTitle</p>
+      {{ dynamicPageTitle({ title: "Page title", description: "An optional supporting description.", titleSecondary: true, titleSmall: true }) }}
+
+      <p class="comp-label">interruptionCard</p>
+      {{ interruptionCard({ title: "Before you continue", description: "We need to check some details with you first.", linkText: "Continue", URL: "#", hiddenText: " to the next step" }) }}
+
+      <p class="comp-label">relatedContentCard</p>
+      {{ relatedContentCard({ title: "Related content", description: "Find more information and advice.", linkText: "Read more", URL: "#", icon: true }) }}
+
+      <p class="comp-label">provider-banner (include)</p>
+      {% include "components/provider-banner/include.html" %}
+
+      <p class="comp-note nhsuk-body-s">Note: navigation and chrome components (<strong>global-navigation-native</strong>, <strong>header-web</strong>, <strong>footer-web</strong>, <strong>app-bottom-navigation</strong>, <strong>switch-profile-banner</strong>) are rendered by the layout on every page, so they are not duplicated here.</p>
+
+    </div>
+  </div>
+
+{% endblock %}
