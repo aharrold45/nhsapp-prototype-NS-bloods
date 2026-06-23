@@ -57,8 +57,6 @@
           .clinic-times-row { position:relative }
           .chev-left { left: 0; }
           .chev-right { right: 0; }
-          .cta-availability { display:inline-flex; align-items:center; gap:10px; color:#0b67a6; font-weight:700; text-decoration:none }
-          .cta-availability:before { content:'\27A1'; display:inline-block; background:#0b6b3a; color:#fff; border-radius:50%; width:28px; height:28px; line-height:28px; text-align:center }
         </style>
 
         {% for clinic in clinics %}
@@ -84,9 +82,7 @@
             {% if clinic.busyPeriods %}
               <p class="nhsuk-body" style="margin:0 0 12px 0">{{ clinic.busyPeriods }}</p>
             {% endif %}
-            <div style="margin:8px 0 12px 0">
-              <a class="cta-availability" href="/pages/your-health/clinic-availability?clinic={{ clinic.id | urlencode }}&postcode={{ postcode | urlencode }}">See full clinic details</a>
-            </div>
+            {{ actionLink({ text: "See full clinic details", href: "/pages/your-health/clinic-availability?clinic=" + (clinic.id | urlencode) + "&postcode=" + (postcode | urlencode) }) }}
             <a class="slot-button walk-in-select" href="/pages/your-health/check?clinic={{ clinic.id | urlencode }}&postcode={{ postcode | urlencode }}&date={{ 'Walk in' | urlencode }}&time={{ 'Walk in' | urlencode }}">Select walk in</a>
           </div>
 
@@ -116,7 +112,7 @@
               <button class="chev-right" aria-label="Next suggested times" data-clinic-id="{{ clinic.id }}">&rsaquo;</button>
 
               <div class="cta-wrapper" style="margin-top:6px; margin-bottom:6px">
-                <a class="cta-availability" href="/pages/your-health/clinic-availability?clinic={{ clinic.id | urlencode }}&postcode={{ postcode | urlencode }}">See full clinic availability</a>
+                {{ actionLink({ text: "See full clinic availability", href: "/pages/your-health/clinic-availability?clinic=" + (clinic.id | urlencode) + "&postcode=" + (postcode | urlencode) }) }}
               </div>
               <p class="clinic-duration nhsuk-body-s" style="margin-top:4px">{{ clinic.durationDesc or 'Tests are expected to start within times shown and last 30 minutes.' }}</p>
             </div>
