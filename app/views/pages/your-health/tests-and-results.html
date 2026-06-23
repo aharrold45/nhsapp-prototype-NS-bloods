@@ -1,0 +1,33 @@
+{% extends 'layout-app.html' %}
+
+{% set hub = "Your health" %}
+
+{% set backLink = true %}
+
+{% set pageHeading = "Tests and results" %}
+
+{% block content %}
+
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-full">
+
+      <h1 class="nhsapp-page-heading nhsuk-heading-l">Tests and results</h1>
+
+      {{ nhsappCardGroup({
+        headingHtml: '<h2 class="nhsuk-heading-m nhsuk-u-margin-top-4 nhsuk-u-margin-bottom-2">GP Surgery</h2>',
+        cards: [
+          { title: "GP ordered test results", href: "#" }
+        ]
+      }) }}
+
+      {{ nhsappCardGroup({
+        headingHtml: '<h2 class="nhsuk-heading-m nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-2">Hospital</h2>',
+        cards: [
+          { title: "Hospital ordered test results", href: "/pages/your-health/test-result", badgeLarge: { count: 1, label: "new result" } }
+        ]
+      }) }}
+
+    </div>
+  </div>
+
+{% endblock %}

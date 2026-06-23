@@ -176,6 +176,15 @@ router.get('/pages/your-health/cancel-appointment', (req, res) => {
 	res.render('pages/your-health/cancel-appointment', appointmentContext(req));
 });
 
+// Sensitive information interstitial shown before test results. The "Continue"
+// destination is passed in via ?next= so the same page can lead to a single
+// result or the full tests-and-results list depending on entry point.
+router.get('/pages/your-health/result-sensitive-information', (req, res) => {
+	res.render('pages/your-health/result-sensitive-information', {
+		next: req.query.next || '/pages/your-health/test-result'
+	});
+});
+
 // Cancellation confirmation, reached from the "Cancel appointment" button.
 // Records the cancellation in the session (so it moves from upcoming to past
 // appointments) and removes the upcoming booking.
