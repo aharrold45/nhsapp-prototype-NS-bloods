@@ -75,11 +75,11 @@
                 aria-hidden="true"
                 class="nhsuk-u-font-weight-bold nhsuk-u-margin-top-1 nhsuk-u-margin-bottom-3"
               >
-                Monday 3 June 2024 <br />
+                Monday 3 June 2026 <br />
                 9:40am
               </p>
               <p aria-hidden="true" class="nhsuk-u-margin-bottom-3">
-                (add a generic address)
+                Royal General Hospital
               </p>
             </div>
 
@@ -159,11 +159,11 @@
                 aria-hidden="true"
                 class="nhsuk-u-font-weight-bold nhsuk-u-margin-top-1 nhsuk-u-margin-bottom-3"
               >
-                Monday 3 June 2024 <br />
+                Monday 3 June 2026 <br />
                 9:40am
               </p>
               <p aria-hidden="true" class="nhsuk-u-margin-bottom-3">
-                (add a generic address)
+                Royal General Hospital
               </p>
             </div>
 
@@ -244,11 +244,11 @@
                 aria-hidden="true"
                 class="nhsuk-u-font-weight-bold nhsuk-u-margin-top-1 nhsuk-u-margin-bottom-3"
               >
-                Monday 3 June 2024 <br />
-                9:40am
+                Monday 18 April 2026 <br />
+                8:00am
               </p>
               <p aria-hidden="true" class="nhsuk-u-margin-bottom-3">
-                (add a generic address)
+                Royal General Hospital
               </p>
             </div>
 
@@ -263,4 +263,12 @@
     </div>
   </div>
 
+{% endblock %}
+
+{% block pageScripts %}
+  <script>
+    document.querySelector('.app-global-navigation-native__help').addEventListener('click', function () {
+      window.location.href = '/pages/hospital-and-specialist-appointments/reset';
+    });
+  </script>
 {% endblock %}

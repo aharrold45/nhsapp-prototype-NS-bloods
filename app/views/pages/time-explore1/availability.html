@@ -1,0 +1,176 @@
+{% extends 'layout-app.html' %}
+{% set hub = "Your health" %}
+{% set backLink = true %}
+
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-full">
+
+    <h1 class="nhsuk-heading-m" style="margin-bottom:2px">Chelmsford Phlebotomy Service</h1>
+    <p class="nhsuk-body-s" style="color:#4c6272; margin-bottom:0">30-minute appointments &nbsp;·&nbsp; Mon–Fri, 9:00am – 5:00pm</p>
+
+    <style>
+      .week-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #f0f4f5;
+        margin: 0 -16px;
+        padding: 12px 16px;
+        border-bottom: 2px solid #d8dde0;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      .week-nav-label { font-weight: 700; font-size: 15px; color: #212b32; }
+      .week-nav-sub { font-size: 13px; color: #4c6272; }
+      .week-nav-btn {
+        background: none;
+        border: none;
+        font-size: 32px;
+        color: #005eb8;
+        padding: 0 4px;
+        cursor: pointer;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+      }
+      .week-nav-btn:disabled { color: #b1b4b6; cursor: default; }
+      .day-section { padding: 16px 0; border-bottom: 1px solid #e6eef0; }
+      .day-section:last-child { border-bottom: none; }
+      .day-heading { font-size: 15px; font-weight: 700; margin: 0 0 10px; color: #212b32; }
+      .slots-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .slot-btn {
+        display: block;
+        text-align: center;
+        text-decoration: none;
+        background: #fff;
+        border: 2px solid #0b5a3b;
+        color: #0b5a3b;
+        padding: 10px 4px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 14px;
+      }
+      .slot-btn:hover { background: #f0fff4; }
+      .no-slots { color: #4c6272; font-size: 14px; margin: 0; font-style: italic; }
+    </style>
+
+    <div class="week-nav">
+      <button class="week-nav-btn" id="prev-week" aria-label="Previous week" disabled>&#8249;</button>
+      <div>
+        <div class="week-nav-label" id="week-label">Loading…</div>
+        <div class="week-nav-sub" id="week-counter"></div>
+      </div>
+      <button class="week-nav-btn" id="next-week" aria-label="Next week">&#8250;</button>
+    </div>
+
+    <div id="days-container"></div>
+
+    <script>
+      (function () {
+        var TODAY = new Date();
+        TODAY.setHours(0, 0, 0, 0);
+
+        function nextMonday(from) {
+          var d = new Date(from);
+          var dow = d.getDay();
+          var ahead = dow === 1 ? 0 : dow === 0 ? 1 : 8 - dow;
+          d.setDate(d.getDate() + ahead);
+          return d;
+        }
+        var START = nextMonday(TODAY);
+
+        var ALL_SLOTS = [
+          '9:00am', '9:30am', '10:00am', '10:30am',
+          '11:00am', '11:30am', '12:00pm', '12:30pm',
+          '1:00pm', '1:30pm', '2:00pm', '2:30pm',
+          '3:00pm', '3:30pm', '4:00pm', '4:30pm'
+        ];
+
+        function availableSlots(dateStr) {
+          var h = 0;
+          for (var i = 0; i < dateStr.length; i++) {
+            h = (Math.imul(h, 31) + dateStr.charCodeAt(i)) >>> 0;
+          }
+          var rng = function () {
+            h = Math.imul(h ^ (h >>> 15), h | 1) >>> 0;
+            h ^= h + Math.imul(h ^ (h >>> 7), h | 61);
+            return ((h ^ (h >>> 14)) >>> 0) / 4294967296;
+          };
+          return ALL_SLOTS.filter(function () { return rng() > 0.28; });
+        }
+
+        function isoDate(d) { return d.toISOString().split('T')[0]; }
+
+        function fmtFull(d) {
+          return d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+        }
+
+        function weekRange(monDate) {
+          var fri = new Date(monDate);
+          fri.setDate(fri.getDate() + 4);
+          var s = monDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+          var e = fri.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+          return s + '–' + e;
+        }
+
+        var weeks = [];
+        for (var w = 0; w < 4; w++) {
+          var monDate = new Date(START);
+          monDate.setDate(START.getDate() + w * 7);
+          var days = [];
+          for (var d = 0; d < 5; d++) {
+            var date = new Date(monDate);
+            date.setDate(monDate.getDate() + d);
+            var ds = isoDate(date);
+            days.push({ label: fmtFull(date), dateStr: ds, slots: availableSlots(ds) });
+          }
+          weeks.push({ label: weekRange(monDate), days: days });
+        }
+
+        var current = 0;
+
+        function render(wi) {
+          var week = weeks[wi];
+          document.getElementById('week-label').textContent = week.label;
+          document.getElementById('week-counter').textContent = 'Week ' + (wi + 1) + ' of 4';
+          document.getElementById('prev-week').disabled = wi === 0;
+          document.getElementById('next-week').disabled = wi === 3;
+
+          var html = '';
+          for (var i = 0; i < week.days.length; i++) {
+            var day = week.days[i];
+            html += '<div class="day-section">';
+            html += '<p class="day-heading">' + day.label + '</p>';
+            if (day.slots.length === 0) {
+              html += '<p class="no-slots">No availability</p>';
+            } else {
+              html += '<div class="slots-grid">';
+              for (var j = 0; j < day.slots.length; j++) {
+                var slot = day.slots[j];
+                var href = '/pages/time-explore1/slot?date=' + encodeURIComponent(day.label) + '&time=' + encodeURIComponent(slot);
+                html += '<a class="slot-btn" href="' + href + '">' + slot + '</a>';
+              }
+              html += '</div>';
+            }
+            html += '</div>';
+          }
+          document.getElementById('days-container').innerHTML = html;
+          window.scrollTo(0, 0);
+        }
+
+        document.getElementById('prev-week').addEventListener('click', function () {
+          if (current > 0) { current--; render(current); }
+        });
+        document.getElementById('next-week').addEventListener('click', function () {
+          if (current < 3) { current++; render(current); }
+        });
+
+        render(0);
+      })();
+    </script>
+
+  </div>
+</div>
+{% endblock %}

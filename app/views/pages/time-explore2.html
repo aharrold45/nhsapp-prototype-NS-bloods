@@ -1,0 +1,23 @@
+{% extends 'layout-app.html' %}
+{% set hub = "Your health" %}
+
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-full">
+
+    <p style="display:inline-block; background:#ffeb3b; color:#000; padding:2px 10px; border-radius:4px; font-size:13px; font-weight:700; margin-bottom:20px">Prototype explore — Time-explore2</p>
+
+    <h1 class="nhsuk-heading-l">Book a blood test</h1>
+    <p class="nhsuk-body">Calendar view — tap a date to see available slots.</p>
+
+    <div style="border:1px solid #d8dde0; border-radius:6px; padding:16px; margin-bottom:28px; background:#fff">
+      <p style="margin:0 0 4px; font-weight:700; font-size:1.1rem">Chelmsford Phlebotomy Service</p>
+      <p style="margin:0 0 4px; color:#4c6272">Mid Essex Hospital Site, Broomfield, Chelmsford CM1 7ET</p>
+      <p style="margin:0; color:#4c6272; font-size:15px">Mon–Fri &nbsp;·&nbsp; 9:00am – 5:00pm &nbsp;·&nbsp; 0.8 miles away</p>
+    </div>
+
+    {{ button({ text: "View full availability", href: "/pages/time-explore2/availability" }) }}
+
+  </div>
+</div>
+{% endblock %}

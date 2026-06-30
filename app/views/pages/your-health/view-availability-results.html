@@ -32,13 +32,14 @@
           /* clinic-times becomes the pager container */
           .clinic-times { position:relative; display:flex; justify-content:center; align-items:center; gap:12px }
           .times-pages { display:flex; align-items:center; justify-content:center }
-          .times-box { width:var(--times-box-width); border:2px solid #0b67a6; border-radius:8px; padding:16px; background:#f6fbfc }
+          .times-box { width:var(--times-box-width); min-height:250px; border:2px solid #0b67a6; border-radius:8px; padding:16px; background:#f6fbfc }
+          .times-box--hidden { display:none }
           .times-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px }
           .slot-button { display:block; text-align:center; text-decoration:none; background:#fff; border:2px solid #0b5a3b; color:#0b5a3b; padding:12px 18px; border-radius:8px; font-weight:700; font-size:16px }
           .walk-in-block { padding:0 0 4px 0 }
-          .walk-in-select { display:inline-block; width:auto; box-shadow:0 4px 0 #00401f }
+          .walk-in-select { display:inline-block; width:auto; padding-left:20px; padding-right:20px; box-shadow:0 4px 0 #00401f; margin-bottom:16px }
           .clinic-times-row .nhsuk-heading-s,
-          .clinic-times-heading .nhsuk-heading-s { font-size:16px; font-weight:400; margin-left: max(0px, calc(50% - (var(--times-box-width) / 2))); }
+          .clinic-times-heading .nhsuk-heading-s { font-size:16px; font-weight:400 }
           .clinic-times-row .nhsuk-heading-s .suggested-current,
           .clinic-times-row .nhsuk-heading-s .suggested-total,
           .clinic-times-heading .nhsuk-heading-s .suggested-current,
@@ -77,26 +78,26 @@
 
           <div class="walk-in-block">
             <p class="nhsuk-body" style="margin:8px 0">{{ clinic.durationDesc }}</p>
-            {% if clinic.busyPeriods %}
-              <p class="nhsuk-body" style="margin:0 0 12px 0">{{ clinic.busyPeriods }}</p>
+            {% if clinic.openingHours %}
+              <p class="nhsuk-body" style="margin:0 0 20px 0">{{ clinic.openingHours }}</p>
             {% endif %}
+            <div><a class="slot-button walk-in-select" href="/pages/your-health/check?clinic={{ clinic.id | urlencode }}&postcode={{ postcode | urlencode }}&date={{ 'Walk in' | urlencode }}&time={{ 'Walk in' | urlencode }}">Select walk in</a></div>
+            <div class="divider" style="margin:0 0 20px 0"></div>
             {{ actionLink({ text: "See full clinic details", href: "/pages/your-health/clinic-availability?clinic=" + (clinic.id | urlencode) + "&postcode=" + (postcode | urlencode) }) }}
-            <a class="slot-button walk-in-select" href="/pages/your-health/check?clinic={{ clinic.id | urlencode }}&postcode={{ postcode | urlencode }}&date={{ 'Walk in' | urlencode }}&time={{ 'Walk in' | urlencode }}">Select walk in</a>
           </div>
 
           {% else %}
 
-          <div class="clinic-times-heading cta-wrapper">
-            <p class="nhsuk-heading-s" style="margin:0 0 8px 0">Suggested times <span class="suggested-current" data-clinic-id="{{ clinic.id }}">1</span>/<span class="suggested-total" data-clinic-id="{{ clinic.id }}">{{ clinic.times | length }}</span></p>
-          </div>
-
-          <div class="nhsuk-grid-row clinic-times-row" style="padding:0; position:relative">
+          <div class="nhsuk-grid-row clinic-times-row">
             <div class="nhsuk-grid-column-two-thirds clinic-times-col">
+              <div class="clinic-times-heading cta-wrapper">
+                <p class="nhsuk-heading-s" style="margin:0 0 8px 0">Suggested times <span class="suggested-current" data-clinic-id="{{ clinic.id }}">1</span>/<span class="suggested-total" data-clinic-id="{{ clinic.id }}">{{ clinic.times | length }}</span></p>
+              </div>
               <div class="clinic-times" style="margin-bottom:8px" data-clinic-id="{{ clinic.id }}">
                 <button class="chev-left" aria-label="Previous suggested times">&lsaquo;</button>
                 <div class="times-pages" style="display:flex; gap:12px; align-items:flex-start;">
                   {% for page in clinic.times %}
-                    <div class="times-box" data-page-index="{{ loop.index0 }}" style="{% if loop.index0 != 0 %}display:none;{% endif %}">
+                    <div class="times-box{% if loop.index0 != 0 %} times-box--hidden{% endif %}" data-page-index="{{ loop.index0 }}">
                       <div style="text-align:center; font-weight:800">{{ page.dateLabel }}</div>
                       <div class="times-grid">
                         {% for slot in page.slots %}
@@ -141,8 +142,8 @@
                 let idx = 0;
 
                 function show(i){
-                  pages.forEach(p=> p.style.display = 'none');
-                  pages[i].style.display = '';
+                  pages.forEach(p=> p.classList.add('times-box--hidden'));
+                  pages[i].classList.remove('times-box--hidden');
                   if (counterCurrent) counterCurrent.textContent = i+1;
                 }
 
@@ -193,12 +194,12 @@
                       chevPrev.style.right = '';
                     }
                     if (chevNext){
-                      // place chevron so its right edge aligns exactly with wrapperRect.right
+                      // Mirror the left chevron: use ctRect.right so the right chevron is
+                      // the same distance from the times box as the left chevron is.
                       const nextW = chevNext.offsetWidth || 48;
-                      const leftForNext = Math.max(0, Math.round(wrapperRect.right) - nextW);
+                      const leftForNext = Math.max(0, Math.round(ctRect.right) - nextW);
                       chevNext.style.top = topPx + 'px';
                       chevNext.style.left = leftForNext + 'px';
-                      // clear right to avoid conflicts
                       chevNext.style.right = '';
                     }
                   }catch(e){ /* ignore layout errors */ }

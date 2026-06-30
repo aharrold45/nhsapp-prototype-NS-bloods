@@ -1,0 +1,36 @@
+{% extends 'layout-app.html' %}
+{% set hub = "Your health" %}
+{% set backLink = true %}
+
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-full">
+
+    <h1 class="nhsuk-heading-l">Check your answers</h1>
+
+    {{ summaryList({
+      rows: [
+        {
+          key: { text: "Clinic" },
+          value: { text: "Chelmsford Phlebotomy Service" }
+        },
+        {
+          key: { text: "Date" },
+          value: { text: data.date }
+        },
+        {
+          key: { text: "Time" },
+          value: { text: data.time }
+        },
+        {
+          key: { text: "Duration" },
+          value: { text: "30 minutes" }
+        }
+      ]
+    }) }}
+
+    {{ button({ text: "Confirm appointment", href: "/pages/time-explore2/confirmed" }) }}
+
+  </div>
+</div>
+{% endblock %}

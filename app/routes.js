@@ -55,10 +55,10 @@ router.get('/pages/your-health/view-availability-results', (req, res) => {
 	const clinicIds = postcodeMap[key] || postcodeMap['DEFAULT'] || [];
 	const clinicsList = loadClinicsList();
 
-	const clinics = clinicIds.slice(0, 5).map(id => {
+	const clinics = clinicIds.slice(0, 5).map((id, clinicIndex) => {
 		const c = clinicsList.find(x => x.id === id) || { id, name: id };
 		// If the clinic entry includes its own `times` (from JSON), prefer that.
-		const times = (c && c.times) ? c.times : availability.generateTimes(key, id, c.openingHours);
+		const times = (c && c.times) ? c.times : availability.generateTimes(key, id, c.openingHours, clinicIndex);
 		return Object.assign({}, c, { times });
 	});
 
@@ -86,7 +86,9 @@ router.get('/pages/your-health/clinic-availability', (req, res) => {
 		return res.redirect('/pages/your-health/view-availability-results?postcode=' + encodeURIComponent(req.query.postcode || ''));
 	}
 
-	const days = availability.generateFullAvailability(key, clinicId, clinic.openingHours, 14);
+	const clinicIds = postcodeMap[key] || postcodeMap['DEFAULT'] || [];
+	const isClosest = clinicIds[0] === clinicId;
+	const days = availability.generateFullAvailability(key, clinicId, clinic.openingHours, 14, isClosest);
 
 	res.render('pages/your-health/clinic-availability', {
 		clinic,
@@ -122,11 +124,28 @@ function appointmentRecord(ctx) {
 	};
 }
 
+// Resets dynamically booked/cancelled appointment session data and returns to
+// the hospital appointments list — triggered by "App help" on that page.
+router.get('/pages/hospital-and-specialist-appointments/reset', (req, res) => {
+	if (req.session && req.session.data) {
+		delete req.session.data.bookedAppointment;
+		delete req.session.data.cancelledAppointment;
+		delete req.session.data.reschedulingFrom;
+	}
+	res.redirect('/pages/hospital-and-specialist-appointments');
+});
+
 // Check your answers page for a chosen appointment slot. The clinic name and
 // address are looked up from clinics.json; the date and time come from the
 // slot button the user selected on the availability page.
 router.get('/pages/your-health/check', (req, res) => {
 	res.render('pages/your-health/check', appointmentContext(req));
+});
+
+// Interstitial "confirming" page shown for 4 seconds between the check page
+// and the confirmation page, to simulate a real booking request in flight.
+router.get('/pages/your-health/confirming', (req, res) => {
+	res.render('pages/your-health/confirming', appointmentContext(req));
 });
 
 // Appointment confirmation page, reached from the check page's

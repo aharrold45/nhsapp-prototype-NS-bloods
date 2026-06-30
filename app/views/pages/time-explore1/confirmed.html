@@ -1,0 +1,17 @@
+{% extends 'layout-app.html' %}
+{% set hub = "Your health" %}
+
+{% block content %}
+<div class="nhsuk-grid-row">
+  <div class="nhsuk-grid-column-full">
+
+    {{ panel({
+      titleText: "Appointment booked",
+      html: "<p>Your blood test at Chelmsford Phlebotomy Service has been booked.</p><p>" + data.date + " at " + data.time + "</p>"
+    }) }}
+
+    <p class="nhsuk-body"><a class="nhsuk-link" href="/pages/time-explore1">Back to start</a></p>
+
+  </div>
+</div>
+{% endblock %}

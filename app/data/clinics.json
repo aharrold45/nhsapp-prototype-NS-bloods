@@ -42,57 +42,55 @@
       "type": "walk-in",
       "distance": "3.2 miles away",
       "address": "7 Dockside, SE7 7HN",
-      "openingHours": "Walk-in only, see clinic for times",
+      "openingHours": "Monday - Friday 8:00am - 6:00pm",
       "cqcRating": "Outstanding",
       "durationDesc": "This clinic operates a walk in only service with tests expected to take 30 minutes.",
       "busyPeriods": "Busy periods are: 8:00 am - 10:00 am, 12:00 pm - 2:00pm and 4:30 pm - 6:00pm."
     },
-    "Postcode-1": {
-      "id": "Postcode-1",
-      "name": "Postcode-1 Clinic",
-      "distance": "0.3 miles away",
-      "address": "12 Station Road, SE7 7HX",
+    "herts-county": {
+      "id": "herts-county",
+      "name": "Hertford County Hospital",
+      "distance": "3.1 miles away",
+      "address": "North Road, Hertford, SG14 1LP",
       "openingHours": "8:00am - 6:00pm Monday to Friday",
       "cqcRating": "Good",
       "durationDesc": "Tests are expected to start within times shown and last 30 minutes."
     },
-    "Postcode-2": {
-      "id": "Postcode-2",
-      "name": "Postcode-2 Clinic",
-      "distance": "1.1 miles away",
-      "address": "45 Church Street, SE7 7HJ",
+    "qeii": {
+      "id": "qeii",
+      "name": "Queen Elizabeth II Hospital",
+      "distance": "6.2 miles away",
+      "address": "Howlands, Welwyn Garden City, AL7 4HQ",
       "openingHours": "8:00am - 6:00pm Monday to Friday",
       "cqcRating": "Good",
       "durationDesc": "Tests are expected to start within times shown and last 30 minutes."
     },
-    "Postcode-3": {
-      "id": "Postcode-3",
-      "name": "Postcode-3 Clinic",
-      "distance": "2.1 miles away",
-      "address": "3 High Street, SE7 7HL",
+    "princess-alexandra": {
+      "id": "princess-alexandra",
+      "name": "Princess Alexandra Hospital",
+      "distance": "8.4 miles away",
+      "address": "Hamstel Road, Harlow, CM20 1QX",
       "openingHours": "8:00am - 6:00pm Monday to Friday",
       "cqcRating": "Requires improvement",
       "durationDesc": "Next availability shown — times typically last 30 minutes."
     },
-    "Postcode-4": {
-      "id": "Postcode-4",
-      "name": "Postcode-4 Clinic",
-      "distance": "2.2 miles away",
-      "address": "88 Market Road, SE7 7HM",
+    "st-margarets": {
+      "id": "st-margarets",
+      "name": "St Margaret's Hospital",
+      "distance": "10.1 miles away",
+      "address": "The Plain, Epping, CM16 6TN",
       "openingHours": "9:00am - 5:00pm Monday to Friday",
       "cqcRating": "Good",
       "durationDesc": "Tests are expected to start within times shown and last 30 minutes."
     },
-    "Postcode-5": {
-      "id": "Postcode-5",
-      "name": "Postcode-5 Clinic",
-      "type": "walk-in",
-      "distance": "3.2 miles away",
-      "address": "7 Dockside, SE7 7HN",
-      "openingHours": "Walk-in only, see clinic for times",
+    "chase-farm": {
+      "id": "chase-farm",
+      "name": "Chase Farm Hospital",
+      "distance": "12.3 miles away",
+      "address": "The Ridgeway, Enfield, EN2 8JL",
+      "openingHours": "8:00am - 6:00pm Monday to Friday",
       "cqcRating": "Outstanding",
-      "durationDesc": "This clinic operates a walk in only service with tests expected to take 30 minutes.",
-      "busyPeriods": "Busy periods are: 8:00 am - 10:00 am, 12:00 pm - 2:00pm and 4:30 pm - 6:00pm."
+      "durationDesc": "Tests are expected to start within times shown and last 30 minutes."
     }
   }
 }
