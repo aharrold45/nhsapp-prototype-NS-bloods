@@ -21,69 +21,43 @@
     .clinic-availability .ca-cqc-dot--inadequate { background:#d5281b; }
 
     /* Week navigation */
-    .week-nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-    .week-nav-btn {
-      background: none;
-      border: none;
-      font-size: 36px;
-      color: #212b32;
-      cursor: pointer;
-      padding: 0;
-      line-height: 1;
-      flex: 0 0 auto;
-      width: 36px;
-    }
-    .week-nav-btn:disabled { color: #b1b4b6; cursor: default; }
-    .week-nav-center { flex: 1; text-align: center; }
-    .week-month { font-size: 22px; font-weight: 700; color: #212b32; margin: 0 0 2px; }
-    .week-range { font-size: 17px; font-weight: 700; color: #212b32; margin: 0 0 4px; }
-    .week-counter { font-size: 14px; color: #005eb8; margin: 0; }
-    .filter-bar {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #f0f4f5;
-      padding: 14px 16px;
-      margin: 0 -16px 8px;
-      color: #005eb8;
-      font-size: 16px;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-      width: calc(100% + 32px);
-      text-align: left;
-    }
-    .filter-bar:hover { background: #e8edee; }
-    .day-heading {
-      font-size: 20px;
-      font-weight: 700;
-      margin: 20px 0 12px;
-      color: #212b32;
-    }
-    .period-label { font-size: 16px; color: #212b32; margin: 0 0 8px; }
-    .slots-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
-    .slot-btn {
-      display: block;
-      text-align: center;
-      text-decoration: none;
-      background: #fff;
-      border: 2px solid #0b5a3b;
-      color: #0b5a3b;
-      padding: 12px 4px;
-      border-radius: 4px;
-      font-weight: 700;
-      font-size: 14px;
-    }
-    .slot-btn:hover { background: #f0fff4; }
-    .day-divider { border: none; border-top: 1px solid #d8dde0; margin: 4px 0 0; }
-    .no-days-msg { color: #4c6272; text-align: center; padding: 40px 0; font-style: italic; }
+    .week-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
+    .week-nav-btn { background:none; border:none; font-size:36px; color:#212b32; cursor:pointer; padding:0; line-height:1; flex:0 0 auto; width:36px; }
+    .week-nav-btn:disabled { color:#b1b4b6; cursor:default; }
+    .week-nav-center { flex:1; text-align:center; }
+    .week-month { font-size:22px; font-weight:700; color:#212b32; margin:0 0 2px; }
+    .week-range { font-size:17px; font-weight:700; color:#212b32; margin:0 0 4px; }
+    .week-counter { font-size:14px; color:#005eb8; margin:0; }
+
+    .filter-bar { display:flex; align-items:center; gap:10px; background:#f0f4f5; padding:14px 16px; margin:0 -16px 8px; color:#005eb8; font-size:16px; font-weight:700; border:none; cursor:pointer; width:calc(100% + 32px); text-align:left; }
+    .filter-bar:hover { background:#e8edee; }
+    .filter-badge { display:none; background:#005eb8; color:#fff; border-radius:10px; font-size:12px; font-weight:700; padding:2px 7px; margin-left:2px; }
+    .filter-badge.is-visible { display:inline-block; }
+
+    .day-heading { font-size:20px; font-weight:700; margin:20px 0 12px; color:#212b32; }
+    .period-label { font-size:16px; color:#212b32; margin:0 0 8px; }
+    .slots-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:16px; }
+    .slot-btn { display:block; text-align:center; text-decoration:none; background:#fff; border:2px solid #0b5a3b; color:#0b5a3b; padding:12px 4px; border-radius:4px; font-weight:700; font-size:14px; }
+    .slot-btn:hover { background:#f0fff4; }
+    .day-divider { border:none; border-top:1px solid #d8dde0; margin:4px 0 0; }
+    .no-days-msg { color:#4c6272; text-align:center; padding:40px 0; font-style:italic; }
     .ca-slot-button { display:block; text-align:center; text-decoration:none; background:#fff; border:2px solid #0b5a3b; color:#0b5a3b; padding:12px 18px; border-radius:8px; font-weight:700; font-size:16px; }
     .ca-walk-in-select { display:inline-block; margin-top:16px; }
+
+    /* Filter overlay */
+    .filter-overlay { display:none; position:fixed; inset:0; z-index:500; background:#f0f4f5; overflow-y:auto; padding:20px 16px 0; }
+    .filter-overlay.is-open { display:block; }
+    .filter-back-btn { display:flex; align-items:center; gap:8px; background:none; border:none; color:#005eb8; font-size:16px; cursor:pointer; padding:0; margin-bottom:28px; font-family:inherit; }
+    .filter-overlay h1 { font-size:26px; font-weight:700; margin:0 0 28px; color:#212b32; line-height:1.2; }
+    .filter-section-label { display:block; font-size:18px; font-weight:700; color:#212b32; margin-bottom:0; }
+    .filter-check-list { list-style:none; padding:0; margin:0 0 28px; border-top:1px solid #d8dde0; }
+    .filter-check-label { display:flex; align-items:center; gap:16px; font-size:18px; color:#212b32; padding:14px 0; cursor:pointer; border-bottom:1px solid #d8dde0; }
+    .filter-checkbox { width:40px; height:40px; border:2px solid #4c6272; border-radius:4px; flex:0 0 40px; appearance:none; -webkit-appearance:none; cursor:pointer; background:#fff; position:relative; margin:0; }
+    .filter-checkbox:checked { background:#005eb8; border-color:#005eb8; }
+    .filter-checkbox:checked::after { content:''; position:absolute; left:11px; top:4px; width:10px; height:18px; border:3px solid #fff; border-top:none; border-left:none; transform:rotate(45deg); }
+    .filter-apply-wrap { position:sticky; bottom:0; background:#f0f4f5; padding:16px 0 20px; }
+    .filter-apply-btn { display:block; width:100%; background:#007f3b; color:#fff; border:none; padding:16px; font-size:18px; font-weight:700; cursor:pointer; font-family:inherit; }
+    .filter-apply-btn:hover { background:#005e2b; }
   </style>
 
   <div class="clinic-availability">
@@ -135,7 +109,6 @@
 
     {% else %}
 
-      <!-- Week navigation -->
       <div class="week-nav">
         <button class="week-nav-btn" id="prev-week" aria-label="Previous week" disabled>&#8249;</button>
         <div class="week-nav-center">
@@ -155,12 +128,49 @@
           <line x1="6" y1="13" x2="12" y2="13" stroke="currentColor" stroke-width="2"/>
         </svg>
         Filter
+        <span class="filter-badge" id="filter-badge"></span>
       </button>
 
       <div id="days-container"></div>
 
     {% endif %}
 
+  </div>
+
+  <!-- Filter overlay -->
+  <div class="filter-overlay" id="filter-overlay">
+    <button class="filter-back-btn" id="filter-close-btn">
+      <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M11 1L1 10l10 9" stroke="#005eb8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Back
+    </button>
+
+    <h1>Filter availability by</h1>
+
+    <span class="filter-section-label">Days</span>
+    <ul class="filter-check-list">
+      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-day" value="Monday"> Monday</label></li>
+      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-day" value="Tuesday"> Tuesday</label></li>
+      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-day" value="Wednesday"> Wednesday</label></li>
+      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-day" value="Thursday"> Thursday</label></li>
+      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-day" value="Friday"> Friday</label></li>
+      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-day" value="Saturday"> Saturday</label></li>
+      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-day" value="Sunday"> Sunday</label></li>
+    </ul>
+
+    <span class="filter-section-label">Times</span>
+    <ul class="filter-check-list">
+      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-time" value="before9"> Before 9:00am</label></li>
+      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-time" value="morning"> 9:00am – 11:59am</label></li>
+      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-time" value="early-afternoon"> 12:00pm – 1:59pm</label></li>
+      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-time" value="late-afternoon"> 2:00pm – 5:00pm</label></li>
+      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-time" value="evening"> After 5:00pm</label></li>
+    </ul>
+
+    <div class="filter-apply-wrap">
+      <button class="filter-apply-btn" id="filter-apply-btn">Apply</button>
+    </div>
   </div>
 
   <script type="application/json" id="days-data">{{ daysJson | safe }}</script>
@@ -225,7 +235,7 @@
             if (daysData[i].iso === iso) { dayData = daysData[i]; break; }
           }
           if (dayData && dayData.hasSlots) {
-            weekDays.push({ data: dayData, heading: fmtDayHeading(date) });
+            weekDays.push({ data: dayData, heading: fmtDayHeading(date), dayName: DAYS_LONG[date.getDay()] });
           }
         }
 
@@ -237,6 +247,32 @@
       }
 
       var current = 0;
+      var activeFilters = { days: [], times: [] };
+
+      function parseHour(timeStr) {
+        var m = (timeStr || '').match(/(\d+):(\d+)\s*(am|pm)/i);
+        if (!m) return 0;
+        var h = parseInt(m[1]);
+        var p = m[3].toLowerCase();
+        if (p === 'pm' && h !== 12) h += 12;
+        if (p === 'am' && h === 12) h = 0;
+        return h;
+      }
+
+      function filterSlots(slots) {
+        if (!activeFilters.times.length) return slots;
+        return slots.filter(function(slot) {
+          var h = parseHour(slot.start);
+          return activeFilters.times.some(function(f) {
+            if (f === 'before9') return h < 9;
+            if (f === 'morning') return h >= 9 && h < 12;
+            if (f === 'early-afternoon') return h >= 12 && h < 14;
+            if (f === 'late-afternoon') return h >= 14 && h < 17;
+            if (f === 'evening') return h >= 17;
+            return false;
+          });
+        });
+      }
 
       function slotHref(dayData, slot) {
         return '/pages/your-health/check?clinic=' + clinicId +
@@ -267,18 +303,29 @@
         document.getElementById('prev-week').disabled = wi === 0;
         document.getElementById('next-week').disabled = wi === 7;
 
+        var filteredDays = week.days.filter(function(day) {
+          if (activeFilters.days.length && activeFilters.days.indexOf(day.dayName) === -1) return false;
+          var m = filterSlots(day.data.morning);
+          var a = filterSlots(day.data.afternoon);
+          var e = filterSlots(day.data.evening);
+          return m.length || a.length || e.length;
+        });
+
         var html = '';
-        if (!week.days.length) {
-          html = '<p class="no-days-msg">No availability this week.</p>';
+        if (!filteredDays.length) {
+          html = '<p class="no-days-msg">No availability matching your filters this week.</p>';
         } else {
-          for (var i = 0; i < week.days.length; i++) {
-            var day = week.days[i];
-            var isLast = i === week.days.length - 1;
+          for (var i = 0; i < filteredDays.length; i++) {
+            var day = filteredDays[i];
+            var isLast = i === filteredDays.length - 1;
+            var morning = filterSlots(day.data.morning);
+            var afternoon = filterSlots(day.data.afternoon);
+            var evening = filterSlots(day.data.evening);
             html += '<div class="day-section">';
             html += '<h2 class="day-heading">' + day.heading + '</h2>';
-            html += renderPeriod('Morning', day.data.morning, day.data);
-            html += renderPeriod('Afternoon', day.data.afternoon, day.data);
-            html += renderPeriod('Evening', day.data.evening, day.data);
+            html += renderPeriod('Morning', morning, day.data);
+            html += renderPeriod('Afternoon', afternoon, day.data);
+            html += renderPeriod('Evening', evening, day.data);
             if (!isLast) html += '<hr class="day-divider">';
             html += '</div>';
           }
@@ -292,6 +339,28 @@
       });
       document.getElementById('next-week').addEventListener('click', function () {
         if (current < 7) { current++; render(current); }
+      });
+
+      // Filter overlay
+      var overlay = document.getElementById('filter-overlay');
+      var badge = document.getElementById('filter-badge');
+
+      document.getElementById('filter-btn').addEventListener('click', function () {
+        overlay.classList.add('is-open');
+      });
+      document.getElementById('filter-close-btn').addEventListener('click', function () {
+        overlay.classList.remove('is-open');
+      });
+      document.getElementById('filter-apply-btn').addEventListener('click', function () {
+        activeFilters.days = Array.from(document.querySelectorAll('.filter-day:checked')).map(function(cb) { return cb.value; });
+        activeFilters.times = Array.from(document.querySelectorAll('.filter-time:checked')).map(function(cb) { return cb.value; });
+        overlay.classList.remove('is-open');
+        var count = activeFilters.days.length + activeFilters.times.length;
+        if (badge) {
+          badge.textContent = count;
+          badge.className = 'filter-badge' + (count > 0 ? ' is-visible' : '');
+        }
+        render(current);
       });
 
       render(0);
