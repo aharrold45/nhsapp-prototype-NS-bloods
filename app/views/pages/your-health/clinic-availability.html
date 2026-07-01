@@ -20,34 +20,70 @@
     .clinic-availability .ca-cqc-dot--outstanding { background:#330072; }
     .clinic-availability .ca-cqc-dot--inadequate { background:#d5281b; }
 
-    /* Date picker */
-    .ca-picker-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px; }
-    .ca-picker-head h2 { margin:0; }
-    .ca-picker { display:flex; align-items:stretch; gap:4px; }
-    .ca-picker-chev { flex:0 0 auto; background:none; border:none; font-size:28px; line-height:1; color:#212b32; padding:0 4px; cursor:pointer; }
-    .ca-picker-chev:disabled { color:#aeb7bd; cursor:default; }
-    .ca-picker-days { display:flex; gap:8px; overflow-x:auto; scroll-behavior:smooth; padding:4px 2px; -webkit-overflow-scrolling:touch; }
-    .ca-picker-days::-webkit-scrollbar { display:none; }
-    .day-chip { flex:0 0 auto; min-width:56px; border:1px solid #d8dde0; border-radius:8px; background:#fff; padding:8px 6px; text-align:center; cursor:pointer; font-family:inherit; }
-    .day-chip .day-chip__weekday { display:block; font-size:14px; color:#425563; }
-    .day-chip .day-chip__day { display:block; font-size:20px; font-weight:700; color:#212b32; }
-    .day-chip[aria-pressed="true"] { background:var(--ca-blue); border-color:var(--ca-blue); }
-    .day-chip[aria-pressed="true"] .day-chip__weekday,
-    .day-chip[aria-pressed="true"] .day-chip__day { color:#fff; }
-
-    /* Time slots */
-    .ca-times-note { color:#425563; margin:16px 0; }
-    .ca-period { margin-bottom:24px; }
-    .ca-period h3 { margin:16px 0 0 0; }
-    .ca-slots-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; margin-top:16px; }
+    /* Week navigation */
+    .week-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .week-nav-btn {
+      background: none;
+      border: none;
+      font-size: 36px;
+      color: #212b32;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      flex: 0 0 auto;
+      width: 36px;
+    }
+    .week-nav-btn:disabled { color: #b1b4b6; cursor: default; }
+    .week-nav-center { flex: 1; text-align: center; }
+    .week-month { font-size: 22px; font-weight: 700; color: #212b32; margin: 0 0 2px; }
+    .week-range { font-size: 17px; font-weight: 700; color: #212b32; margin: 0 0 4px; }
+    .week-counter { font-size: 14px; color: #005eb8; margin: 0; }
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f0f4f5;
+      padding: 14px 16px;
+      margin: 0 -16px 8px;
+      color: #005eb8;
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      width: calc(100% + 32px);
+      text-align: left;
+    }
+    .filter-bar:hover { background: #e8edee; }
+    .day-heading {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 20px 0 12px;
+      color: #212b32;
+    }
+    .period-label { font-size: 16px; color: #212b32; margin: 0 0 8px; }
+    .slots-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+    .slot-btn {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      background: #fff;
+      border: 2px solid #0b5a3b;
+      color: #0b5a3b;
+      padding: 12px 4px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .slot-btn:hover { background: #f0fff4; }
+    .day-divider { border: none; border-top: 1px solid #d8dde0; margin: 4px 0 0; }
+    .no-days-msg { color: #4c6272; text-align: center; padding: 40px 0; font-style: italic; }
     .ca-slot-button { display:block; text-align:center; text-decoration:none; background:#fff; border:2px solid #0b5a3b; color:#0b5a3b; padding:12px 18px; border-radius:8px; font-weight:700; font-size:16px; }
-    .ca-slot-button:active { transform:translateY(1px); }
-    .ca-no-slots { color:#425563; padding:14px 0; }
     .ca-walk-in-select { display:inline-block; margin-top:16px; }
-
-    /* Order a kit card */
-    .ca-kit-card { display:flex; justify-content:space-between; align-items:center; gap:12px; width:100%; text-align:left; background:#fff; border:1px solid #d8dde0; border-radius:8px; padding:16px; margin:8px 0 0 0; font-weight:700; font-size:18px; color:var(--ca-blue); text-decoration:none; }
-    .ca-kit-card__chev { font-size:24px; color:#425563; }
   </style>
 
   <div class="clinic-availability">
@@ -90,152 +126,176 @@
 
     {% if clinic.type == 'walk-in' %}
 
-    <h2 class="nhsuk-heading-m">Availability</h2>
-    <p class="nhsuk-body">{{ clinic.durationDesc }}</p>
-    {% if clinic.busyPeriods %}
-      <p class="nhsuk-body">{{ clinic.busyPeriods }}</p>
-    {% endif %}
-    <a class="ca-slot-button ca-walk-in-select" href="/pages/your-health/check?clinic={{ clinic.id | urlencode }}&postcode={{ postcode | urlencode }}&date={{ 'Walk in' | urlencode }}&time={{ 'Walk in' | urlencode }}">Select walk in</a>
+      <h2 class="nhsuk-heading-m">Availability</h2>
+      <p class="nhsuk-body">{{ clinic.durationDesc }}</p>
+      {% if clinic.busyPeriods %}
+        <p class="nhsuk-body">{{ clinic.busyPeriods }}</p>
+      {% endif %}
+      <a class="ca-slot-button ca-walk-in-select" href="/pages/your-health/check?clinic={{ clinic.id | urlencode }}&postcode={{ postcode | urlencode }}&date={{ 'Walk in' | urlencode }}&time={{ 'Walk in' | urlencode }}">Select walk in</a>
 
     {% else %}
 
-    <div class="ca-picker-head">
-      <h2 class="nhsuk-heading-m" id="ca-month-label">{{ days[0].monthYear if days.length }}</h2>
-      <a class="nhsuk-link" href="#">View calendar</a>
-    </div>
-
-    <div class="ca-picker">
-      <button type="button" class="ca-picker-chev" id="ca-prev" aria-label="Previous day">&lsaquo;</button>
-      <div class="ca-picker-days" id="ca-days">
-        {% for day in days %}
-          <button type="button" class="day-chip" data-day-index="{{ day.index }}" data-month-year="{{ day.monthYear }}" aria-pressed="{{ 'true' if loop.first else 'false' }}">
-            <span class="day-chip__weekday">{{ day.weekday }}</span>
-            <span class="day-chip__day">{{ day.day }}</span>
-          </button>
-        {% endfor %}
-      </div>
-      <button type="button" class="ca-picker-chev" id="ca-next" aria-label="Next day">&rsaquo;</button>
-    </div>
-
-    <p class="ca-times-note">Times shown are expected start and finish.</p>
-
-    <div id="ca-panels">
-      {% for day in days %}
-        <div class="ca-day-panel" data-day-index="{{ day.index }}" {% if not loop.first %}hidden{% endif %}>
-          {% if not day.hasSlots %}
-            <p class="ca-no-slots">No appointments available on this day.</p>
-          {% else %}
-            {% set periods = [
-              { name: 'Morning', slots: day.morning },
-              { name: 'Afternoon', slots: day.afternoon },
-              { name: 'Evening', slots: day.evening }
-            ] %}
-            {% for period in periods %}
-              {% if period.slots.length %}
-                <div class="ca-period">
-                  <h3 class="nhsuk-heading-s">{{ period.name }}</h3>
-                  <div class="ca-slots-grid">
-                    {% for slot in period.slots %}
-                      <a class="ca-slot-button" href="/pages/your-health/check?clinic={{ clinic.id | urlencode }}&postcode={{ postcode | urlencode }}&date={{ day.dateLabel | urlencode }}&time={{ slot.start | urlencode }}" aria-label="Select {{ slot.label }}">{{ slot.start }}</a>
-                    {% endfor %}
-                  </div>
-                </div>
-              {% endif %}
-            {% endfor %}
-          {% endif %}
+      <!-- Week navigation -->
+      <div class="week-nav">
+        <button class="week-nav-btn" id="prev-week" aria-label="Previous week" disabled>&#8249;</button>
+        <div class="week-nav-center">
+          <p class="week-month" id="week-month"></p>
+          <p class="week-range" id="week-range-label"></p>
+          <p class="week-counter" id="week-counter"></p>
         </div>
-      {% endfor %}
-    </div>
+        <button class="week-nav-btn" id="next-week" aria-label="Next week">&#8250;</button>
+      </div>
 
-    <h2 class="nhsuk-heading-s nhsuk-u-margin-top-6">Can't see a time suitable?</h2>
-    <a class="ca-kit-card" href="#">
-      <span>Order a home testing kit</span>
-      <span class="ca-kit-card__chev" aria-hidden="true">&rsaquo;</span>
-    </a>
+      <p class="nhsuk-body" style="margin-bottom:16px">Times shown are expected start times. Please leave an hour for your appointments.</p>
+
+      <button class="filter-bar" id="filter-btn" aria-label="Filter availability">
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <line x1="0" y1="1" x2="18" y2="1" stroke="currentColor" stroke-width="2"/>
+          <line x1="3" y1="7" x2="15" y2="7" stroke="currentColor" stroke-width="2"/>
+          <line x1="6" y1="13" x2="12" y2="13" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        Filter
+      </button>
+
+      <div id="days-container"></div>
 
     {% endif %}
 
-    <hr class="ca-section-break" />
-
-    <h2 class="nhsuk-heading-s">Help and support</h2>
-    <p class="nhsuk-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-    <p class="nhsuk-body"><strong>0800 123 456</strong><br>9am to 5pm Monday to Friday</p>
-
-    <hr class="ca-section-break" />
-
-    <details class="nhsuk-details">
-      <summary class="nhsuk-details__summary">
-        <span class="nhsuk-details__summary-text">About [name of test]</span>
-      </summary>
-      <div class="nhsuk-details__text">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      </div>
-    </details>
-
-    <details class="nhsuk-details">
-      <summary class="nhsuk-details__summary">
-        <span class="nhsuk-details__summary-text">An FAQ about test</span>
-      </summary>
-      <div class="nhsuk-details__text">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-      </div>
-    </details>
-
   </div>
 
-{% endblock %}
+  <script type="application/json" id="days-data">{{ daysJson | safe }}</script>
+  <script type="application/json" id="clinic-meta">{"clinicId":"{{ clinic.id | urlencode }}","postcode":"{{ postcode | urlencode }}"}</script>
 
-{% block pageScripts %}
   <script>
     (function () {
-      var daysEl = document.getElementById('ca-days');
-      if (!daysEl) return;
-      var chips = Array.prototype.slice.call(daysEl.querySelectorAll('.day-chip'));
-      var panels = Array.prototype.slice.call(document.querySelectorAll('.ca-day-panel'));
-      var monthLabel = document.getElementById('ca-month-label');
-      var prevBtn = document.getElementById('ca-prev');
-      var nextBtn = document.getElementById('ca-next');
-      if (!chips.length) return;
+      var el = document.getElementById('days-data');
+      if (!el) return;
+      var daysData = JSON.parse(el.textContent);
+      var meta = JSON.parse(document.getElementById('clinic-meta').textContent);
+      var clinicId = meta.clinicId;
+      var postcode = meta.postcode;
+
+      var TODAY = new Date();
+      TODAY.setHours(0, 0, 0, 0);
+
+      var MONTHS_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      var MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      var DAYS_LONG = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+      function ordinal(n) {
+        var s = ['th','st','nd','rd'], v = n % 100;
+        return n + (s[(v - 20) % 10] || s[v] || s[0]);
+      }
+      function isoDate(d) { return d.toISOString().split('T')[0]; }
+      function fmtWeekRange(mon, sun) {
+        return ordinal(mon.getDate()) + ' ' + MONTHS_SHORT[mon.getMonth()] + ' – ' + ordinal(sun.getDate()) + ' ' + MONTHS_SHORT[sun.getMonth()];
+      }
+      function fmtMonthYear(mon, sun) {
+        if (mon.getMonth() === sun.getMonth()) return MONTHS_LONG[mon.getMonth()] + ' ' + mon.getFullYear();
+        return MONTHS_LONG[mon.getMonth()] + ' / ' + MONTHS_LONG[sun.getMonth()] + ' ' + sun.getFullYear();
+      }
+      function fmtDayHeading(date) {
+        return DAYS_LONG[date.getDay()] + ' ' + ordinal(date.getDate()) + ' ' + MONTHS_LONG[date.getMonth()];
+      }
+      function getMondayOf(date) {
+        var d = new Date(date);
+        var dow = d.getDay();
+        d.setDate(d.getDate() + (dow === 0 ? -6 : 1 - dow));
+        d.setHours(0, 0, 0, 0);
+        return d;
+      }
+
+      var weekStart = getMondayOf(TODAY);
+      var weeks = [];
+
+      for (var w = 0; w < 8; w++) {
+        var monDate = new Date(weekStart);
+        monDate.setDate(weekStart.getDate() + w * 7);
+        var sunDate = new Date(monDate);
+        sunDate.setDate(monDate.getDate() + 6);
+
+        var weekDays = [];
+        for (var d = 0; d < 7; d++) {
+          var date = new Date(monDate);
+          date.setDate(monDate.getDate() + d);
+          if (date < TODAY) continue;
+          var iso = isoDate(date);
+          var dayData = null;
+          for (var i = 0; i < daysData.length; i++) {
+            if (daysData[i].iso === iso) { dayData = daysData[i]; break; }
+          }
+          if (dayData && dayData.hasSlots) {
+            weekDays.push({ data: dayData, heading: fmtDayHeading(date) });
+          }
+        }
+
+        weeks.push({
+          days: weekDays,
+          range: fmtWeekRange(monDate, sunDate),
+          monthLabel: fmtMonthYear(monDate, sunDate)
+        });
+      }
 
       var current = 0;
 
-      function select(i) {
-        if (i < 0) i = 0;
-        if (i > chips.length - 1) i = chips.length - 1;
-        current = i;
-        chips.forEach(function (chip, idx) {
-          chip.setAttribute('aria-pressed', idx === i ? 'true' : 'false');
-        });
-        panels.forEach(function (panel, idx) {
-          if (idx === i) panel.removeAttribute('hidden');
-          else panel.setAttribute('hidden', '');
-        });
-        if (monthLabel) monthLabel.textContent = chips[i].getAttribute('data-month-year');
-        chips[i].scrollIntoView({ block: 'nearest', inline: 'center' });
-        if (prevBtn) prevBtn.disabled = i === 0;
-        if (nextBtn) nextBtn.disabled = i === chips.length - 1;
+      function slotHref(dayData, slot) {
+        return '/pages/your-health/check?clinic=' + clinicId +
+          '&postcode=' + postcode +
+          '&date=' + encodeURIComponent(dayData.dateLabel) +
+          '&time=' + encodeURIComponent(slot.start);
       }
 
-      chips.forEach(function (chip, idx) {
-        chip.addEventListener('click', function () { select(idx); });
+      function renderPeriod(label, slots, dayData) {
+        var html = '<p class="period-label">' + label + '</p>';
+        if (!slots || !slots.length) {
+          html += '<p style="color:#4c6272; font-size:14px; margin:0 0 16px">None available</p>';
+        } else {
+          html += '<div class="slots-grid">';
+          for (var i = 0; i < slots.length; i++) {
+            html += '<a class="slot-btn" href="' + slotHref(dayData, slots[i]) + '">' + slots[i].start + '</a>';
+          }
+          html += '</div>';
+        }
+        return html;
+      }
+
+      function render(wi) {
+        var week = weeks[wi];
+        document.getElementById('week-month').textContent = week.monthLabel;
+        document.getElementById('week-range-label').textContent = week.range;
+        document.getElementById('week-counter').textContent = 'Week ' + (wi + 1) + ' of 8';
+        document.getElementById('prev-week').disabled = wi === 0;
+        document.getElementById('next-week').disabled = wi === 7;
+
+        var html = '';
+        if (!week.days.length) {
+          html = '<p class="no-days-msg">No availability this week.</p>';
+        } else {
+          for (var i = 0; i < week.days.length; i++) {
+            var day = week.days[i];
+            var isLast = i === week.days.length - 1;
+            html += '<div class="day-section">';
+            html += '<h2 class="day-heading">' + day.heading + '</h2>';
+            html += renderPeriod('Morning', day.data.morning, day.data);
+            html += renderPeriod('Afternoon', day.data.afternoon, day.data);
+            html += renderPeriod('Evening', day.data.evening, day.data);
+            if (!isLast) html += '<hr class="day-divider">';
+            html += '</div>';
+          }
+        }
+
+        document.getElementById('days-container').innerHTML = html;
+      }
+
+      document.getElementById('prev-week').addEventListener('click', function () {
+        if (current > 0) { current--; render(current); }
       });
-      if (prevBtn) prevBtn.addEventListener('click', function () { select(current - 1); });
-      if (nextBtn) nextBtn.addEventListener('click', function () { select(current + 1); });
+      document.getElementById('next-week').addEventListener('click', function () {
+        if (current < 7) { current++; render(current); }
+      });
 
-      // Swipe left/right on the panels area to change day
-      var panelsEl = document.getElementById('ca-panels');
-      if (panelsEl) {
-        var startX = null;
-        panelsEl.addEventListener('touchstart', function (e) { startX = e.changedTouches[0].clientX; }, { passive: true });
-        panelsEl.addEventListener('touchend', function (e) {
-          if (startX === null) return;
-          var dx = e.changedTouches[0].clientX - startX;
-          if (Math.abs(dx) > 40) select(dx < 0 ? current + 1 : current - 1);
-          startX = null;
-        }, { passive: true });
-      }
-
-      select(0);
+      render(0);
     })();
   </script>
+
 {% endblock %}

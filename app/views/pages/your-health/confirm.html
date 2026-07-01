@@ -46,6 +46,10 @@
 
       <h2 class="nhsuk-heading-m">Appointment details</h2>
       <dl class="nhsuk-summary-list">
+        <div class="nhsuk-summary-list__row">
+          <dt class="nhsuk-summary-list__key">Type</dt>
+          <dd class="nhsuk-summary-list__value">Blood test</dd>
+        </div>
         {% if clinic.type == 'walk-in' %}
         <div class="nhsuk-summary-list__row">
           <dt class="nhsuk-summary-list__key">Appointment type</dt>
@@ -104,14 +108,16 @@
           {
             href: "#",
             aboveContent: { html: '<strong class="nhsuk-tag nhsuk-tag--red">Book as soon as possible</strong>' },
-            title: "Book [name of test] ASAP",
-            description: "Some context for the test and why its important."
+            title: "Please book a faecal immunochemical test as soon as possible",
+            description: "
+                Because of some of the symptoms you have discussed with your GP a faecal immunochemical test is required to assess you Iron deficiency anaemia.
+              ."
           },
           {
             href: "#",
             aboveContent: { html: '<strong class="nhsuk-tag nhsuk-tag--red">Actions required</strong>' },
             title: "Monday 11th May 2026",
-            descriptionHtml: '<p class="nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-2"><strong>6:00 pm - 6:30 pm</strong></p><p class="nhsuk-u-margin-bottom-1">[Name of the test]</p><p class="nhsuk-u-margin-bottom-0">Greenwich Health Centre</p>'
+            descriptionHtml: '<p class="nhsuk-u-margin-top-2 nhsuk-u-margin-bottom-2"><strong>6:00 pm - 6:30 pm</strong></p><p class="nhsuk-u-margin-bottom-1">Blood test</p><p class="nhsuk-u-margin-bottom-0">Greenwich Health Centre</p>'
           }
         ]
       }) }}
@@ -120,7 +126,7 @@
 
       <details class="nhsuk-details">
         <summary class="nhsuk-details__summary">
-          <span class="nhsuk-details__summary-text">About [name of test]</span>
+          <span class="nhsuk-details__summary-text">About blood test</span>
         </summary>
         <div class="nhsuk-details__text">
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>

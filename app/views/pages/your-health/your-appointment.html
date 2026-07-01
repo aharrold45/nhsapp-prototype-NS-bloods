@@ -4,7 +4,7 @@
 
 {% set backLink = true %}
 
-{% set pageHeading = "Your [name of the test] appointment" %}
+{% set pageHeading = "Your Blood test appointment" %}
 
 {% block content %}
 
@@ -23,7 +23,7 @@
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-full">
 
-      <h1 class="nhsapp-page-heading nhsuk-heading-l">Your [name of the test] appointment</h1>
+      <h1 class="nhsapp-page-heading nhsuk-heading-l">Your Blood test appointment</h1>
 
       <a class="add-to-calendar" href="#">
         {{ nhsappIcon('calendar') }}
@@ -39,6 +39,9 @@
         </h2>
         <p>You have more appointments to book. Please see below.</p>
       </div>
+
+      <h2 class="nhsuk-heading-s">Type</h2>
+      <p class="nhsuk-body">Blood test</p>
 
       <dl class="nhsuk-summary-list">
         {% if clinic.type == 'walk-in' %}
@@ -93,7 +96,7 @@
           {
             href: "#",
             aboveContent: { html: '<strong class="nhsuk-tag nhsuk-tag--red">Not submitted</strong>' },
-            title: "Request for [name of a document] upload",
+            title: "Request for document upload",
             descriptionHtml: '<p class="nhsuk-u-secondary-text-color nhsuk-u-margin-bottom-0">Received 30th April 2026</p>'
           },
           {
@@ -134,7 +137,7 @@
 
       <details class="nhsuk-details">
         <summary class="nhsuk-details__summary">
-          <span class="nhsuk-details__summary-text">About [name of test]</span>
+          <span class="nhsuk-details__summary-text">About blood test</span>
         </summary>
         <div class="nhsuk-details__text">
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>

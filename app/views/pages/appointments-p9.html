@@ -2,6 +2,9 @@
 
 {% set hub = "Appointments" %}
 
+{% set backLink = true %}
+{% set backLinkURL = "/" %}
+
 {% set pageHeading = "Appointments" %}
 
 {% block content %}
@@ -12,10 +15,13 @@
       <!-- Page title -->
       <h1 class="app-dynamic-page-title__heading nhsuk-heading-l">Appointments</h1>
 
+      
+
+
       <!-- GP Surgery -->
       {{ nhsappCardGroup({
         stacked: true,
-        headingHtml: '<h2 class="nhsuk-heading-m nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-0">GP Surgery</h2>',
+        headingHtml: '<h2 class="nhsuk-heading-m nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-20">GP Surgery</h2>',
         cards: [
           { title: 'Book an appointment', href: '/pages/appointments/book' },
           { title: 'Manage GP appointments', href: '/pages/appointments/manage-gp-appointments' },
@@ -27,7 +33,7 @@
       <!-- Hospital -->
       {{ nhsappCardGroup({
         stacked: true,
-        headingHtml: '<h2 class="nhsuk-heading-m nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-0">Hospital</h2>',
+        headingHtml: '<h2 class="nhsuk-heading-m nhsuk-u-margin-top-6 nhsuk-u-margin-bottom-20">Hospital</h2>',
         cards: [
           { title: 'Hospital and specialist appointments', href: '/pages/hospital-and-specialist-appointments', badgeLarge: { count: 1, label: 'notifications' } },
           { title: 'Referrals', href: '/pages/your-health/referrals' },

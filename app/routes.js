@@ -88,11 +88,12 @@ router.get('/pages/your-health/clinic-availability', (req, res) => {
 
 	const clinicIds = postcodeMap[key] || postcodeMap['DEFAULT'] || [];
 	const isClosest = clinicIds[0] === clinicId;
-	const days = availability.generateFullAvailability(key, clinicId, clinic.openingHours, 14, isClosest);
+	const days = availability.generateFullAvailability(key, clinicId, clinic.openingHours, 56, isClosest);
 
 	res.render('pages/your-health/clinic-availability', {
 		clinic,
 		days,
+		daysJson: JSON.stringify(days),
 		postcode: req.query.postcode || ''
 	});
 });

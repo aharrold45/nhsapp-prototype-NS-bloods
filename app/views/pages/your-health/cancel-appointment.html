@@ -30,9 +30,9 @@
 
       <h2 class="nhsuk-heading-m">Current appointment details</h2>
       {% if clinic.type == 'walk-in' %}
-        <p class="nhsuk-body">[Name of test], walk in at {{ clinic.name }}.</p>
+        <p class="nhsuk-body">blood test, walk in at {{ clinic.name }}.</p>
       {% else %}
-        <p class="nhsuk-body">[Name of test], {{ date }}, {{ time }} at {{ clinic.name }}.</p>
+        <p class="nhsuk-body">blood test, {{ date }}, {{ time }} at {{ clinic.name }}.</p>
       {% endif %}
 
       <hr class="nhsuk-section-break nhsuk-section-break--visible nhsuk-section-break--m">

@@ -3,6 +3,7 @@
 {% set hub = "Your health" %}
 
 {% set backLink = true %}
+{% set backLinkURL = "/pages/appointments-p9" %}
 
 {% set pageHeading = "Hospital and specialist appointments" %}
 
@@ -12,7 +13,12 @@
     <div class="nhsuk-grid-column-full">
 
       <!-- Page title -->
-      <h1 class="app-dynamic-page-title__heading nhsuk-heading-l">Hospital and specialist appointments</h1><BR>
+      <h1 class="app-dynamic-page-title__heading nhsuk-heading-l">Hospital and specialist appointments</h1>
+      <p>View and manage your upcoming and past hospital appointments.</p>
+
+      {{ insetText({
+        html: "Not all appointments may show in the NHS App. If you cannot find what you need, contact your healthcare provider."
+      }) }}
 
       <!-- Actions required -->
       <div class="nhsapp-section-heading">
@@ -36,11 +42,11 @@
                 class="nhsapp-card__link nhsuk-link--no-visited-state nhsuk-u-font-size-22"
                 aria-label="Action needed: Book test"
               >
-                Arrange (name of test) ASAP
+                Please arrange a blood test in the next few days
               </a>
 
               <p aria-hidden="true" class="nhsuk-u-margin-bottom-3">
-                Some context for the test and why its important.
+                Because of some of the symptoms you have discussed with your GP a blood test is required to assess you for Iron deficiency anaemia.
               </p>
             </div>
 
@@ -67,7 +73,7 @@
                 class="nhsapp-card__link nhsuk-link--no-visited-state nhsuk-u-font-size-22"
                 aria-label="Action needed: Action needed booked"
               >
-                xxx appointment
+                Cholesterol test
               </a>
 
 
@@ -108,7 +114,7 @@
                 href="/pages/your-health/your-appointment?clinic={{ data.bookedAppointment.clinicId | urlencode }}&postcode={{ data.bookedAppointment.postcode | urlencode }}&date={{ data.bookedAppointment.date | urlencode }}&time={{ data.bookedAppointment.time | urlencode }}"
                 class="nhsapp-card__link nhsuk-link--no-visited-state nhsuk-u-font-size-22"
               >
-                [name of the test] appointment
+                Blood test appointment
               </a>
 
               {% if data.bookedAppointment.walkIn %}
@@ -151,7 +157,7 @@
                 class="nhsapp-card__link nhsuk-link--no-visited-state nhsuk-u-font-size-22"
                 aria-label="Action needed: Booked"
               >
-                xx appointment
+                Cholesterol test
               </a>
 
 
@@ -193,7 +199,7 @@
                 href="#"
                 class="nhsapp-card__link nhsuk-link--no-visited-state nhsuk-u-font-size-22"
               >
-                [name of the test] appointment
+                Blood test appointment
               </a>
 
               {% if data.cancelledAppointment.walkIn %}
@@ -236,7 +242,7 @@
                 class="nhsapp-card__link nhsuk-link--no-visited-state nhsuk-u-font-size-22"
                 aria-label="Results received: Past appointment"
               >
-                xx appointment
+                Liver Function Tests
               </a>
 
 
