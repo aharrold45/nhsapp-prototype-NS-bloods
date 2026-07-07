@@ -5,66 +5,68 @@
 {% set backLink = true %}
 {% set backLinkURL = "/pages/hospital-and-specialist-appointments" %}
 
-{% set pageHeading = "Arrange blood test" %}
+{% set pageHeading = "Arrange a blood test" %}
 
 {% block content %}
 
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-full">
 
-      <h1 class="app-dynamic-page-title__heading nhsuk-heading-l">Arrange Blood test</h1>
+      <h1 class="app-dynamic-page-title__heading nhsuk-heading-l">Arrange a blood test</h1>
 
-      {{ card({ heading: "Home kits", headingClasses: "nhsuk-heading-m", feature: true, descriptionHtml: "<p class='nhsuk-body'>Home kits are the most convenient and often the quickest way to get your results.</p>" }) }}
-
-      <dl class="nhsuk-summary-list">
-        <div class="nhsuk-summary-list__row">
-          <dt class="nhsuk-summary-list__key">Requested by</dt>
-          <dd class="nhsuk-summary-list__value">NHS Online</dd>
-        </div>
-        <div class="nhsuk-summary-list__row">
-          <dt class="nhsuk-summary-list__key">Requested on</dt>
-          <dd class="nhsuk-summary-list__value">6 April 2026</dd>
-        </div>
-      </dl>
+      <p class="nhsuk-body-s nhsuk-u-secondary-text-color nhsuk-u-margin-bottom-4">
+        Requested by: NHS Online<br>
+        Requested on: 6 April 2026
+      </p>
 
       <p>Because of some of the symptoms you have discussed with your GP a blood test is required to assess you for Iron deficiency anaemia.</p>
-      <ul class="nhsapp-cards">
-        <li class="nhsapp-card">
-          <div class="nhsapp-card__container">
-            <div class="nhsapp-card__content">
-              <a class="nhsapp-card__link nhsuk-link--no-visited-state nhsuk-u-font-size-22" href="/pages/your-health/view-availability" aria-label="Book with a clinic">Book with a clinic</a>
-            </div>
-            {{ nhsappIcon('chevronRight') }}
-          </div>
-        </li>
+      <div style="height: 10px;"></div>
 
-        <li class="nhsapp-card">
-          <div class="nhsapp-card__container">
-            <div class="nhsapp-card__content">
-              <a class="nhsapp-card__link nhsuk-link--no-visited-state nhsuk-u-font-size-22" href="#" aria-label="Order Home test kit">Order Home test kit</a>
+      <form action="/pages/your-health/arrange-test" method="post">
+        <div class="nhsuk-form-group">
+          <fieldset class="nhsuk-fieldset">
+            <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+              <h2 class="nhsuk-fieldset__heading">Choose test type</h2>
+            </legend>
+            <div class="nhsuk-radios">
+              <div class="nhsuk-radios__item">
+                <input class="nhsuk-radios__input" id="test-type" name="test-type" type="radio" value="clinic" {% if data['test-type'] != 'home' %}checked{% endif %}>
+                <label class="nhsuk-label nhsuk-radios__label" for="test-type">Book with a clinic</label>
+                <div class="nhsuk-hint nhsuk-radios__hint">Search for available clinics in your area</div>
+              </div>
+              <div class="nhsuk-radios__item">
+                <input class="nhsuk-radios__input" id="test-type-2" name="test-type" type="radio" value="home" {% if data['test-type'] == 'home' %}checked{% endif %}>
+                <label class="nhsuk-label nhsuk-radios__label" for="test-type-2">Order a home test</label>
+                <div class="nhsuk-hint nhsuk-radios__hint">Get a test kit conveniently delivered to an address of your choice<BR></div>
+              </div>
             </div>
-            {{ nhsappIcon('chevronRight') }}
-          </div>
-        </li>
-      </ul>
-  
-      <h2 class="nhsuk-heading-m">What do i need to do to prepare?</h2>
-      <p>There is no required preparation (e.g., fasting) for an NHS full blood count and iron test.</p><BR>
-      
+          </fieldset>
+        </div>
+
+        <button class="nhsuk-button nhsuk-u-margin-bottom-0" type="submit" style="width: 100%">Start</button>
+        <div style="height: 10px;"></div>
+      </form>
+
+      <hr class="nhsuk-section-break nhsuk-section-break--m nhsuk-section-break--visible nhsuk-u-margin-top-6">
+      <div style="height: 10px;"></div>
+
+      <h2 class="nhsuk-heading-m">What do I need to do to prepare?</h2>
+      <p>There is no required preparation (e.g., fasting) for an NHS full blood count and iron test.</p>
+
       <h2 class="nhsuk-heading-m">What is this test about?</h2>
-      <p>The objective of the blood test to find out if the number of red blood cells you have is normal. This is called a full blood count (FBC) test, which also looks at other types of cells in your blood.</p><BR>
+      <p>The objective of the blood test to find out if the number of red blood cells you have is normal. This is called a full blood count (FBC) test, which also looks at other types of cells in your blood.</p>
 
       <h2 class="nhsuk-heading-m">What is Iron deficiency anaemia?</h2>
-      <p>Iron deficiency anaemia is caused by lack of iron, often because of blood loss or pregnancy. It's treated with iron tablets and by eating iron-rich foods. <a href="https://www.nhs.uk/conditions/iron-deficiency-anaemia/" class="nhsuk-link">Read more about Iron deficiency anaemia</a>.</p><BR>
+      <p>Iron deficiency anaemia is caused by lack of iron, often because of blood loss or pregnancy. It's treated with iron tablets and by eating iron-rich foods. <a href="https://www.nhs.uk/conditions/iron-deficiency-anaemia/" class="nhsuk-link">Read more about Iron deficiency anaemia</a>.</p>
 
-      <h2 class="nhsuk-heading-m">What If I'm worried about needles?</h2>
-      <p>Tell the healthcare professional doing your blood test if you're worried about needles. They can help you feel more comfortable during the test. You can also bring someone with you to the blood test to support you.</p><BR>
+      <h2 class="nhsuk-heading-m">What if I'm worried about needles?</h2>
+      <p>Tell the healthcare professional doing your blood test if you're worried about needles. They can help you feel more comfortable during the test. You can also bring someone with you to the blood test to support you.</p>
 
       <h2 class="nhsuk-heading-m">Can I book this test over the phone?</h2>
-      <p>The easisest way to book and mange a test is through this app but if you'd prefer to speak to some call:</p>
+      <p>The easiest way to book and manage a test is through this app but if you'd prefer to speak to someone call:</p>
 
       <p>
-        <a class="nhsuk-link nhsuk-link--no-visited-state nhsuk-heading-m" href="tel:0800123456">0800 123 456</a>
+        <a class="nhsuk-link nhsuk-link--no-visited-state nhsuk-heading-m" href="tel:0800123456">0800 123 456</a><br>
         <span class="nhsuk-body-m">9:00am - 5:00pm Monday to Friday</span>
       </p>
 

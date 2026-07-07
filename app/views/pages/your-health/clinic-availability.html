@@ -9,169 +9,87 @@
 {% block content %}
 
   <style>
-    .clinic-availability { --ca-blue:#005eb8; --ca-green:#007f3b; }
-    .clinic-availability .ca-section-break { border:0; border-top:1px solid #d8dde0; margin:20px 0; }
-    .clinic-availability .ca-meta-label { font-weight:700; margin:0 0 4px 0; }
-    .clinic-availability .ca-address { margin:0 0 8px 0; }
-    .clinic-availability .ca-cqc-rating { display:flex; align-items:center; gap:10px; margin:8px 0; }
-    .clinic-availability .ca-cqc-dot { width:18px; height:18px; border-radius:50%; flex:0 0 auto; }
-    .clinic-availability .ca-cqc-dot--good { background:#007f3b; }
-    .clinic-availability .ca-cqc-dot--improve { background:#ffb81c; }
-    .clinic-availability .ca-cqc-dot--outstanding { background:#330072; }
-    .clinic-availability .ca-cqc-dot--inadequate { background:#d5281b; }
+    .ca-section-break { border:0; border-top:1px solid #d8dde0; margin:20px 0; }
+    .ca-meta-label { font-weight:700; margin:0 0 4px 0; }
+    .ca-address { margin:0 0 8px 0; }
+    .ca-cqc-rating { display:flex; align-items:center; gap:10px; margin:8px 0; }
+    .ca-cqc-dot { width:18px; height:18px; border-radius:50%; flex:0 0 auto; }
+    .ca-cqc-dot--good { background:#007f3b; }
+    .ca-cqc-dot--improve { background:#ffb81c; }
+    .ca-cqc-dot--outstanding { background:#330072; }
+    .ca-cqc-dot--inadequate { background:#d5281b; }
 
-    /* Week navigation */
-    .week-nav { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
-    .week-nav-btn { background:none; border:none; font-size:36px; color:#212b32; cursor:pointer; padding:0; line-height:1; flex:0 0 auto; width:36px; }
-    .week-nav-btn:disabled { color:#b1b4b6; cursor:default; }
-    .week-nav-center { flex:1; text-align:center; }
-    .week-month { font-size:22px; font-weight:700; color:#212b32; margin:0 0 2px; }
-    .week-range { font-size:17px; font-weight:700; color:#212b32; margin:0 0 4px; }
-    .week-counter { font-size:14px; color:#005eb8; margin:0; }
-
-    .filter-row { display:flex; align-items:center; justify-content:space-between; background:#f0f4f5; margin:0 -16px 8px; padding:0 16px; }
-    .filter-row:hover { background:#e8edee; }
-    .filter-bar { display:flex; align-items:center; gap:10px; background:none; border:none; padding:14px 0; color:#005eb8; font-size:16px; font-weight:700; cursor:pointer; text-align:left; font-family:inherit; }
-    .clear-filters-btn { display:none; background:none; border:none; color:#005eb8; font-size:16px; cursor:pointer; text-decoration:underline; padding:14px 0; font-family:inherit; white-space:nowrap; }
-
-    .day-heading { font-size:20px; font-weight:700; margin:20px 0 12px; color:#212b32; }
-    .period-label { font-size:16px; color:#212b32; margin:0 0 8px; }
-    .slots-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; margin-bottom:16px; }
-    .slot-btn { display:block; text-align:center; text-decoration:none; background:#fff; border:2px solid #0b5a3b; color:#0b5a3b; padding:12px 4px; border-radius:4px; font-weight:700; font-size:14px; }
-    .slot-btn:hover { background:#f0fff4; }
-    .day-divider { border:none; border-top:1px solid #d8dde0; margin:4px 0 0; }
-    .no-days-msg { color:#4c6272; text-align:center; padding:40px 0; font-style:italic; }
-    .ca-slot-button { display:block; text-align:center; text-decoration:none; background:#fff; border:2px solid #0b5a3b; color:#0b5a3b; padding:12px 18px; border-radius:8px; font-weight:700; font-size:16px; }
-    .ca-walk-in-select { display:inline-block; margin-top:16px; }
-
-    /* Filter overlay */
-    .filter-overlay { display:none; position:fixed; inset:0; z-index:500; background:#f0f4f5; overflow-y:auto; padding:20px 16px 0; }
-    .filter-overlay.is-open { display:block; }
-    .filter-back-btn { display:flex; align-items:center; gap:8px; background:none; border:none; color:#005eb8; font-size:16px; cursor:pointer; padding:0; margin-bottom:28px; font-family:inherit; }
-    .filter-overlay h1 { font-size:26px; font-weight:700; margin:0 0 28px; color:#212b32; line-height:1.2; }
-    .filter-section-label { display:block; font-size:18px; font-weight:700; color:#212b32; margin-bottom:0; }
-    .filter-check-list { list-style:none; padding:0; margin:0 0 28px; border-top:1px solid #d8dde0; }
-    .filter-check-label { display:flex; align-items:center; gap:16px; font-size:18px; color:#212b32; padding:14px 0; cursor:pointer; border-bottom:1px solid #d8dde0; }
-    .filter-checkbox { width:40px; height:40px; border:2px solid #4c6272; border-radius:4px; flex:0 0 40px; appearance:none; -webkit-appearance:none; cursor:pointer; background:#fff; position:relative; margin:0; }
-    .filter-checkbox:checked { background:#005eb8; border-color:#005eb8; }
-    .filter-checkbox:checked::after { content:''; position:absolute; left:11px; top:4px; width:10px; height:18px; border:3px solid #fff; border-top:none; border-left:none; transform:rotate(45deg); }
-    .filter-apply-wrap { position:sticky; bottom:0; background:#f0f4f5; padding:16px 0 20px; }
-    .filter-apply-btn { display:block; width:100%; background:#007f3b; color:#fff; border:none; padding:16px; font-size:18px; font-weight:700; cursor:pointer; font-family:inherit; }
-    .filter-apply-btn:hover { background:#005e2b; }
+    .dates-list { border:1px solid #aeb7bd; margin-bottom:16px; }
+    .date-card { display:flex; align-items:center; text-decoration:none; color:inherit; padding:16px; border-bottom:1px solid #aeb7bd; background:#fff; }
+    .date-card:last-child { border-bottom:none; }
+    .date-card:hover, .date-card:active { background:#fff; }
+    .date-card__body { flex:1; min-width:0; }
+    .date-card__date { display:block; color:#005eb8; font-size:1.125rem; font-weight:700; margin-bottom:4px; }
+    .date-card__slots { font-weight:700; margin:0 0 2px; font-size:1rem; color:#212b32; }
+    .date-card__period { margin:0; font-size:1rem; color:#212b32; }
+    .date-card__chev { flex:0 0 24px; font-size:1.5rem; color:#005eb8; margin-left:12px; line-height:1; }
+    .ca-phone { font-size:1.5rem; font-weight:700; color:#005eb8; display:block; margin-bottom:4px; text-decoration:none; }
+    .ca-phone:hover { text-decoration:underline; }
   </style>
 
-  <div class="clinic-availability">
+  <div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-full">
 
-    <h1 class="nhsapp-page-heading nhsuk-heading-l">{{ clinic.name }}</h1>
+      <h1 class="nhsapp-page-heading nhsuk-heading-l">{{ clinic.name }}</h1>
 
-    {% if clinic.distance %}
-      <p class="ca-meta-label">Location {{ clinic.distance }}</p>
-    {% endif %}
-    {% if clinic.address %}
-      <p class="ca-address nhsuk-body">{{ clinic.address }}</p>
-    {% endif %}
-    <p><a class="nhsuk-link" href="#">Get directions</a></p>
+      <h2 class="nhsuk-heading-s">Care Quality Commission inspection rating.</h2>
+      <div class="ca-cqc-rating">
+        {% set rating = clinic.cqcRating | lower %}
+        {% if rating == 'good' %}
+          {% set dotClass = 'ca-cqc-dot--good' %}
+        {% elif 'improve' in rating %}
+          {% set dotClass = 'ca-cqc-dot--improve' %}
+        {% elif rating == 'outstanding' %}
+          {% set dotClass = 'ca-cqc-dot--outstanding' %}
+        {% else %}
+          {% set dotClass = 'ca-cqc-dot--inadequate' %}
+        {% endif %}
+        <span class="ca-cqc-dot {{ dotClass }}" aria-hidden="true"></span>
+        <span>Overall: <strong>{{ clinic.cqcRating }}</strong></span>
+      </div>
+      <p><a class="nhsuk-link" href="#">Visit the CQC site for more information</a></p>
 
-    <hr class="ca-section-break" />
+      <hr class="ca-section-break" />
 
-    <h2 class="nhsuk-heading-s">Opening hours</h2>
-    <p class="nhsuk-body">{{ clinic.openingHours }}</p>
+      <p class="ca-meta-label">Location</p>
+      {% if clinic.address %}
+        <p class="ca-address nhsuk-body">{{ clinic.address }}</p>
+      {% endif %}
+      <p><a class="nhsuk-link" href="#">Map and directions</a></p>
 
-    <hr class="ca-section-break" />
+      <hr class="ca-section-break" />
 
-    <h2 class="nhsuk-heading-s">Care Quality Commission inspection rating.</h2>
-    <div class="ca-cqc-rating">
-      {% set rating = clinic.cqcRating | lower %}
-      {% if rating == 'good' %}
-        {% set dotClass = 'ca-cqc-dot--good' %}
-      {% elif 'improve' in rating %}
-        {% set dotClass = 'ca-cqc-dot--improve' %}
-      {% elif rating == 'outstanding' %}
-        {% set dotClass = 'ca-cqc-dot--outstanding' %}
+      {% if clinic.type == 'walk-in' %}
+
+        <h2 class="nhsuk-heading-m">Availability</h2>
+        <p class="nhsuk-body">{{ clinic.durationDesc }}</p>
+        {% if clinic.busyPeriods %}
+          <p class="nhsuk-body">{{ clinic.busyPeriods }}</p>
+        {% endif %}
+        <a class="nhsuk-button" style="background:#007f3b; display:inline-block; text-decoration:none; padding:14px 20px; color:#fff; font-weight:700; box-shadow:0 4px 0 #003d20;" href="/pages/your-health/check?clinic={{ clinic.id | urlencode }}&postcode={{ postcode | urlencode }}&date={{ 'Walk in' | urlencode }}&time={{ 'Walk in' | urlencode }}">Select walk in</a>
+
       {% else %}
-        {% set dotClass = 'ca-cqc-dot--inadequate' %}
+
+        <h2 class="nhsuk-heading-m">Select a date</h2>
+        <div class="dates-list" id="dates-container"></div>
+        <p id="load-more-wrap" style="display:none; margin-bottom:24px">
+          <a class="nhsuk-link" href="#" id="load-more-btn">Load more days</a>
+        </p>
+
       {% endif %}
-      <span class="ca-cqc-dot {{ dotClass }}" aria-hidden="true"></span>
-      <span>Overall: <strong>{{ clinic.cqcRating }}</strong></span>
-    </div>
-    <p><a class="nhsuk-link" href="#">Visit the CQC site for more information</a></p>
 
-    <hr class="ca-section-break" />
+      <hr class="ca-section-break" />
 
-    {% if clinic.type == 'walk-in' %}
+      <h2 class="nhsuk-heading-m">Can I book over the phone?</h2>
+      <p class="nhsuk-body">The easiest way to book and manage a test is through this app but if you'd prefer to speak to someone call:</p>
+      <a class="ca-phone" href="tel:0800123456">0800 123 456</a>
+      <p class="nhsuk-body">9:00am - 5:00pm Monday to Friday</p>
 
-      <h2 class="nhsuk-heading-m">Availability</h2>
-      <p class="nhsuk-body">{{ clinic.durationDesc }}</p>
-      {% if clinic.busyPeriods %}
-        <p class="nhsuk-body">{{ clinic.busyPeriods }}</p>
-      {% endif %}
-      <a class="ca-slot-button ca-walk-in-select" href="/pages/your-health/check?clinic={{ clinic.id | urlencode }}&postcode={{ postcode | urlencode }}&date={{ 'Walk in' | urlencode }}&time={{ 'Walk in' | urlencode }}">Select walk in</a>
-
-    {% else %}
-
-      <div class="week-nav">
-        <button class="week-nav-btn" id="prev-week" aria-label="Previous week" disabled>&#8249;</button>
-        <div class="week-nav-center">
-          <p class="week-month" id="week-month"></p>
-          <p class="week-range" id="week-range-label"></p>
-          <p class="week-counter" id="week-counter"></p>
-        </div>
-        <button class="week-nav-btn" id="next-week" aria-label="Next week">&#8250;</button>
-      </div>
-
-      <p class="nhsuk-body" style="margin-bottom:16px">Times shown are expected start times. Please leave an hour for your appointments.</p>
-
-      <div class="filter-row">
-        <button class="filter-bar" id="filter-btn" aria-label="Filter availability">
-          <svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <line x1="0" y1="1" x2="18" y2="1" stroke="currentColor" stroke-width="2"/>
-            <line x1="3" y1="7" x2="15" y2="7" stroke="currentColor" stroke-width="2"/>
-            <line x1="6" y1="13" x2="12" y2="13" stroke="currentColor" stroke-width="2"/>
-          </svg>
-          Filter <span id="filter-count"></span>
-        </button>
-        <button class="clear-filters-btn" id="clear-filters-btn">Clear filters</button>
-      </div>
-
-      <div id="days-container"></div>
-
-    {% endif %}
-
-  </div>
-
-  <!-- Filter overlay -->
-  <div class="filter-overlay" id="filter-overlay">
-    <button class="filter-back-btn" id="filter-close-btn">
-      <svg width="12" height="20" viewBox="0 0 12 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M11 1L1 10l10 9" stroke="#005eb8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      Back
-    </button>
-
-    <h1>Filter availability by</h1>
-
-    <span class="filter-section-label">Days</span>
-    <ul class="filter-check-list">
-      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-day" value="Monday"> Monday</label></li>
-      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-day" value="Tuesday"> Tuesday</label></li>
-      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-day" value="Wednesday"> Wednesday</label></li>
-      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-day" value="Thursday"> Thursday</label></li>
-      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-day" value="Friday"> Friday</label></li>
-      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-day" value="Saturday"> Saturday</label></li>
-      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-day" value="Sunday"> Sunday</label></li>
-    </ul>
-
-    <span class="filter-section-label">Times</span>
-    <ul class="filter-check-list">
-      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-time" value="before9"> Before 9:00am</label></li>
-      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-time" value="morning"> 9:00am – 11:59am</label></li>
-      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-time" value="early-afternoon"> 12:00pm – 1:59pm</label></li>
-      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-time" value="late-afternoon"> 2:00pm – 5:00pm</label></li>
-      <li><label class="filter-check-label"><input type="checkbox" class="filter-checkbox filter-time" value="evening"> After 5:00pm</label></li>
-    </ul>
-
-    <div class="filter-apply-wrap">
-      <button class="filter-apply-btn" id="filter-apply-btn">Apply</button>
     </div>
   </div>
 
@@ -186,195 +104,72 @@
       var meta = JSON.parse(document.getElementById('clinic-meta').textContent);
       var clinicId = meta.clinicId;
       var postcode = meta.postcode;
+      var BATCH = 7;
+      var shown = 0;
 
-      var TODAY = new Date();
-      TODAY.setHours(0, 0, 0, 0);
-
-      var MONTHS_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-      var MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-      var DAYS_LONG = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      var availDays = daysData.filter(function (d) { return d.hasSlots; });
 
       function ordinal(n) {
-        var s = ['th','st','nd','rd'], v = n % 100;
+        var s = ['th', 'st', 'nd', 'rd'], v = n % 100;
         return n + (s[(v - 20) % 10] || s[v] || s[0]);
       }
-      function isoDate(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
-      function fmtWeekRange(mon, sun) {
-        return ordinal(mon.getDate()) + ' ' + MONTHS_SHORT[mon.getMonth()] + ' – ' + ordinal(sun.getDate()) + ' ' + MONTHS_SHORT[sun.getMonth()];
-      }
-      function fmtMonthYear(mon, sun) {
-        if (mon.getMonth() === sun.getMonth()) return MONTHS_LONG[mon.getMonth()] + ' ' + mon.getFullYear();
-        return MONTHS_LONG[mon.getMonth()] + ' / ' + MONTHS_LONG[sun.getMonth()] + ' ' + sun.getFullYear();
-      }
-      function fmtDayHeading(date) {
-        return DAYS_LONG[date.getDay()] + ' ' + ordinal(date.getDate()) + ' ' + MONTHS_LONG[date.getMonth()];
-      }
-      function getMondayOf(date) {
-        var d = new Date(date);
-        var dow = d.getDay();
-        d.setDate(d.getDate() + (dow === 0 ? -6 : 1 - dow));
-        d.setHours(0, 0, 0, 0);
-        return d;
-      }
 
-      var weekStart = getMondayOf(TODAY);
-      var weeks = [];
-
-      for (var w = 0; w < 8; w++) {
-        var monDate = new Date(weekStart);
-        monDate.setDate(weekStart.getDate() + w * 7);
-        var sunDate = new Date(monDate);
-        sunDate.setDate(monDate.getDate() + 6);
-
-        var weekDays = [];
-        for (var d = 0; d < 7; d++) {
-          var date = new Date(monDate);
-          date.setDate(monDate.getDate() + d);
-          if (date < TODAY) continue;
-          var iso = isoDate(date);
-          var dayData = null;
-          for (var i = 0; i < daysData.length; i++) {
-            if (daysData[i].iso === iso) { dayData = daysData[i]; break; }
-          }
-          if (dayData && dayData.hasSlots) {
-            weekDays.push({ data: dayData, heading: fmtDayHeading(date), dayName: DAYS_LONG[date.getDay()] });
-          }
-        }
-
-        weeks.push({
-          days: weekDays,
-          range: fmtWeekRange(monDate, sunDate),
-          monthLabel: fmtMonthYear(monDate, sunDate)
+      function formatDate(dateLabel) {
+        return dateLabel.replace(/(\w+) (\d+) (\w+)/, function (m, dow, day, month) {
+          return dow + ' ' + ordinal(parseInt(day, 10)) + ' ' + month;
         });
       }
 
-      var current = 0;
-      var activeFilters = { days: [], times: [] };
-
-      function parseHour(timeStr) {
-        var m = (timeStr || '').match(/(\d+):(\d+)\s*(am|pm)/i);
-        if (!m) return 0;
-        var h = parseInt(m[1]);
-        var p = m[3].toLowerCase();
-        if (p === 'pm' && h !== 12) h += 12;
-        if (p === 'am' && h === 12) h = 0;
-        return h;
+      function periodLabel(day) {
+        var parts = [];
+        if (day.morning && day.morning.length) parts.push('Morning');
+        if (day.afternoon && day.afternoon.length) parts.push('Lunchtime');
+        if (day.evening && day.evening.length) parts.push('Evening');
+        if (!parts.length) return '';
+        if (parts.length === 1) return parts[0] + ' available';
+        var last = parts.pop();
+        return parts.join(', ') + ' and ' + last + ' available';
       }
 
-      function filterSlots(slots) {
-        if (!activeFilters.times.length) return slots;
-        return slots.filter(function(slot) {
-          var h = parseHour(slot.start);
-          return activeFilters.times.some(function(f) {
-            if (f === 'before9') return h < 9;
-            if (f === 'morning') return h >= 9 && h < 12;
-            if (f === 'early-afternoon') return h >= 12 && h < 14;
-            if (f === 'late-afternoon') return h >= 14 && h < 17;
-            if (f === 'evening') return h >= 17;
-            return false;
-          });
+      function renderBatch() {
+        var batch = availDays.slice(shown, shown + BATCH);
+        var container = document.getElementById('dates-container');
+        batch.forEach(function (day) {
+          var count = (day.morning ? day.morning.length : 0) +
+                      (day.afternoon ? day.afternoon.length : 0) +
+                      (day.evening ? day.evening.length : 0);
+          var url = '/pages/your-health/select-time?clinic=' + clinicId +
+                    '&postcode=' + postcode +
+                    '&iso=' + encodeURIComponent(day.iso) +
+                    '&date=' + encodeURIComponent(day.dateLabel);
+          var card = document.createElement('a');
+          card.className = 'date-card';
+          card.href = url;
+          card.innerHTML =
+            '<div class="date-card__body">' +
+              '<span class="date-card__date">' + formatDate(day.dateLabel) + '</span>' +
+              '<p class="date-card__slots">' + count + ' ' + (count === 1 ? 'slot' : 'slots') + '</p>' +
+              '<p class="date-card__period">' + periodLabel(day) + '</p>' +
+            '</div>' +
+            '<div class="date-card__chev">&#8250;</div>';
+          container.appendChild(card);
+        });
+        shown += batch.length;
+        var loadMoreWrap = document.getElementById('load-more-wrap');
+        if (loadMoreWrap) {
+          loadMoreWrap.style.display = shown < availDays.length ? 'block' : 'none';
+        }
+      }
+
+      renderBatch();
+
+      var loadMoreBtn = document.getElementById('load-more-btn');
+      if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          renderBatch();
         });
       }
-
-      function slotHref(dayData, slot) {
-        return '/pages/your-health/check?clinic=' + clinicId +
-          '&postcode=' + postcode +
-          '&date=' + encodeURIComponent(dayData.dateLabel) +
-          '&time=' + encodeURIComponent(slot.start);
-      }
-
-      function renderPeriod(label, slots, dayData) {
-        var html = '<p class="period-label">' + label + '</p>';
-        if (!slots || !slots.length) {
-          html += '<p style="color:#4c6272; font-size:14px; margin:0 0 16px">None available</p>';
-        } else {
-          html += '<div class="slots-grid">';
-          for (var i = 0; i < slots.length; i++) {
-            html += '<a class="slot-btn" href="' + slotHref(dayData, slots[i]) + '">' + slots[i].start + '</a>';
-          }
-          html += '</div>';
-        }
-        return html;
-      }
-
-      function render(wi) {
-        var week = weeks[wi];
-        document.getElementById('week-month').textContent = week.monthLabel;
-        document.getElementById('week-range-label').textContent = week.range;
-        document.getElementById('week-counter').textContent = 'Week ' + (wi + 1) + ' of 8';
-        document.getElementById('prev-week').disabled = wi === 0;
-        document.getElementById('next-week').disabled = wi === 7;
-
-        var filteredDays = week.days.filter(function(day) {
-          if (activeFilters.days.length && activeFilters.days.indexOf(day.dayName) === -1) return false;
-          var m = filterSlots(day.data.morning);
-          var a = filterSlots(day.data.afternoon);
-          var e = filterSlots(day.data.evening);
-          return m.length || a.length || e.length;
-        });
-
-        var html = '';
-        if (!filteredDays.length) {
-          html = '<p class="no-days-msg">No availability matching your filters this week.</p>';
-        } else {
-          for (var i = 0; i < filteredDays.length; i++) {
-            var day = filteredDays[i];
-            var isLast = i === filteredDays.length - 1;
-            var morning = filterSlots(day.data.morning);
-            var afternoon = filterSlots(day.data.afternoon);
-            var evening = filterSlots(day.data.evening);
-            html += '<div class="day-section">';
-            html += '<h2 class="day-heading">' + day.heading + '</h2>';
-            html += renderPeriod('Morning', morning, day.data);
-            html += renderPeriod('Afternoon', afternoon, day.data);
-            html += renderPeriod('Evening', evening, day.data);
-            if (!isLast) html += '<hr class="day-divider">';
-            html += '</div>';
-          }
-        }
-
-        document.getElementById('days-container').innerHTML = html;
-      }
-
-      document.getElementById('prev-week').addEventListener('click', function () {
-        if (current > 0) { current--; render(current); }
-      });
-      document.getElementById('next-week').addEventListener('click', function () {
-        if (current < 7) { current++; render(current); }
-      });
-
-      // Filter overlay
-      var overlay = document.getElementById('filter-overlay');
-      var filterCount = document.getElementById('filter-count');
-      var clearBtn = document.getElementById('clear-filters-btn');
-
-      function updateFilterUI() {
-        var count = activeFilters.days.length + activeFilters.times.length;
-        if (filterCount) filterCount.textContent = count > 0 ? '(' + count + ')' : '';
-        if (clearBtn) clearBtn.style.display = count > 0 ? 'block' : 'none';
-      }
-
-      document.getElementById('filter-btn').addEventListener('click', function () {
-        overlay.classList.add('is-open');
-      });
-      document.getElementById('filter-close-btn').addEventListener('click', function () {
-        overlay.classList.remove('is-open');
-      });
-      document.getElementById('filter-apply-btn').addEventListener('click', function () {
-        activeFilters.days = Array.from(document.querySelectorAll('.filter-day:checked')).map(function(cb) { return cb.value; });
-        activeFilters.times = Array.from(document.querySelectorAll('.filter-time:checked')).map(function(cb) { return cb.value; });
-        overlay.classList.remove('is-open');
-        updateFilterUI();
-        render(current);
-      });
-      clearBtn.addEventListener('click', function () {
-        activeFilters = { days: [], times: [] };
-        document.querySelectorAll('.filter-day, .filter-time').forEach(function(cb) { cb.checked = false; });
-        updateFilterUI();
-        render(current);
-      });
-
-      render(0);
     })();
   </script>
 

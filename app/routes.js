@@ -49,6 +49,15 @@ router.get('/', (req, res) => {
 	res.render('pages/home-p9');
 });
 
+// Arrange test — redirect Start button based on chosen test type
+router.post('/pages/your-health/arrange-test', (req, res) => {
+	if (req.body['test-type'] === 'clinic') {
+		res.redirect('/pages/your-health/view-availability');
+	} else {
+		res.redirect('/pages/your-health/arrange-test');
+	}
+});
+
 // View availability search results
 router.get('/pages/your-health/view-availability-results', (req, res) => {
 	const key = resolvePostcodeKey(req.query.postcode);
@@ -94,6 +103,44 @@ router.get('/pages/your-health/clinic-availability', (req, res) => {
 		clinic,
 		days,
 		daysJson: JSON.stringify(days),
+		postcode: req.query.postcode || ''
+	});
+});
+
+// Time slot selection for a specific day at a clinic (reached from a date
+// card on the clinic-availability page).
+router.get('/pages/your-health/select-time', (req, res) => {
+	const key = resolvePostcodeKey(req.query.postcode);
+	const clinicId = req.query.clinic;
+	const iso = req.query.iso;
+	const clinicsList = loadClinicsList();
+	const clinic = clinicsList.find(x => x.id === clinicId);
+
+	if (!clinic) {
+		return res.redirect('/pages/your-health/view-availability-results?postcode=' + encodeURIComponent(req.query.postcode || ''));
+	}
+
+	const clinicIds = postcodeMap[key] || postcodeMap['DEFAULT'] || [];
+	const clinicIndex = clinicIds.indexOf(clinicId);
+	const days = availability.generateFullAvailability(key, clinicId, clinic.openingHours, 56, clinicIndex < 0 ? 1 : clinicIndex);
+	const day = days.find(d => d.iso === iso);
+
+	if (!day || !day.hasSlots) {
+		return res.redirect('/pages/your-health/clinic-availability?clinic=' + encodeURIComponent(clinicId) + '&postcode=' + encodeURIComponent(req.query.postcode || ''));
+	}
+
+	const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+	const d = new Date(day.iso);
+	const n = d.getDate();
+	const ordSuffixes = ['th','st','nd','rd'];
+	const v = n % 100;
+	const ord = n + (ordSuffixes[(v - 20) % 10] || ordSuffixes[v] || ordSuffixes[0]);
+	const dateHeading = dayNames[d.getDay()] + ' ' + ord + ' ' + day.month;
+
+	res.render('pages/your-health/select-time', {
+		clinic,
+		day,
+		dateHeading,
 		postcode: req.query.postcode || ''
 	});
 });
