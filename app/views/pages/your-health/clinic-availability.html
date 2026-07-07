@@ -198,7 +198,7 @@
         var s = ['th','st','nd','rd'], v = n % 100;
         return n + (s[(v - 20) % 10] || s[v] || s[0]);
       }
-      function isoDate(d) { return d.toISOString().split('T')[0]; }
+      function isoDate(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
       function fmtWeekRange(mon, sun) {
         return ordinal(mon.getDate()) + ' ' + MONTHS_SHORT[mon.getMonth()] + ' – ' + ordinal(sun.getDate()) + ' ' + MONTHS_SHORT[sun.getMonth()];
       }
