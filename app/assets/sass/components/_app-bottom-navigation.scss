@@ -4,6 +4,7 @@
 
 .app-bottom-navigation {
   background-color: $nhsuk-link-color;
+  border-top: 1px solid nhsuk-colour("white");
   bottom: 0;
   padding-bottom:8px;
   position: fixed;
