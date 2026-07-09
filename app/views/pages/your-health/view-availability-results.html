@@ -6,77 +6,140 @@
 
 {% block content %}
 
-  <style>
-    .search-summary { margin-bottom: 24px }
-    .search-summary__row { padding: 12px 0; border-bottom: 1px solid #aeb7bd }
-    .search-summary__row:first-child { border-top: 1px solid #aeb7bd }
-    .search-summary__label { font-weight: 700; margin: 0 0 2px }
-    .search-summary__value { margin: 0 0 4px; color: #212b32 }
-    .provider-card { display: flex; align-items: center; text-decoration: none; color: inherit; background: #fff; border: 1px solid #aeb7bd; border-radius: 4px; padding: 16px; margin-bottom: 16px }
-    .provider-card:hover { border-color: #212b32 }
-    .provider-card:visited { color: inherit }
-    .provider-card__body { flex: 1; min-width: 0 }
-    .provider-card__name { display: block; color: #005eb8; font-size: 1.1875rem; font-weight: 600; margin: 0 0 4px; text-decoration: underline }
-    .provider-card__distance { font-weight: 700; margin: 0 0 10px; color: #212b32; font-size: 1rem }
-    .provider-card__appt-label { font-weight: 700; margin: 0; font-size: 1rem; color: #212b32 }
-    .provider-card__appt-date { margin: 2px 0 0; font-size: 1rem; color: #212b32 }
-    .provider-card__chev { flex: 0 0 24px; font-size: 1.5rem; color: #005eb8; margin-left: 12px; line-height: 1 }
-  </style>
-
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-full">
 
-      <h1 class="nhsapp-page-heading nhsuk-heading-l">Available blood test providers</h1>
+      <h1 class="nhsapp-page-heading nhsuk-heading-l">Available clinics</h1>
+
+      {% if postcode %}
+        <p class="nhsuk-body-m">Showing results for <strong>{{ postcode }}</strong></p>
+      {% endif %}
 
       {% if debug == '1' %}
         <h2 class="nhsuk-heading-m">Debug: clinics payload</h2>
         <pre style="white-space:pre-wrap; background:#f6f6f6; padding:12px; border-radius:6px">{{ clinicsJson }}</pre>
       {% endif %}
 
-      <div class="search-summary">
-        <div class="search-summary__row">
-          <p class="search-summary__label">Near</p>
-          <p class="search-summary__value">{{ postcode }}</p>
-          <a class="nhsuk-link" href="/pages/your-health/view-availability">Change</a>
-        </div>
-        <div class="search-summary__row">
-          <p class="search-summary__label">Access needs</p>
-          <p class="search-summary__value">
-            {%- if data['access'] == 'yes' and data['access-needs'] -%}
-              {%- if data['access-needs'] is string -%}
-                {{ data['access-needs'] }}
-              {%- else -%}
-                {{ data['access-needs'] | join(', ') }}
-              {%- endif -%}
-            {%- else -%}
-              No access needs
-            {%- endif -%}
-          </p>
-          <a class="nhsuk-link" href="/pages/your-health/view-availability">Change</a>
-        </div>
-      </div>
+      <div class="nhsuk-section">
+        <style>
+          .clinic-top { display:flex; justify-content:space-between; align-items:flex-start; padding:8px 0 0 }
+          .clinic-distance { font-weight:700; font-size:1.1rem; margin:0 }
+          .clinic-name { font-size:1.4rem; margin:4px 0 12px }
+          .clinic-times-heading { font-size:16px; font-weight:400; margin:0 0 8px }
+          .clinic-times-heading .suggested-current,
+          .clinic-times-heading .suggested-total { font-weight:700 }
+          .clinic-times { display:flex; align-items:center; gap:0; margin-bottom:16px }
+          .times-pages { flex:1; min-width:0; padding:0 4px }
+          .times-date { text-align:left; padding-left:32px; font-weight:800; margin:20px 0 12px }
+          .times-box { padding:0; margin-bottom:10px }
+          .times-box--hidden { display:none }
+          .times-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px }
+          .slot-button { display:block; text-align:center; text-decoration:none; background:#fff; border:2px solid #0b5a3b; color:#0b5a3b; padding:12px 8px; border-radius:8px; font-weight:700; font-size:15px }
+          .slot-button:active { transform:translateY(1px) }
+          .chev-btn { flex:0 0 28px; width:28px; font-size:36px; color:#212b32; background:none; border:none; padding:0; cursor:pointer; line-height:1 }
+          .chev-btn:disabled { color:#b1b4b6; cursor:default }
+          .clinic-duration { color:#222; margin:0 0 16px }
+          .walk-in-block { padding:0 0 4px 0 }
+          .walk-in-select { display:inline-block; width:auto; padding-left:20px; padding-right:20px; box-shadow:0 4px 0 #00401f; margin-bottom:16px }
+        </style>
 
-      {% for clinic in clinics %}
-        {% set clinicUrl = "/pages/your-health/clinic-availability?clinic=" + (clinic.id | urlencode) + "&postcode=" + (postcode | urlencode) %}
-
-        {% if clinic.type == 'walk-in' %}
-          {% set earliestDate = "Walk in Appointment" %}
-        {% elif clinic.times and clinic.times.length %}
-          {% set earliestDate = clinic.times[0].dateLabel %}
-        {% else %}
-          {% set earliestDate = "Contact clinic for availability" %}
-        {% endif %}
-
-        <a class="provider-card" href="{{ clinicUrl }}">
-          <div class="provider-card__body">
-            <span class="provider-card__name">{{ clinic.name }}</span>
-            <p class="provider-card__distance">{{ clinic.distance }}</p>
-            <p class="provider-card__appt-label">Earliest appointment:</p>
-            <p class="provider-card__appt-date">{{ earliestDate }}</p>
+        {% for clinic in clinics %}
+          <div class="clinic-top">
+            <p class="clinic-distance">{{ clinic.distance }}</p>
+            <p style="margin:0"><a class="nhsuk-link" href="#">Get directions</a></p>
           </div>
-          <div class="provider-card__chev">›</div>
-        </a>
-      {% endfor %}
+          <p class="clinic-name">{{ clinic.name }}</p>
+
+          {% if clinic.type == 'walk-in' %}
+
+          <div class="walk-in-block">
+            <p class="nhsuk-body" style="margin:0 0 8px">{{ clinic.durationDesc }}</p>
+            {% if clinic.openingHours %}
+              <p class="nhsuk-body" style="margin:0 0 20px">{{ clinic.openingHours }}</p>
+            {% endif %}
+            <div><a class="slot-button walk-in-select" href="/pages/your-health/check?clinic={{ clinic.id | urlencode }}&postcode={{ postcode | urlencode }}&date={{ 'Walk in' | urlencode }}&time={{ 'Walk in' | urlencode }}">Select walk in</a></div>
+            <div style="margin:0 0 20px"></div>
+            {{ actionLink({ text: "See full clinic details", href: "/pages/your-health/clinic-availability?clinic=" + (clinic.id | urlencode) + "&postcode=" + (postcode | urlencode) }) }}
+          </div>
+
+          {% else %}
+
+          <p class="clinic-times-heading">Suggested times <span class="suggested-current" data-clinic-id="{{ clinic.id }}">1</span>/<span class="suggested-total" data-clinic-id="{{ clinic.id }}">10</span></p>
+          <div class="times-date" data-clinic-id="{{ clinic.id }}">{{ clinic.times[0].dateLabel if clinic.times.length }}</div>
+          <div class="clinic-times" data-clinic-id="{{ clinic.id }}">
+            <button class="chev-btn" data-dir="prev" aria-label="Previous suggested times" disabled>&lsaquo;</button>
+            <div class="times-pages">
+              {% for page in clinic.times %}
+                <div class="times-box{% if loop.index0 != 0 %} times-box--hidden{% endif %}" data-date="{{ page.dateLabel }}">
+                  <div class="times-grid">
+                    {% for slot in page.slots %}
+                      <a class="slot-button" href="/pages/your-health/check?clinic={{ clinic.id | urlencode }}&postcode={{ postcode | urlencode }}&date={{ page.dateLabel | urlencode }}&time={{ slot | urlencode }}">{{ slot }}</a>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+            <button class="chev-btn" data-dir="next" data-clinic-id="{{ clinic.id }}" aria-label="Next suggested times">&rsaquo;</button>
+          </div>
+          <p class="clinic-duration nhsuk-body-m">{{ clinic.durationDesc or 'Tests are expected to start within times shown and last 30 minutes.' }}</p>
+          {{ actionLink({ text: "See full clinic availability", href: "/pages/your-health/clinic-availability?clinic=" + (clinic.id | urlencode) + "&postcode=" + (postcode | urlencode) }) }}
+
+          {% endif %}
+
+          {% if not loop.last %}
+            <hr class="nhsuk-section-break--s" />
+          {% endif %}
+        {% endfor %}
+
+        <script>
+          (function(){
+            function initClinicPagers(){
+              document.querySelectorAll('.clinic-times').forEach(function(ct){
+                var pages = Array.from(ct.querySelectorAll('.times-box'));
+                if (!pages.length) return;
+                var total = pages.length;
+                var clinicId = ct.dataset.clinicId;
+                var counterCurrent = document.querySelector('.suggested-current[data-clinic-id="'+clinicId+'"]');
+                var counterTotal = document.querySelector('.suggested-total[data-clinic-id="'+clinicId+'"]');
+                var dateLabel = document.querySelector('.times-date[data-clinic-id="'+clinicId+'"]');
+                if (counterTotal) counterTotal.textContent = 10;
+                var idx = 0;
+                var chevPrev = ct.querySelector('[data-dir="prev"]');
+                var chevNext = ct.querySelector('[data-dir="next"]');
+
+                function show(i){
+                  pages.forEach(function(p){ p.classList.add('times-box--hidden'); });
+                  pages[i].classList.remove('times-box--hidden');
+                  if (counterCurrent) counterCurrent.textContent = i + 1;
+                  if (dateLabel) dateLabel.textContent = pages[i].dataset.date;
+                  if (chevPrev) chevPrev.disabled = i === 0;
+                  if (chevNext) chevNext.disabled = i === total - 1;
+                }
+
+                if (chevPrev) chevPrev.addEventListener('click', function(){ if (idx > 0) show(--idx); });
+                if (chevNext) chevNext.addEventListener('click', function(){ if (idx < total - 1) show(++idx); });
+
+                var startX = null;
+                ct.addEventListener('touchstart', function(e){ startX = e.changedTouches[0].clientX; }, {passive:true});
+                ct.addEventListener('touchend', function(e){
+                  if (startX === null) return;
+                  var dx = e.changedTouches[0].clientX - startX;
+                  if (Math.abs(dx) > 30){
+                    if (dx < 0 && idx < total - 1) show(++idx);
+                    else if (dx > 0 && idx > 0) show(--idx);
+                  }
+                  startX = null;
+                }, {passive:true});
+
+                show(0);
+              });
+            }
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initClinicPagers);
+            else initClinicPagers();
+          })();
+        </script>
+
+      </div>
 
     </div>
   </div>
