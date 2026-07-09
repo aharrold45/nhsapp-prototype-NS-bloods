@@ -30,7 +30,7 @@
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
-    "express-session": "^1.18.2",
+    "express-session": "^1.19.0",
     "gulp": "^5.0.1",
     "gulp-babel": "^8.0.0",
     "gulp-clean": "^0.4.0",
