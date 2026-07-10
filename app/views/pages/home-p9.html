@@ -6,6 +6,8 @@
 
 {% block content %}
 
+  {% set appointmentBadgeCount = 1 if data['bookedAppointment'] else 2 %}
+
   <div class="nhsuk-grid-row">
     <div class="nhsuk-grid-column-full">
 
@@ -19,7 +21,7 @@
         stacked: true,
         cards: [
           { title: 'Prescriptions', href: '/pages/your-health/prescriptions-p9' },
-          { title: 'Appointments', href: '/pages/appointments-p9', badgeLarge: { count: 1, label: 'notifications' } },
+          { title: 'Appointments', href: '/pages/appointments-p9', badgeLarge: { count: appointmentBadgeCount, label: 'notifications' } },
           { title: 'Test results', href: '/pages/your-health/result-sensitive-information?next=/pages/your-health/tests-and-results' },
           { title: 'Vaccinations', href: '/pages/your-health/vaccinations-p9' },
           { title: 'Health conditions', href: '/pages/your-health/conditions-p9' },
@@ -30,7 +32,7 @@
       <!-- NHS information and support -->
       {{ nhsappCardGroup({
         stacked: true,
-        headingHtml: '<h2 class="nhsuk-heading-m nhsuk-u-margin-bottom-0">NHS information and support</h2>',
+        headingHtml: '<h2 class="nhsuk-heading-m nhsuk-u-margin-bottom-10">NHS information and support</h2>',
         cards: [
           { title: 'Check your symptoms using 111 online', href: 'https://111.nhs.uk/' },
           { title: 'Health A-Z', href: 'https://www.nhs.uk/conditions/' },
@@ -41,7 +43,7 @@
       <!-- Messages -->
       {{ nhsappCardGroup({
         stacked: true,
-        headingHtml: '<h2 class="nhsuk-heading-m nhsuk-u-margin-bottom-0">Messages</h2>',
+        headingHtml: '<h2 class="nhsuk-heading-m nhsuk-u-margin-bottom-10">Messages</h2>',
         cards: [
           { title: 'New messages', href: '/pages/messages/your-messages', badgeLarge: { count: 1, label: 'notifications' } },
           { title: 'Sent messages', href: '/pages/messages-sent-p9' }
