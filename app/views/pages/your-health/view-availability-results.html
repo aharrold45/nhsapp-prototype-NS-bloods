@@ -82,7 +82,7 @@
             <button class="chev-btn" data-dir="next" data-clinic-id="{{ clinic.id }}" aria-label="Next suggested times">&rsaquo;</button>
           </div>
           <p class="clinic-duration nhsuk-body-m">{{ clinic.durationDesc or 'Tests are expected to start within times shown and last 30 minutes.' }}</p>
-          {{ actionLink({ text: "See full clinic availability", href: "/pages/your-health/clinic-availability?clinic=" + (clinic.id | urlencode) + "&postcode=" + (postcode | urlencode) }) }}
+          {{ actionLink({ text: "More availability", href: "/pages/your-health/clinic-availability?clinic=" + (clinic.id | urlencode) + "&postcode=" + (postcode | urlencode) }) }}
 
           {% endif %}
 
